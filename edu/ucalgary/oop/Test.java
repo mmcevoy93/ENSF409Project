@@ -6,6 +6,7 @@ max.mcevoy@ucalgary.ca</a>
 @since 1.0
 */
 
+//Hello!
 
 class Animal{
     protected int animalID;
