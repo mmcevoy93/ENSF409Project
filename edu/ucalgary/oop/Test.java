@@ -6,6 +6,8 @@ max.mcevoy@ucalgary.ca</a>
 @since 1.0
 */
 
+//THis will cause an error
+
 
 class Animal{
     protected int animalID;
