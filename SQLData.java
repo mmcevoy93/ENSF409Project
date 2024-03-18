@@ -60,9 +60,9 @@ public class SQLData {
     }
 
     public static void main(String[] args){
-        JDBCDemo myJDBC = new JDBCDemo();
+        SQLData myJDBC = new SQLData("whatever URL", "whatever username", "whatever password");
 
-        myJDBC.createConnection();
+        myJDBC.initializeConnection();
 
         String allData = myJDBC.selectData();
         System.out.println(allData);
