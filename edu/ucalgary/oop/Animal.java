@@ -108,16 +108,3 @@ public class Animal{
      */
     public int FeedWindow(){return -1;}
 }
-
-class Test{
-    private static List<Animal> animals = new ArrayList<>();
-    public static void main(String args[]) {
-        Fox fox = new Fox(12, "eppe");
-        Raccoon rac = new Raccoon(12, "eppe");
-        System.out.println(fox.getfeedTime());
-        animals.add(fox);
-        animals.add(rac);
-        System.out.println(animals.get(0).getSpecies());
-
-    }
-}
