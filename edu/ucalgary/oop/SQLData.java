@@ -60,7 +60,7 @@ public class SQLData {
     }
 
     public static void main(String[] args){
-        SQLData myJDBC = new SQLData("whatever URL", "whatever username", "whatever password");
+        SQLData myJDBC = new SQLData("jdbc:postgresql://localhost/ewr", "oop", "ucalgary");
 
         myJDBC.initializeConnection();
 
