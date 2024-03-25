@@ -1,13 +1,16 @@
 package edu.ucalgary.oop;
 import java.sql.*;
+import java.util.*;
 public class SQLData {
 
     private Connection dbConnect;
-    private ResultSet results;
+    private ResultSet taskResults;
 
     public final String DBURL;
     public final String USERNAME;
     public final String PASSWORD;
+
+    private ArrayList<Task> newTask;
 
     public SQLData(String url, String user, String pw){
 
@@ -30,29 +33,77 @@ public class SQLData {
     }
 
     //Step 2 & 3: Make statements and execute
-    public String selectData(){
-        StringBuffer tasksAndTreatments = new StringBuffer();
+    public ArrayList<Task> selectTask(){
 
         try{
             Statement myStmt = dbConnect.createStatement();
-            results = myStmt.executeQuery("SELECT * FROM treatments");
+            taskResults = myStmt.executeQuery("SELECT * FROM TASKS");
 
-            while (results.next()){
-                System.out.println("Print results: " + results.getString(""));
-                tasksAndTreatments.append(results.getString(""));
-                tasksAndTreatments.append('\n');
+            while (taskResults.next()){
+                int taskID = taskResults.getInt("TaskID");
+                String description = taskResults.getString("Description");
+                int duration = taskResults.getInt("Duration");
+                int maxWindow = taskResults.getInt("MaxWindow");
+
+                switch(description) {
+                    case ("Kit feeding"):
+                        newTask.add(new Task(taskID, description, duration, maxWindow));
+                        break;
+
+                    case ("Rebandage leg wound"):
+                        newTask.add(new Task(taskID, description, duration, maxWindow));
+                        break;
+
+                    case ("Apply burn ointment back"):
+                        newTask.add(new Task(taskID, description, duration, maxWindow));
+                        break;
+
+                    case ("Administer antibiotics"):
+                        newTask.add(new Task(taskID, description, duration, maxWindow));
+                        break;
+
+                    case ("Flush neck wound"):
+                        newTask.add(new Task(taskID, description, duration, maxWindow));
+                        break;
+
+                    case ("Give fluid injection"):
+                        newTask.add(new Task(taskID, description, duration, maxWindow));
+                        break;
+
+                    case ("Give vitamin injection"):
+                        newTask.add(new Task(taskID, description, duration, maxWindow));
+                        break;
+
+                    case ("Mange treament"):
+                        newTask.add(new Task(taskID, description, duration, maxWindow));
+                        break;
+
+                    case ("Eyedrops"):
+                        newTask.add(new Task(taskID, description, duration, maxWindow));
+                        break;
+
+                    case ("Inspect broken leg"):
+                        newTask.add(new Task(taskID, description, duration, maxWindow));
+                        break;
+                    default:
+                        System.out.println("Invalid task");
+                        break;
+                }
+
+
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return tasksAndTreatments.toString();
+
+        return newTask;
     }
 
     //Step 5: close the connection
     public void close(){
         try{
-            results.close();
+            taskResults.close();
             dbConnect.close();
         } catch (SQLException e){
             e.printStackTrace();
@@ -64,8 +115,10 @@ public class SQLData {
 
         myJDBC.initializeConnection();
 
-        String allData = myJDBC.selectData();
-        System.out.println(allData);
+
+        ArrayList<Task> newList = myJDBC.selectTask();
+//        allData = myJDBC.selectData();
+//        System.out.println(allData);
 
         myJDBC.close();
     }
