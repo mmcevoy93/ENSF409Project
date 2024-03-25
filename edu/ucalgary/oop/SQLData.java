@@ -117,19 +117,19 @@ public class SQLData {
 
                 switch(animalSpecies){
                     case("coyote"):
-                        animals.add(new Coyote(animalID, animalNickname, animalSpecies));
+                        animals.add(new Coyote(animalID, animalNickname));
                         break;
                     case("beaver"):
-                        animals.add(new Beaver(animalID, animalNickname, animalSpecies));
+                        animals.add(new Beaver(animalID, animalNickname));
                         break;
                     case("Fox"):
-                        animals.add(new Fox(animalID, animalNickname, animalSpecies));
+                        animals.add(new Fox(animalID, animalNickname));
                         break;
                     case("Raccoon"):
-                        animals.add(new Raccoon(animalID, animalNickname, animalSpecies));
+                        animals.add(new Raccoon(animalID, animalNickname));
                         break;
                     case("porcupine"):
-                        animals.add(new Porcupine(animalID, animalNickname, animalSpecies));
+                        animals.add(new Porcupine(animalID, animalNickname));
                         break;
                     default:
                         System.out.println("Invalid Species");
