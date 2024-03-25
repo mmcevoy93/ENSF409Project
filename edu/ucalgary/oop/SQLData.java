@@ -122,10 +122,10 @@ public class SQLData {
                     case("beaver"):
                         animals.add(new Beaver(animalID, animalNickname));
                         break;
-                    case("Fox"):
+                    case("fox"):
                         animals.add(new Fox(animalID, animalNickname));
                         break;
-                    case("Raccoon"):
+                    case("raccoon"):
                         animals.add(new Raccoon(animalID, animalNickname));
                         break;
                     case("porcupine"):
