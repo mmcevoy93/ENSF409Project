@@ -5,12 +5,16 @@ public class SQLData {
 
     private Connection dbConnect;
     private ResultSet taskResults;
+    private ResultSet animalResults;
+    private ResultSet treatmentResults;
 
     public final String DBURL;
     public final String USERNAME;
     public final String PASSWORD;
 
     private ArrayList<Task> newTask;
+    private ArrayList<Animal> animals;
+    private ArrayList<Treatment> treatments;
 
     public SQLData(String url, String user, String pw){
 
@@ -100,10 +104,84 @@ public class SQLData {
         return newTask;
     }
 
+    public ArrayList<Animal> selectAnimalData(){
+
+        try{
+            Statement myStmt = dbConnect.createStatement();
+            animalResults = myStmt.executeQuery("SELECT * FROM ANIMALS");
+
+            while (animalResults.next()){
+                int animalID = animalResults.getInt("AnimalID");
+                String animalNickname = animalResults.getString("AnimalNickname");
+                String animalSpecies = animalResults.getString("AnimalSpecies");
+
+                switch(animalSpecies){
+                    case("coyote"):
+                        animals.add(new Coyote(animalID, animalNickname, animalSpecies));
+                        break;
+                    case("beaver"):
+                        animals.add(new Beaver(animalID, animalNickname, animalSpecies));
+                        break;
+                    case("Fox"):
+                        animals.add(new Fox(animalID, animalNickname, animalSpecies));
+                        break;
+                    case("Raccoon"):
+                        animals.add(new Raccoon(animalID, animalNickname, animalSpecies));
+                        break;
+                    case("porcupine"):
+                        animals.add(new Porcupine(animalID, animalNickname, animalSpecies));
+                        break;
+                    default:
+                        System.out.println("Invalid Species");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return animals;
+    }
+
+    public ArrayList<Treatment> selectTreatmentsData(){
+
+        try{
+            Statement myStmt = dbConnect.createStatement();
+            treatmentResults = myStmt.executeQuery("SELECT * FROM TREATMENTS");
+
+            while (treatmentResults.next()){
+                int animalID = treatmentResults.getInt("AnimalID");
+                int taskID = treatmentResults.getInt("TaskID");
+                int startHour = treatmentResults.getInt("StartHour");
+
+                treatments.add(new Treatment(animalID, taskID, startHour));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return treatments;
+    }
+
     //Step 5: close the connection
     public void close(){
         try{
             taskResults.close();
+            dbConnect.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void closeAnimal(){
+        try{
+            treatmentResults.close();
+            dbConnect.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void closeTreatment(){
+        try{
+            treatmentResults.close();
             dbConnect.close();
         } catch (SQLException e){
             e.printStackTrace();
@@ -117,10 +195,14 @@ public class SQLData {
 
 
         ArrayList<Task> newList = myJDBC.selectTask();
+        ArrayList<Animal> animals = myJDBC.selectAnimalData();
+        ArrayList<Treatment> treatments = myJDBC.selectTreatmentsData();
 //        allData = myJDBC.selectData();
 //        System.out.println(allData);
 
         myJDBC.close();
+        myJDBC.closeAnimal();
+        myJDBC.closeTreatment();
     }
 
 }
