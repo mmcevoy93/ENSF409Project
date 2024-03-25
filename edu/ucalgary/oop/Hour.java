@@ -1,3 +1,4 @@
+package edu.ucalgary.oop;
 import java.util.*;
 public class Hour {
     //Declaring fields

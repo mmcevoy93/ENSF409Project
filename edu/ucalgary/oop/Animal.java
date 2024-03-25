@@ -13,7 +13,9 @@ import java.util.*;
  * Animal contains all the relavent info needed to 
  * complete all medical treatments, feedings and cleaning
  */
-public class Animal{
+
+// todo: include a throw to the IllegalArgumentException
+public class Animal {
     protected int animalID;
     protected String nickname;
     protected boolean feed = false;

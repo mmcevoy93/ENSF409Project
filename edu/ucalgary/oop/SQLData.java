@@ -1,5 +1,5 @@
+package edu.ucalgary.oop;
 import java.sql.*;
-
 public class SQLData {
 
     private Connection dbConnect;

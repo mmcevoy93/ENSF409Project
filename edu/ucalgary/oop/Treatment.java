@@ -1,5 +1,7 @@
 package edu.ucalgary.oop;
-public class Treatment throws IllegalArgumentException{
+
+// todo: create a throw to an IllegalArgumentException
+public class Treatment{
     private int ANIMAL_ID;
     private int TASK_ID;
     private int START_HOUR;
