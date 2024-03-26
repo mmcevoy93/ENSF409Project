@@ -16,8 +16,8 @@ public class Nocturnal extends Animal{
     }
     
     @Override
-    public int FeedStart(){return FEED_START;}
+    public int feedStart(){return FEED_START;}
     @Override
-    public int FeedWindow(){return FEED_WINDOW;}
+    public int feedWindow(){return FEED_WINDOW;}
     
 }

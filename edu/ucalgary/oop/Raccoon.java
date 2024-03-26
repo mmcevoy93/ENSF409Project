@@ -7,9 +7,9 @@ max.mcevoy@ucalgary.ca</a>
 */
 
 public class Raccoon extends  Nocturnal{
-    private final int FEED_TIME = 5;
-    private final int FEED_PREP = 5;
-    private final int CLEAN_TIME = 4;
+    private static final int FEED_TIME = 5;
+    private static final int FEED_PREP = 5;
+    private static final int CLEAN_TIME = 4;
     public Raccoon(int id, String name){
         super(id, name, FEED_TIME, FEED_PREP, CLEAN_TIME);   
     }

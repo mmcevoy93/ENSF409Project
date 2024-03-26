@@ -7,9 +7,9 @@ max.mcevoy@ucalgary.ca</a>
 */
 
 public class Porcupine extends Nocturnal {
-    private static final int FEED_TIME = ;
-    private static final int FEED_PREP = ;
-    private static final int CLEAN_TIME = ;
+    private static final int FEED_TIME = 0;
+    private static final int FEED_PREP = 0;
+    private static final int CLEAN_TIME = 0;
 
     public Porcupine(int id, String name) {
         super(id, name, FEED_TIME, FEED_PREP, CLEAN_TIME);

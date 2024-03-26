@@ -4,17 +4,14 @@ import java.util.*;
 public class SQLData {
 
     private Connection dbConnect;
-    private ResultSet taskResults;
-    private ResultSet animalResults;
-    private ResultSet treatmentResults;
 
     public final String DBURL;
     public final String USERNAME;
     public final String PASSWORD;
 
-    private ArrayList<Task> newTask;
-    private ArrayList<Animal> animals;
-    private ArrayList<Treatment> treatments;
+    private List<Task> newTask = new ArrayList<>();
+    private List<Animal> animals = new ArrayList<>();
+    private List<Treatment> treatments = new ArrayList<>();
 
     public SQLData(String url, String user, String pw){
 
@@ -37,8 +34,8 @@ public class SQLData {
     }
 
     //Step 2 & 3: Make statements and execute
-    public ArrayList<Task> selectTask(){
-
+    public void selectTask(){
+        ResultSet taskResults;
         try{
             Statement myStmt = dbConnect.createStatement();
             taskResults = myStmt.executeQuery("SELECT * FROM TASKS");
@@ -48,64 +45,19 @@ public class SQLData {
                 String description = taskResults.getString("Description");
                 int duration = taskResults.getInt("Duration");
                 int maxWindow = taskResults.getInt("MaxWindow");
-
-                switch(description) {
-                    case ("Kit feeding"):
-                        newTask.add(new Task(taskID, description, duration, maxWindow));
-                        break;
-
-                    case ("Rebandage leg wound"):
-                        newTask.add(new Task(taskID, description, duration, maxWindow));
-                        break;
-
-                    case ("Apply burn ointment back"):
-                        newTask.add(new Task(taskID, description, duration, maxWindow));
-                        break;
-
-                    case ("Administer antibiotics"):
-                        newTask.add(new Task(taskID, description, duration, maxWindow));
-                        break;
-
-                    case ("Flush neck wound"):
-                        newTask.add(new Task(taskID, description, duration, maxWindow));
-                        break;
-
-                    case ("Give fluid injection"):
-                        newTask.add(new Task(taskID, description, duration, maxWindow));
-                        break;
-
-                    case ("Give vitamin injection"):
-                        newTask.add(new Task(taskID, description, duration, maxWindow));
-                        break;
-
-                    case ("Mange treament"):
-                        newTask.add(new Task(taskID, description, duration, maxWindow));
-                        break;
-
-                    case ("Eyedrops"):
-                        newTask.add(new Task(taskID, description, duration, maxWindow));
-                        break;
-
-                    case ("Inspect broken leg"):
-                        newTask.add(new Task(taskID, description, duration, maxWindow));
-                        break;
-                    default:
-                        System.out.println("Invalid task");
-                        break;
-                }
-
-
+                this.newTask.add(new Task(taskID, description, duration, maxWindow));
             }
-
-        } catch (SQLException e) {
+            taskResults.close();
+        }
+        catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return newTask;
+        
     }
 
-    public ArrayList<Animal> selectAnimalData(){
-
+    public void selectAnimalData(){
+        ResultSet animalResults;
         try{
             Statement myStmt = dbConnect.createStatement();
             animalResults = myStmt.executeQuery("SELECT * FROM ANIMALS");
@@ -114,7 +66,6 @@ public class SQLData {
                 int animalID = animalResults.getInt("AnimalID");
                 String animalNickname = animalResults.getString("AnimalNickname");
                 String animalSpecies = animalResults.getString("AnimalSpecies");
-
                 switch(animalSpecies){
                     case("coyote"):
                         animals.add(new Coyote(animalID, animalNickname));
@@ -135,74 +86,61 @@ public class SQLData {
                         System.out.println("Invalid Species");
                 }
             }
+            animalResults.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return animals;
     }
 
-    public ArrayList<Treatment> selectTreatmentsData(){
+    public void selectTreatmentsData(){
 
+        ResultSet treatmentResults;
         try{
             Statement myStmt = dbConnect.createStatement();
             treatmentResults = myStmt.executeQuery("SELECT * FROM TREATMENTS");
-
             while (treatmentResults.next()){
                 int animalID = treatmentResults.getInt("AnimalID");
                 int taskID = treatmentResults.getInt("TaskID");
                 int startHour = treatmentResults.getInt("StartHour");
-
-                treatments.add(new Treatment(animalID, taskID, startHour));
+                this.treatments.add(new Treatment(animalID, taskID, startHour));
             }
+            treatmentResults.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return treatments;
+        
     }
 
     //Step 5: close the connection
     public void close(){
         try{
-            taskResults.close();
             dbConnect.close();
         } catch (SQLException e){
             e.printStackTrace();
         }
     }
 
-    public void closeAnimal(){
-        try{
-            treatmentResults.close();
-            dbConnect.close();
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-    }
-
-    public void closeTreatment(){
-        try{
-            treatmentResults.close();
-            dbConnect.close();
-        } catch (SQLException e){
-            e.printStackTrace();
+    public void testAnimalList(){
+        String foo = "%s is a %s. It needs to be feed at %d:00";
+        for(Animal a : animals){
+            System.out.println(String.format(foo, a.getName(), a.getSpecies(), a.getfeedTime()));
         }
     }
 
     public static void main(String[] args){
-        SQLData myJDBC = new SQLData("jdbc:postgresql://localhost/ewr", "oop", "ucalgary");
+        SQLData myJDBC = new SQLData("jdbc:postgresql://localhost:5432/ewr", "oop", "ucalgary");
 
         myJDBC.initializeConnection();
 
 
-        ArrayList<Task> newList = myJDBC.selectTask();
-        ArrayList<Animal> animals = myJDBC.selectAnimalData();
-        ArrayList<Treatment> treatments = myJDBC.selectTreatmentsData();
-//        allData = myJDBC.selectData();
-//        System.out.println(allData);
-
+        myJDBC.selectTask();
+        myJDBC.selectAnimalData();
+        myJDBC.selectTreatmentsData();
         myJDBC.close();
-        myJDBC.closeAnimal();
-        myJDBC.closeTreatment();
+
+        myJDBC.testAnimalList();
+
+
     }
 
 }

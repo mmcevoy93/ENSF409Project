@@ -102,11 +102,11 @@ public class Animal {
      * gets the feed start time in 24 hours
      * @return the start hour that animal can be feed at
      */
-    public int FeedStart(){return -1;}
+    public int feedStart(){return -1;}
 
     /**
      * gets the feeding window time in hours
      * @return amount of hours you have from start
      */
-    public int FeedWindow(){return -1;}
+    public int feedWindow(){return -1;}
 }
