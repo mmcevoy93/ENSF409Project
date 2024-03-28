@@ -13,11 +13,15 @@ public class SQLData {
     private final String DBURL;
     private final String USERNAME;
     private final String PASSWORD;
+    private final List<Task> tasks = new ArrayList<>();
+    private final List<Animal> animals = new ArrayList<>();
 
     public SQLData(String url, String user, String pw){
         this.DBURL = url;
         this.USERNAME = user;
         this.PASSWORD = pw;
+        initializeConnection();
+        selectTask();
     }
 
     public void initializeConnection() {
@@ -30,8 +34,7 @@ public class SQLData {
         }
     }
 
-    public List<Task> selectTask(){
-        List<Task> newTask = new ArrayList<>();
+    public void selectTask(){
         ResultSet taskResults;
         try{
             Statement myStmt = dbConnect.createStatement();
@@ -42,19 +45,18 @@ public class SQLData {
                 String description = taskResults.getString("Description");
                 int duration = taskResults.getInt("Duration");
                 int maxWindow = taskResults.getInt("MaxWindow");
-                newTask.add(new Task(taskID, description, duration, maxWindow));
+                this.tasks.add(new Task(taskID, description, duration, maxWindow));
             }
             taskResults.close();
         }
         catch (SQLException e) {
             e.printStackTrace();
         }
-        return newTask;        
+    
     }
 
     public List<Animal> selectAnimalData(){
         ResultSet animalResults;
-        List<Animal> animals = new ArrayList<>();
         try{
             Statement myStmt = dbConnect.createStatement();
             animalResults = myStmt.executeQuery("SELECT * FROM ANIMALS");
@@ -64,19 +66,19 @@ public class SQLData {
                 String animalSpecies = animalResults.getString("AnimalSpecies");
                 switch(animalSpecies){
                     case("coyote"):
-                        animals.add(new Coyote(animalID, animalNickname));
+                        this.animals.add(new Coyote(animalID, animalNickname));
                         break;
                     case("beaver"):
-                        animals.add(new Beaver(animalID, animalNickname));
+                        this.animals.add(new Beaver(animalID, animalNickname));
                         break;
                     case("fox"):
-                        animals.add(new Fox(animalID, animalNickname));
+                        this.animals.add(new Fox(animalID, animalNickname));
                         break;
                     case("raccoon"):
-                        animals.add(new Raccoon(animalID, animalNickname));
+                        this.animals.add(new Raccoon(animalID, animalNickname));
                         break;
                     case("porcupine"):
-                        animals.add(new Porcupine(animalID, animalNickname));
+                        this.animals.add(new Porcupine(animalID, animalNickname));
                         break;
                     default:
                         System.out.println("Invalid Species");
@@ -86,7 +88,7 @@ public class SQLData {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return animals;
+        return this.animals;
     }
 
     public List<Treatment> selectTreatmentsData(){
@@ -99,7 +101,7 @@ public class SQLData {
                 int animalID = treatmentResults.getInt("AnimalID");
                 int taskID = treatmentResults.getInt("TaskID");
                 int startHour = treatmentResults.getInt("StartHour");
-                treatments.add(new Treatment(animalID, taskID, startHour));
+                treatments.add(new Treatment(animalID, taskID, startHour, this.tasks, this.animals));
             }
             treatmentResults.close();
         } catch (SQLException e) {

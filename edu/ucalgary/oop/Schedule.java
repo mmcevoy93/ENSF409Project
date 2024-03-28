@@ -13,37 +13,31 @@ public class Schedule{
 
     private List<Animal> animals;
     private List<Treatment> treatments;
-    private List<Task> tasks;
     int dayHours[] = new int[24];
+    String printHours[] = new String[24];
 
-    public Schedule(List<Animal> animals, List<Treatment> treatments, List<Task> tasks){
+    public Schedule(List<Animal> animals, List<Treatment> treatments){
         this.animals = animals;
         this.treatments = treatments;
-        this.tasks = tasks;
+
         Collections.sort(this.treatments);
         Arrays.fill(this.dayHours, 60);
         foo();
     }
 
     public void foo(){
-        int time, AnID, tID;
+        int time;
         String name, description = "";
         int lastTime = -1;
-        LocalDate today  = LocalDate.now();
-        System.out.println("Schedule for " + today.toString());
         for (Treatment t : this.treatments){
-            time = t.getStartHour();
+            time = t.getStart();
             if(lastTime!=time){System.out.println(String.format("\n%02d:00",time));}
             lastTime=time;
-
-            AnID = t.getAnimalID()-1;
-            tID = t.getTaskID()-1;
-            name = animals.get(AnID).getName();
-            description = tasks.get(tID).getDescription();
-
-            this.dayHours[time] -= tasks.get(tID).getDuration();
-            System.out.println("* " + description + " (" + name +")");
-            System.out.println(this.dayHours[time]);            
+            name = t.getAnimalName();
+            description = t.getTaskDescription();
+            this.dayHours[time] -= t.getDur();
+            System.out.print("* " + description + " (" + name +") - ");
+            System.out.println("Time remaining in hour: " + this.dayHours[time]);
         }
     }
 
@@ -54,9 +48,8 @@ public class Schedule{
         String username = "oop";
         String password = "ucalgary";
         SQLData myJDBC = new SQLData(url,username,password);
-        myJDBC.initializeConnection();
-
-        Schedule schedule = new Schedule(myJDBC.selectAnimalData(), myJDBC.selectTreatmentsData(), myJDBC.selectTask());
+        
+        Schedule schedule = new Schedule(myJDBC.selectAnimalData(), myJDBC.selectTreatmentsData());
         List<Animal> animals = myJDBC.selectAnimalData();
         
     }
