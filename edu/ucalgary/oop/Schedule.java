@@ -49,6 +49,7 @@ public class Schedule{
             System.out.print("* " + description + " (" + name +") - "); // Prints the description of the task and the name of the animal
             System.out.println("Time remaining in hour: " + this.dayHours[time]); // Pirnts the remaining time in the given hour for tasks
         }
+        System.out.println("Number of Nocturnals: " + AnimalCounter.countNocturnals(animals));
     }
 
     public static void main(String[] args){

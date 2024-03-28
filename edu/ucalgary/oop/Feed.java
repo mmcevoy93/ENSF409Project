@@ -4,4 +4,5 @@ package edu.ucalgary.oop;
 // TODO - information must be written to a file
 // TODO - Unit Testing
 public class Feed {
+    
 }
