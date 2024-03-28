@@ -17,20 +17,27 @@ public class Schedule{
     private String printHours[] = new String[24];
 
     public Schedule(List<Animal> animals, List<Treatment> treatments){
-        this.animals = animals;
-        this.treatments = treatments;
+        this.animals = animals;                 // Creates an array list with animal information
+        this.treatments = treatments;           // Creates an array with treatments information
 
-        Arrays.fill(this.dayHours, 60);
-        printTreatments();
+        Arrays.fill(this.dayHours, 60);     // Fills the 24 indices "daysHour" array with 60
+                                                // Which is representative of 60 minutes
+        printTreatments();                      // prints Treatments
     }
 
     public void printTreatments(){
-        int time;
-        String name, description = "";
-        int lastTime = -1;
-        Collections.sort(this.treatments);//sorts by time
+        /**
+         * Prints the treatments of the given animal for each hour
+         */
+
+        int time;                                   // Time variable to store the StartHour
+        String name, description = "";              // 
+        int lastTime = -1;                          // What is this negative for?
+        //Collections.sort(this.treatments);//sorts by time
         for (Treatment t : this.treatments){
-            time = t.getStartHour();
+            // For loop that goes through the treatment array
+            // For each treatment, accesses information form the given index
+            time = t.getStartHour();                // Initialize time with the StartHour from the Treatment index
             if(lastTime!=time){System.out.println(String.format("\n%02d:00",time));}
             lastTime=time;
             name = t.getAnimalName();

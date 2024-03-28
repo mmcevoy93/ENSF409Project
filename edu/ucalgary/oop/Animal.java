@@ -30,7 +30,7 @@ public class Animal {
      * Animal constructor
      * Needs all the info about animal
      * 
-     * @param int ID of animal
+     * @param animalID ID of animal
      * @param nickname Nickname of animal
      * @param feedPrep Time in minutes to prep for animal feeding
      * @param feedTime time to feed animal in minutes
