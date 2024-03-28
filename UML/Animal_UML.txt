@@ -26,7 +26,6 @@ class Nocturnal{
 class Crepuscular{
 -int FEED_START = 19
 -int FEED_WINDOW = 3
-
 }
 
 class Diurnal{

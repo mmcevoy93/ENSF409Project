@@ -16,15 +16,15 @@ import java.util.*;
 
 // todo: include a throw to the IllegalArgumentException
 public class Animal {
-    protected int animalID;
-    protected String nickname;
-    protected boolean feed = false;
-    protected boolean clean = false;
-    protected int feedStart;
-    protected int feedWindow;
-    protected int feedPrep;
-    protected int feedTime;
-    protected int cleanTime;
+    private int animalID;
+    private String nickname;
+    private boolean feed = false;
+    private boolean clean = false;
+    private int feedStart;
+    private int feedWindow;
+    private int feedPrep;
+    private int feedTime;
+    private int cleanTime;
 
     /**
      * Animal constructor

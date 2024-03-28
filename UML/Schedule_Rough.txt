@@ -1,0 +1,76 @@
+@startuml EWR
+
+
+class Task{
+-int TASK_ID
+-String DESCRIPTION
+-int DURATION
+-int MAX_WINDOW
++Task(taskID:int, description:String, duration:int, maxWindow:int)
++getTaskID(): int
++getDescription():String
++getDuration():int
++getMaxWindow():int
+}
+
+class Treatment{
+-int ANIMAL_ID
+-int TASK_ID
+-int START_HOUR
+-List<Task> tasks;
+-List<Animal> animals;
+
++Treatment(animalID: int, taskID: int, startHour: int, tasks: List<Task>, animals List<Animals>)
++getAnimalName():String
++getTaskDescription():String
++getStart():int
++getDur():int
++getWindow():int
++compareTo
+}
+
+
+class Animal{
+-int animalID;
+-String nickname;
+-boolean feed = false;
+-boolean clean = false;
+-int feedStart;
+-int feedWindow;
+-int feedPrep;
+-int feedTime;
+-int cleanTime;
++Animal(animalID:int, animalNickname:String, orphan:boolean) 
++isClean():boolean
++clean(boolean)
++isFeed():boolean
++feed(boolean)
++getAnimalID():int
++getAnimalNickname():String
++isOrphan(boolean)
++getFeedTime():int
++getCleanTime():int
+}
+
+class Schedule{
+private List<Animal>
+private List<Treatment>
+private int dayHours[]
+private String printHours[]
+}
+
+interface Comparable{}
+
+Treatment -- Task
+Treatment -- Animal
+Treatment -- Comparable
+Schedule -- Treatment
+Schedule -- Animal
+
+
+
+
+
+
+
+@enduml

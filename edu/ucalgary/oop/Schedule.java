@@ -13,8 +13,8 @@ public class Schedule{
 
     private List<Animal> animals;
     private List<Treatment> treatments;
-    int dayHours[] = new int[24];
-    String printHours[] = new String[24];
+    private int dayHours[] = new int[24];
+    private String printHours[] = new String[24];
 
     public Schedule(List<Animal> animals, List<Treatment> treatments){
         this.animals = animals;
