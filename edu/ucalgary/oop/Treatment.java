@@ -1,7 +1,7 @@
 package edu.ucalgary.oop;
 
 // todo: create a throw to an IllegalArgumentException
-public class Treatment {
+public class Treatment implements Comparable<Treatment> {
     private int ANIMAL_ID;
     private int TASK_ID;
     private int START_HOUR;
@@ -22,5 +22,10 @@ public class Treatment {
 
     public int getStartHour(){
         return this.START_HOUR;
+    }
+
+    @Override
+    public int compareTo(Treatment other) {
+        return Integer.compare(this.START_HOUR, other.START_HOUR);
     }
 }

@@ -7,8 +7,8 @@ max.mcevoy@ucalgary.ca</a>
 */
 
 public class Diurnal extends Animal {
-    private static final int FEED_START = 0;
-    private static final int FEED_WINDOW = 0;
+    private static final int FEED_START = 8;
+    private static final int FEED_WINDOW = 3;
 
     Diurnal(int id, String nickname, int feedTime, int feedPrep, int cleanTime) {
         super(id, nickname, feedPrep, feedTime, cleanTime, FEED_START, FEED_WINDOW);

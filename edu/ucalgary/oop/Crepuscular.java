@@ -7,8 +7,8 @@ max.mcevoy@ucalgary.ca</a>
 */
 
 public class Crepuscular extends Animal {
-    private static final int FEED_START = ; 
-    private static final int FEED_WINDOW = ;
+    private static final int FEED_START = 19; 
+    private static final int FEED_WINDOW = 3;
 
     Crepuscular(int id, String nickname, int feedTime, int feedPrep, int cleanTime) {
         super(id, nickname, feedPrep, feedTime, cleanTime, FEED_START, FEED_WINDOW);
