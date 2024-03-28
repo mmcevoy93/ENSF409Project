@@ -5,45 +5,48 @@ max.mcevoy@ucalgary.ca</a>
 @version 1.1
 @since 1.0
 */
+
+
 import java.util.*;
+
 // todo: create a throw to an IllegalArgumentException
-public class Treatment  implements Comparable<Treatment>{
-    private int ANIMAL_ID;
-    private int TASK_ID;
-    private int START_HOUR;
-    private List<Task> tasks;
-    private List<Animal> animals;
+public class Treatment implements Comparable<Treatment> {
+    private String animalName;
+    private String description;
+    private int startHour;
+    private int duration;
+    private int maxWindow;
 
-
-    public Treatment(int animalID, int taskID, int startHour, List<Task> tasks, List<Animal> animals){
-        this.ANIMAL_ID = animalID;
-        this.TASK_ID = taskID;
-        this.START_HOUR = startHour;
-        this.tasks = tasks;
-        this.animals = animals;
+    public Treatment(String animalName, String description, int startHour, int duration, int maxWindow) {
+        this.animalName = animalName;
+        this.description = description;
+        this.startHour = startHour;
+        this.duration = duration;
+        this.maxWindow = maxWindow;
     }
 
-    public String getAnimalName(){
-        return this.animals.get(ANIMAL_ID-1).getName();
+    public String getAnimalName() {
+        return this.animalName;
     }
 
-    public String getTaskDescription(){
-        return this.tasks.get(TASK_ID-1).getDescription();
+    public String getDescription() {
+        return this.description;
     }
 
-    public int getStart() {
-        return this.START_HOUR;
+    public int getStartHour() {
+        return this.startHour;
     }
 
-    public int getDur() {
-        return this.tasks.get(TASK_ID-1).getDuration();
+    public int getDuration() {
+        return this.duration;
     }
 
-    public int getWindow() {
-        return this.tasks.get(TASK_ID-1).getMaxWindow();
+    public int getMaxWindow() {
+        return this.maxWindow;
     }
+
     @Override
     public int compareTo(Treatment other) {
-        return Integer.compare(this.START_HOUR, other.START_HOUR);
+        return Integer.compare(this.startHour, other.startHour);
     }
 }

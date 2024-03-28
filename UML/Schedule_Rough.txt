@@ -1,31 +1,17 @@
 @startuml EWR
 
-
-class Task{
--int TASK_ID
--String DESCRIPTION
--int DURATION
+class Treatment{
 -int MAX_WINDOW
-+Task(taskID:int, description:String, duration:int, maxWindow:int)
-+getTaskID(): int
+-int DURATION
+-int START_HOUR
+-String taskDescription;
+-String animalName;
++Treatment(animalName:String, taskDescription:String, startHour:int, duration:int, maxWindow:int)
++getAnimalName():String
 +getDescription():String
 +getDuration():int
++getStartHour():int
 +getMaxWindow():int
-}
-
-class Treatment{
--int ANIMAL_ID
--int TASK_ID
--int START_HOUR
--List<Task> tasks;
--List<Animal> animals;
-
-+Treatment(animalID: int, taskID: int, startHour: int, tasks: List<Task>, animals List<Animals>)
-+getAnimalName():String
-+getTaskDescription():String
-+getStart():int
-+getDur():int
-+getWindow():int
 +compareTo
 }
 
@@ -62,7 +48,6 @@ private String printHours[]
 interface Comparable{}
 
 Treatment -- Task
-Treatment -- Animal
 Treatment -- Comparable
 Schedule -- Treatment
 Schedule -- Animal

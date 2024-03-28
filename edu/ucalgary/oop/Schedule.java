@@ -20,28 +20,26 @@ public class Schedule{
         this.animals = animals;
         this.treatments = treatments;
 
-        Collections.sort(this.treatments);
         Arrays.fill(this.dayHours, 60);
-        foo();
+        printTreatments();
     }
 
-    public void foo(){
+    public void printTreatments(){
         int time;
         String name, description = "";
         int lastTime = -1;
+        Collections.sort(this.treatments);//sorts by time
         for (Treatment t : this.treatments){
-            time = t.getStart();
+            time = t.getStartHour();
             if(lastTime!=time){System.out.println(String.format("\n%02d:00",time));}
             lastTime=time;
             name = t.getAnimalName();
-            description = t.getTaskDescription();
-            this.dayHours[time] -= t.getDur();
+            description = t.getDescription();
+            this.dayHours[time] -= t.getDuration();
             System.out.print("* " + description + " (" + name +") - ");
             System.out.println("Time remaining in hour: " + this.dayHours[time]);
         }
     }
-
-    
 
     public static void main(String[] args){
         String url = "jdbc:postgresql://localhost:5432/ewr";
@@ -49,9 +47,7 @@ public class Schedule{
         String password = "ucalgary";
         SQLData myJDBC = new SQLData(url,username,password);
         
-        Schedule schedule = new Schedule(myJDBC.selectAnimalData(), myJDBC.selectTreatmentsData());
-        List<Animal> animals = myJDBC.selectAnimalData();
-        
+        Schedule schedule = new Schedule(myJDBC.getAnimalList(), myJDBC.getTreatmentList());        
     }
 
 }

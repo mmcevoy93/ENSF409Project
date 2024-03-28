@@ -13,15 +13,17 @@ public class SQLData {
     private final String DBURL;
     private final String USERNAME;
     private final String PASSWORD;
-    private final List<Task> tasks = new ArrayList<>();
-    private final List<Animal> animals = new ArrayList<>();
+    private List<Animal> animals = new ArrayList<>();
+    private List<Treatment> treatments = new ArrayList<>();
 
     public SQLData(String url, String user, String pw){
         this.DBURL = url;
         this.USERNAME = user;
         this.PASSWORD = pw;
         initializeConnection();
-        selectTask();
+        selectAnimalData();
+        selectTreatmentsData();
+        close();
     }
 
     public void initializeConnection() {
@@ -34,32 +36,13 @@ public class SQLData {
         }
     }
 
-    public void selectTask(){
-        ResultSet taskResults;
-        try{
-            Statement myStmt = dbConnect.createStatement();
-            taskResults = myStmt.executeQuery("SELECT * FROM TASKS");
-            
-            while (taskResults.next()){
-                int taskID = taskResults.getInt("TaskID");
-                String description = taskResults.getString("Description");
-                int duration = taskResults.getInt("Duration");
-                int maxWindow = taskResults.getInt("MaxWindow");
-                this.tasks.add(new Task(taskID, description, duration, maxWindow));
-            }
-            taskResults.close();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-    
-    }
 
-    public List<Animal> selectAnimalData(){
+    public void selectAnimalData(){
         ResultSet animalResults;
+        String query = "SELECT * FROM ANIMALS";
         try{
             Statement myStmt = dbConnect.createStatement();
-            animalResults = myStmt.executeQuery("SELECT * FROM ANIMALS");
+            animalResults = myStmt.executeQuery(query);
             while (animalResults.next()){
                 int animalID = animalResults.getInt("AnimalID");
                 String animalNickname = animalResults.getString("AnimalNickname");
@@ -85,29 +68,39 @@ public class SQLData {
                 }
             }
             animalResults.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return this.animals;
+        } 
+        catch (SQLException e) {e.printStackTrace();}
     }
 
-    public List<Treatment> selectTreatmentsData(){
-        List<Treatment> treatments = new ArrayList<>();
+    public void selectTreatmentsData(){
         ResultSet treatmentResults;
-        try{
+        String query = "SELECT " +
+                            "ANIMALS.AnimalNickname AS AnimalName, " +
+                            "TASKS.Description AS TaskDescription, " +
+                            "TASKS.Duration AS Duration, " +
+                            "TASKS.MaxWindow AS MaxWindow, " +
+                            "TREATMENTS.StartHour AS StartHour " +
+                        "FROM " +
+                            "TREATMENTS " +
+                        "JOIN " +
+                            "ANIMALS ON TREATMENTS.AnimalID = ANIMALS.AnimalID " +
+                        "JOIN " +
+                            "TASKS ON TREATMENTS.TaskID = TASKS.TaskID";
+        try
+        {
             Statement myStmt = dbConnect.createStatement();
-            treatmentResults = myStmt.executeQuery("SELECT * FROM TREATMENTS");
+            treatmentResults = myStmt.executeQuery(query);
             while (treatmentResults.next()){
-                int animalID = treatmentResults.getInt("AnimalID");
-                int taskID = treatmentResults.getInt("TaskID");
+                String animalName = treatmentResults.getString("AnimalName");
+                String taskDescription = treatmentResults.getString("TaskDescription");
+                int duration = treatmentResults.getInt("Duration");
+                int maxWindow = treatmentResults.getInt("MaxWindow");
                 int startHour = treatmentResults.getInt("StartHour");
-                treatments.add(new Treatment(animalID, taskID, startHour, this.tasks, this.animals));
+                this.treatments.add(new Treatment(animalName, taskDescription, startHour, duration, maxWindow));
             }
             treatmentResults.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return treatments;
+        } 
+        catch (SQLException e) {e.printStackTrace();}
     }
 
     public void close(){
@@ -118,6 +111,9 @@ public class SQLData {
             e.printStackTrace();
         }
     }
+
+    public List<Animal> getAnimalList(){return this.animals;}
+    public List<Treatment> getTreatmentList(){return this.treatments;}
 
     public static void main(String[] args){
         SQLData myJDBC = new SQLData("jdbc:postgresql://localhost:5432/ewr", "oop", "ucalgary");
