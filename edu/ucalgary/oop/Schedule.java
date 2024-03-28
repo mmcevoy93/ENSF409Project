@@ -39,6 +39,7 @@ public class Schedule{
             System.out.print("* " + description + " (" + name +") - ");
             System.out.println("Time remaining in hour: " + this.dayHours[time]);
         }
+        System.out.println("Number of Nocturnals: " + AnimalCounter.countNocturnals(animals));
     }
 
     public static void main(String[] args){
