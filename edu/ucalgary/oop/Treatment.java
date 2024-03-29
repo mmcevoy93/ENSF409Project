@@ -13,7 +13,7 @@ import java.util.*;
 public class Treatment implements Comparable<Treatment> {
     private String animalName;
     private String description;
-    private int startHour; //
+    private int startHour;
     private int duration;
     private int maxWindow;
 

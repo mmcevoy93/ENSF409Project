@@ -1,82 +1,46 @@
 package edu.ucalgary.oop;
 
-import java.util.List;
+import java.util.*;
 
 
 public class AnimalCounter {
-    public static int countBeavers(List<Animal> animals) {
+    private static final Map<Class<? extends Animal>, Integer> feedTimeMap = new HashMap<>();
+    static {
+        feedTimeMap.put(Beaver.class, Beaver.getFeedTime());
+        feedTimeMap.put(Coyote.class, Coyote.getFeedTime());
+        feedTimeMap.put(Fox.class, Fox.getFeedTime());
+        feedTimeMap.put(Porcupine.class, Porcupine.getFeedTime());
+        feedTimeMap.put(Raccoon.class, Raccoon.getFeedTime());
+
+    }
+
+
+  public static int countAnimals(List<Animal> animals, Class<? extends Animal> animalType) {
         int count = 0;
         for (Animal animal : animals) {
-            if (animal instanceof Beaver) {
+            if (animalType.isInstance(animal) && !animal.getOrphaned()) {
                 count++;
             }
         }
         return count;
     }
 
-    public static int countCoyotes(List<Animal> animals) {
-        int count = 0;
-        for (Animal animal : animals) {
-            if (animal instanceof Coyote) {
-                count++;
-            }
-        }
-        return count;
+    public static int getTotalFeedTime(List<Animal> animals, Class<? extends Animal> animalType) {
+        int feedTimePer = feedTimeMap.getOrDefault(animalType, 0);
+        return feedTimePer * countAnimals(animals, animalType);
     }
 
-    public static int countFoxes(List<Animal> animals) {
-        int count = 0;
+    public static String getAnimalNames(List<Animal> animals, Class<? extends Animal> animalType) {
+        StringBuilder namesBuilder = new StringBuilder();
         for (Animal animal : animals) {
-            if (animal instanceof Fox) {
-                count++;
+            if (animalType.isInstance(animal) && !animal.getOrphaned()) {
+                if (namesBuilder.length() > 0) {
+                    namesBuilder.append(", ");
+                }
+                namesBuilder.append(animal.getName());
             }
         }
-        return count;
+        return namesBuilder.toString();
     }
-    public static int countPorcupines(List<Animal> animals) {
-        int count = 0;
-        for (Animal animal : animals) {
-            if (animal instanceof Porcupine) {
-                count++;
-            }
-        }
-        return count;
-    }
-    public static int countRaccoons(List<Animal> animals) {
-        int count = 0;
-        for (Animal animal : animals) {
-            if (animal instanceof Raccoon) {
-                count++;
-            }
-        }
-        return count;
-    }
-    
-    public static int countDiurnal(List<Animal> animals) {
-        int count = 0;
-        for (Animal animal : animals) {
-            if (animal instanceof Diurnal) {
-                count++;
-            }
-        }
-        return count;
-    }
-    public static int countCrepusculars(List<Animal> animals) {
-        int count = 0;
-        for (Animal animal : animals) {
-            if (animal instanceof Crepuscular) {
-                count++;
-            }
-        }
-        return count;
-    }
-    public static int countNocturnals(List<Animal> animals) {
-        int count = 0;
-        for (Animal animal : animals) {
-            if (animal instanceof Nocturnal) {
-                count++;
-            }
-        }
-        return count;
-    }
+
 }

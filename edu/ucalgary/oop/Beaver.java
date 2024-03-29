@@ -17,4 +17,20 @@ public class Beaver extends Diurnal {
 
     @Override
     public String getSpecies() { return "beaver"; }
+    
+    // Getter method for FEED_TIME
+    public static int getFeedTime() {
+        return FEED_TIME;
+    }
+
+    // Getter method for FEED_PREP
+    public static int getFeedPrep() {
+        return FEED_PREP;
+    }
+
+    // Getter method for CLEAN_TIME
+    public static int getCleanTime() {
+        return CLEAN_TIME;
+    }
+    public static int getFeedStart(){return Diurnal.FEED_START;}
 }

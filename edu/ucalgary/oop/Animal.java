@@ -6,7 +6,7 @@ max.mcevoy@ucalgary.ca</a>
 @version 1.4
 @since 1.0
 */
-
+import java.util.regex.*;
 import java.util.*;
 
 /**Animal class
@@ -20,11 +20,13 @@ public class Animal {
     private String nickname;
     private boolean feed = false;
     private boolean clean = false;
+    private boolean orphaned;
     private int feedStart;
     private int feedWindow;
     private int feedPrep;
     private int feedTime;
     private int cleanTime;
+    private final Pattern PATTERN = Pattern.compile("\\b\\w+(,\\s+\\w+)+\\b");
 
     /**
      * Animal constructor
@@ -46,6 +48,10 @@ public class Animal {
         this.feedWindow = feedWindow;
         this.feedPrep = feedPrep;
         this.cleanTime = cleanTime;
+
+        Matcher matcher = PATTERN.matcher(nickname);
+        if(matcher.find()){this.orphaned = true;}
+        else{this.orphaned = false;}
     }
 
      /**
@@ -77,6 +83,8 @@ public class Animal {
      * @return boolean on animal feeding status for day
      */
     public boolean getFeed(){return this.feed;}
+
+    public boolean getOrphaned(){return this.orphaned;}
 
     /**
      * Sets the daily cleaning status of animal cage

@@ -7,8 +7,8 @@ max.mcevoy@ucalgary.ca</a>
 */
 
 public class Nocturnal extends Animal{
-    private static final int FEED_START = 0;
-    private static final int FEED_WINDOW = 3;
+    protected static final int FEED_START = 0;
+    protected static final int FEED_WINDOW = 3;
     
     
     Nocturnal(int id, String nickname, int feedTime, int feedPrep, int cleanTime){
@@ -19,5 +19,4 @@ public class Nocturnal extends Animal{
     public int feedStart(){return FEED_START;}
     @Override
     public int feedWindow(){return FEED_WINDOW;}
-    
 }

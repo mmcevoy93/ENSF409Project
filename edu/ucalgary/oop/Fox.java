@@ -14,11 +14,28 @@ public class Fox extends Nocturnal{
     private static final int CLEAN_TIME = 5;
 
     public Fox(int id, String name){
-        super(id, name, FEED_TIME, FEED_PREP, CLEAN_TIME);    
+        super(id, name, 1, 1, 1);    
     }
 
      @Override
     public String getSpecies(){
         return "fox";
     }
+    // Getter method for FEED_TIME
+    public static int getFeedTime() {
+        return FEED_TIME;
+    }
+
+    // Getter method for FEED_PREP
+    public static int getFeedPrep() {
+        return FEED_PREP;
+    }
+
+    // Getter method for CLEAN_TIME
+    public static int getCleanTime() {
+        return CLEAN_TIME;
+    }
+    
+    public static int getFeedStart(){return Nocturnal.FEED_START;}
+
 }
