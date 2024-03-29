@@ -30,42 +30,77 @@ public class Schedule{
          * Prints the treatments of the given animal for each hour
          */
         addFeedToList();
-        Collections.sort(this.treatments);//sorts by time
-        
-
-        // Step 2: Create hourly schedule
+        Collections.sort(this.treatments);//sorts by time then by max window
         List<List<Treatment>> hourlySchedule = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
             hourlySchedule.add(new ArrayList<>());
         }
+        //this works to sort if all the tasks are less than an hour
+        // System.out.println(AnimalCounter.getAnimalNames(animals, Coyote.class));
+        // System.out.println(AnimalCounter.getTotalFeedTime(animals, Coyote.class));
 
-        for (Treatment treatment : treatments) {
-            int startHour = treatment.getStartHour();
-            int duration = treatment.getDuration();
-            int maxWindow = treatment.getMaxWindow();
+        for (Treatment treat : treatments) {
+            int startHour = treat.getStartHour();
+            int duration = treat.getDuration();
+            int maxWindow = treat.getMaxWindow();
             int endHour = startHour + (duration / 60) + ((duration % 60 == 0) ? 0 : 1);
-            for (int hour = startHour; hour < endHour; hour++) {
-            
-                int scheduledDuration = 0;
-                // Calculate total duration already scheduled within the hour
+            //Not working yet but 
+            //System.out.println("* " + treat.getDescription() + " (" +  treat.getAnimalName() + ")");
+            for (int hour = startHour; hour < hour+maxWindow; hour++) {
+                // Calculate the total duration already scheduled within the hour for this treat's max window
+                int scheduledDurationWithinMaxWindow = 0;
                 for (Treatment scheduledTreatment : hourlySchedule.get(hour)) {
-                    scheduledDuration += scheduledTreatment.getDuration();
+                    scheduledDurationWithinMaxWindow += scheduledTreatment.getDuration();
                 }
-                // Check if there's enough time available in the hour for task
-                if (scheduledDuration + duration <= 60) {
-                    hourlySchedule.get(hour).add(treatment);
-                    break; // Exit loop if treatment is scheduled in this hour
+                //System.out.println(scheduledDurationWithinMaxWindow+duration);
+                // Check if adding the treatment to the hour exceeds the max window
+                if (scheduledDurationWithinMaxWindow + duration <= 60) {
+                    hourlySchedule.get(hour).add(treat);
+                    break;
                 }
-            
-            }
+                }
+                // System.out.println();
         }
+        //clean cage
+        //similar to above 
+        for(Animal a: animals){
+            String name = a.getName();
+            String des = "Cage Cleaning";
+            int startHour = 0;
+            int duration = a.getCleanTime();
+            int maxWindow = 24;
+            Treatment clean = new Treatment(name,des,startHour,duration,maxWindow);
+            for (int hour = startHour; hour < hour+maxWindow; hour++) {
+                // Calculate the total duration already scheduled within the hour for this treat's max window
+                int scheduledDurationWithinMaxWindow = 0;
+                for (Treatment scheduledTreatment : hourlySchedule.get(hour)) {
+                    scheduledDurationWithinMaxWindow += scheduledTreatment.getDuration();
+                }
+                System.out.println(scheduledDurationWithinMaxWindow+duration);
+                // Check if adding the treatment to the hour exceeds the max window
+                if (scheduledDurationWithinMaxWindow + duration <= 60) {
+                    hourlySchedule.get(hour).add(clean);
+                    break;
+                }
+                }
+
+        }
+
+
+
+        
+
+        //print test schedule
         for (int hour = 0; hour < 24; hour++) {
-            System.out.println(String.format("\n%02d:00",hour));
-            List<Treatment> treatmentsForHour = hourlySchedule.get(hour);
-            for (Treatment treatment : treatmentsForHour) {
-                System.out.println("* " + treatment.getDescription() + " (" +  treatment.getAnimalName() + ")");
+            List<Treatment> treatmentsForHour = hourlySchedule.get(hour);//list of treatments at a single hour 
+            if(!treatmentsForHour.isEmpty()){//check if any treatments are in that hour
+                System.out.println(String.format("\n%02d:00",hour));
             }
-            System.out.println();
+            //print off each taks in this hour time frame
+            for (Treatment treat : treatmentsForHour) {
+                System.out.println("* " + treat.getDescription() + " (" +  treat.getAnimalName() + ")");
+            }
+            ;
         }
 
 
@@ -102,12 +137,12 @@ public class Schedule{
         // Ebube's Test *COMMENT OUT IF NOT NEEDED*
         // 1. Print out information from treatements list
         // System.out.println("EBUBE'S TEST TO VIEW - PRINT TREATMENTS");
-        // for (Treatment treatment : schedule.treatments){
+        // for (Treatment treat : schedule.treatments){
         //     count++;
-        //     System.out.println(String.format("Animal Name %d: " + treatment.getAnimalName(), count));
-        //     System.out.println("Treatment: " + treatment.getDescription());
-        //     System.out.println("Start hour: " + treatment.getStartHour());
-        //     System.out.println("maxWindow: " + treatment.getMaxWindow());
+        //     System.out.println(String.format("Animal Name %d: " + treat.getAnimalName(), count));
+        //     System.out.println("Treatment: " + treat.getDescription());
+        //     System.out.println("Start hour: " + treat.getStartHour());
+        //     System.out.println("maxWindow: " + treat.getMaxWindow());
         //     System.out.println();
         //     System.out.println();
 

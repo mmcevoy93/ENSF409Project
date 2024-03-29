@@ -32,9 +32,10 @@ public class AnimalCounter {
 
     public static String getAnimalNames(List<Animal> animals, Class<? extends Animal> animalType) {
         StringBuilder namesBuilder = new StringBuilder();
+        namesBuilder.append(String.format("%d: ", countAnimals(animals, animalType)));
         for (Animal animal : animals) {
             if (animalType.isInstance(animal) && !animal.getOrphaned()) {
-                if (namesBuilder.length() > 0) {
+                if (namesBuilder.length() > 3) {
                     namesBuilder.append(", ");
                 }
                 namesBuilder.append(animal.getName());
