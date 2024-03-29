@@ -30,25 +30,45 @@ public class Schedule{
          * Prints the treatments of the given animal for each hour
          */
         addFeedToList();
-        int time;                                               // Time variable to store the StartHour
-        String name, description = "";                          // Name, and Description variable to store the name and task of the animal
-        int lastTime = -1;                                      // Placeholder for tracking the time
         Collections.sort(this.treatments);//sorts by time
-        for (Treatment t : this.treatments){
-                                                                        // For loop that goes through the treatment array
-                                                                        // For each treatment, accesses information from the given index
-            time = t.getStartHour();                                    // Initialize time with the StartHour from the Treatment index
-            if(lastTime != time){                                       // Checks if lastTime is equal to
-                System.out.println(String.format("\n%02d:00",time));    // Prints out the time of the treatment
-            }
-            lastTime = time;                                            // Equates the treatment time to lastTime
-                                                                        // Done to ensure that the time is not printed again
-            name = t.getAnimalName();                                   // Assign the animalName to the name variable
-            description = t.getDescription();                           // Assign the description to the description variable
-            this.dayHours[time] -= t.getDuration();                     // Subtract the duration of the task form the hour of the day
-            System.out.print("* " + description + " (" + name +") - "); // Prints the description of the task and the name of the animal
-            System.out.println("Time remaining in hour: " + this.dayHours[time]); // Pirnts the remaining time in the given hour for tasks
+        
+
+        // Step 2: Create hourly schedule
+        List<List<Treatment>> hourlySchedule = new ArrayList<>();
+        for (int i = 0; i < 24; i++) {
+            hourlySchedule.add(new ArrayList<>());
         }
+
+        for (Treatment treatment : treatments) {
+            int startHour = treatment.getStartHour();
+            int duration = treatment.getDuration();
+            int maxWindow = treatment.getMaxWindow();
+            int endHour = startHour + (duration / 60) + ((duration % 60 == 0) ? 0 : 1);
+            for (int hour = startHour; hour < endHour; hour++) {
+            
+                int scheduledDuration = 0;
+                // Calculate total duration already scheduled within the hour
+                for (Treatment scheduledTreatment : hourlySchedule.get(hour)) {
+                    scheduledDuration += scheduledTreatment.getDuration();
+                }
+                // Check if there's enough time available in the hour for task
+                if (scheduledDuration + duration <= 60) {
+                    hourlySchedule.get(hour).add(treatment);
+                    break; // Exit loop if treatment is scheduled in this hour
+                }
+            
+            }
+        }
+        for (int hour = 0; hour < 24; hour++) {
+            System.out.println(String.format("\n%02d:00",hour));
+            List<Treatment> treatmentsForHour = hourlySchedule.get(hour);
+            for (Treatment treatment : treatmentsForHour) {
+                System.out.println("* " + treatment.getDescription() + " (" +  treatment.getAnimalName() + ")");
+            }
+            System.out.println();
+        }
+
+
         
     }
 

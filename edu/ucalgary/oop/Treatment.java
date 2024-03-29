@@ -46,7 +46,13 @@ public class Treatment implements Comparable<Treatment> {
     }
 
     @Override
-    public int compareTo(Treatment other) {
-        return Integer.compare(this.startHour, other.startHour);
+public int compareTo(Treatment other) {
+    // First, compare by startHour
+    int startHourComparison = Integer.compare(this.startHour, other.startHour);
+    if (startHourComparison != 0) {
+        return startHourComparison; // If startHour differs, return the result
     }
+    // If startHour is the same, compare by maxWindow (smaller maxWindow comes first)
+    return Integer.compare(this.maxWindow, other.maxWindow);
+}
 }
