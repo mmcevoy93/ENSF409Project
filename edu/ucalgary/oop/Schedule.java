@@ -12,13 +12,13 @@ import java.time.LocalDate;
 public class Schedule{
 
     private List<Animal> animals; // Array of animals (from SQLData file)
-    private List<Treatment> treatments; // Array of treatments (from SQLData file)
+    private List<DailyTasks> tasks; // Array of treatments (from SQLData file)
     private int dayHours[] = new int[24]; // Array of 24, representative of 24 hours in a day
     private String printHours[] = new String[24]; // Array of 24  -- not sure WHY THOUGH?
 
-    public Schedule(List<Animal> animals, List<Treatment> treatments){
+    public Schedule(List<Animal> animals, List<DailyTasks> tasks){
         this.animals = animals;                 // Creates an array list with animal information
-        this.treatments = treatments;           // Creates an array with treatments information
+        this.tasks = tasks;           // Creates an array with treatments information
 
         Arrays.fill(this.dayHours, 60);     // Fills the 24 indices "daysHour" array with 60
                                                 // Which is representative of 60 minutes
@@ -30,8 +30,8 @@ public class Schedule{
          * Prints the treatments of the given animal for each hour
          */
         addFeedToList();
-        Collections.sort(this.treatments);//sorts by time then by max window
-        List<List<Treatment>> hourlySchedule = new ArrayList<>();
+        Collections.sort(this.tasks);//sorts by time then by max window
+        List<List<DailyTasks>> hourlySchedule = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
             hourlySchedule.add(new ArrayList<>());
         }
@@ -39,27 +39,24 @@ public class Schedule{
         // System.out.println(AnimalCounter.getAnimalNames(animals, Coyote.class));
         // System.out.println(AnimalCounter.getTotalFeedTime(animals, Coyote.class));
 
-        for (Treatment treat : treatments) {
-            int startHour = treat.getStartHour();
-            int duration = treat.getDuration();
-            int maxWindow = treat.getMaxWindow();
+        for (DailyTasks task: tasks) {
+            int startHour = task.getStartHour();
+            int duration = task.getDuration();
+            int maxWindow = task.getMaxWindow();
             int endHour = startHour + (duration / 60) + ((duration % 60 == 0) ? 0 : 1);
-            //Not working yet but 
-            //System.out.println("* " + treat.getDescription() + " (" +  treat.getAnimalName() + ")");
+
             for (int hour = startHour; hour < hour+maxWindow; hour++) {
                 // Calculate the total duration already scheduled within the hour for this treat's max window
                 int scheduledDurationWithinMaxWindow = 0;
-                for (Treatment scheduledTreatment : hourlySchedule.get(hour)) {
+                for (DailyTasks scheduledTreatment : hourlySchedule.get(hour)) {
                     scheduledDurationWithinMaxWindow += scheduledTreatment.getDuration();
                 }
-                //System.out.println(scheduledDurationWithinMaxWindow+duration);
                 // Check if adding the treatment to the hour exceeds the max window
                 if (scheduledDurationWithinMaxWindow + duration <= 60) {
-                    hourlySchedule.get(hour).add(treat);
+                    hourlySchedule.get(hour).add(task);
                     break;
                 }
-                }
-                // System.out.println();
+            }
         }
         //clean cage
         //similar to above 
@@ -69,11 +66,11 @@ public class Schedule{
             int startHour = 0;
             int duration = a.getCleanTime();
             int maxWindow = 24;
-            Treatment clean = new Treatment(name,des,startHour,duration,maxWindow);
+            DailyTasks clean = new DailyTasks(name,des,startHour,duration,maxWindow);
             for (int hour = startHour; hour < hour+maxWindow; hour++) {
                 // Calculate the total duration already scheduled within the hour for this treat's max window
                 int scheduledDurationWithinMaxWindow = 0;
-                for (Treatment scheduledTreatment : hourlySchedule.get(hour)) {
+                for (DailyTasks scheduledTreatment : hourlySchedule.get(hour)) {
                     scheduledDurationWithinMaxWindow += scheduledTreatment.getDuration();
                 }
                 System.out.println(scheduledDurationWithinMaxWindow+duration);
@@ -92,12 +89,12 @@ public class Schedule{
 
         //print test schedule
         for (int hour = 0; hour < 24; hour++) {
-            List<Treatment> treatmentsForHour = hourlySchedule.get(hour);//list of treatments at a single hour 
+            List<DailyTasks> treatmentsForHour = hourlySchedule.get(hour);//list of treatments at a single hour 
             if(!treatmentsForHour.isEmpty()){//check if any treatments are in that hour
                 System.out.println(String.format("\n%02d:00",hour));
             }
             //print off each taks in this hour time frame
-            for (Treatment treat : treatmentsForHour) {
+            for (DailyTasks treat : treatmentsForHour) {
                 System.out.println("* " + treat.getDescription() + " (" +  treat.getAnimalName() + ")");
             }
             ;
@@ -111,7 +108,7 @@ public class Schedule{
         if (AnimalCounter.countAnimals(animals, animalClass) != 0) {
             String animalName = AnimalCounter.getAnimalNames(animals, animalClass);
             int duration = AnimalCounter.getTotalFeedTime(animals, animalClass) + feedPrep;
-            treatments.add(new Treatment(animalName, description, startHour, duration, 3));
+            tasks.add(new DailyTasks(animalName, description, startHour, duration, 3));
         }
     }
     public void addFeedToList() {
@@ -130,10 +127,10 @@ public class Schedule{
         SQLData myJDBC = new SQLData(url,username,password);            // Instantiates an SQLData object with the url, username and password
 
 
-        Schedule schedule = new Schedule(myJDBC.getAnimalList(), myJDBC.getTreatmentList());  // Instantiates a Schedule with information form the AnimalList
+        Schedule schedule = new Schedule(myJDBC.getAnimalList(), myJDBC.getTreatmentTasks());  // Instantiates a Schedule with information form the AnimalList
 
-        System.out.println();
-        int count = 0;
+        // System.out.println();
+        // int count = 0;
         // Ebube's Test *COMMENT OUT IF NOT NEEDED*
         // 1. Print out information from treatements list
         // System.out.println("EBUBE'S TEST TO VIEW - PRINT TREATMENTS");

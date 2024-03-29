@@ -6,18 +6,17 @@ max.mcevoy@ucalgary.ca</a>
 @since 1.0
 */
 
-
 import java.util.*;
 
 // todo: create a throw to an IllegalArgumentException
-public class Treatment implements Comparable<Treatment> {
+public class DailyTasks implements Comparable<DailyTasks> {
     private String animalName;
     private String description;
     private int startHour;
     private int duration;
     private int maxWindow;
 
-    public Treatment(String animalName, String description, int startHour, int duration, int maxWindow) {
+    public DailyTasks(String animalName, String description, int startHour, int duration, int maxWindow) {
         this.animalName = animalName;
         this.description = description;
         this.startHour = startHour;
@@ -46,7 +45,7 @@ public class Treatment implements Comparable<Treatment> {
     }
 
     @Override
-public int compareTo(Treatment other) {
+public int compareTo(DailyTasks other) {
     // First, compare by startHour
     int startHourComparison = Integer.compare(this.startHour, other.startHour);
     if (startHourComparison != 0) {

@@ -1,8 +1,8 @@
 package edu.ucalgary.oop;
 /*
-@author <a href="mailto:">
-</a>
-@version 1.2
+@author Max McEvoy 30005167<a href="mailto:max.mcevoy@ucalgary.ca">
+max.mcevoy@ucalgary.ca</a>
+@version 1.3
 @since 1.0
 */
 import java.sql.*;
@@ -14,7 +14,7 @@ public class SQLData {
     private final String USERNAME;
     private final String PASSWORD;
     private List<Animal> animals = new ArrayList<>();
-    private List<Treatment> treatments = new ArrayList<>();
+    private List<DailyTasks> tasks = new ArrayList<>();
 
     public SQLData(String url, String user, String pw){
         this.DBURL = url;
@@ -27,10 +27,11 @@ public class SQLData {
     }
 
     public void initializeConnection() {
-        try {
+        try{
             dbConnect = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
         } 
-        catch (SQLException e) {
+        catch (SQLException e) 
+        {
             System.out.println("Connection Failed");
             e.printStackTrace();
         }
@@ -68,8 +69,10 @@ public class SQLData {
                 }
             }
             animalResults.close();
-        } 
-        catch (SQLException e) {e.printStackTrace();}
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public void selectTreatmentsData(){
@@ -96,7 +99,7 @@ public class SQLData {
                 int duration = treatmentResults.getInt("Duration");
                 int maxWindow = treatmentResults.getInt("MaxWindow");
                 int startHour = treatmentResults.getInt("StartHour");
-                this.treatments.add(new Treatment(animalName, taskDescription, startHour, duration, maxWindow));
+                this.tasks.add(new DailyTasks(animalName, taskDescription, startHour, duration, maxWindow));
             }
             treatmentResults.close();
         } 
@@ -104,16 +107,18 @@ public class SQLData {
     }
 
     public void close(){
-        try{
+        try
+        {
             dbConnect.close();
-        } 
-        catch (SQLException e){
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
     }
 
     public List<Animal> getAnimalList(){return this.animals;}
-    public List<Treatment> getTreatmentList(){return this.treatments;}
+    public List<DailyTasks> getTreatmentTasks(){return this.tasks;}
 
     public static void main(String[] args){
         SQLData myJDBC = new SQLData("jdbc:postgresql://localhost:5432/ewr", "oop", "ucalgary");
