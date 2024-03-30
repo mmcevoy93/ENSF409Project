@@ -26,6 +26,9 @@ public class SQLData {
         close();
     }
 
+    /**
+     * Initializes connection to database
+     */
     public void initializeConnection() {
         try{
             dbConnect = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
@@ -37,7 +40,10 @@ public class SQLData {
         }
     }
 
-
+    /**
+     * selects all from the animal table
+     * Populates list of Animals with correct animal
+     */
     public void selectAnimalData(){
         ResultSet animalResults;
         String query = "SELECT * FROM ANIMALS";
@@ -75,6 +81,10 @@ public class SQLData {
         }
     }
 
+    /**
+     * selects from treatments joining animal and tasks together
+     * populates list of DailyTasks
+     */
     public void selectTreatmentsData(){
         ResultSet treatmentResults;
         String query = "SELECT " +
@@ -106,6 +116,9 @@ public class SQLData {
         catch (SQLException e) {e.printStackTrace();}
     }
 
+    /**
+     * Closes database connection
+     */
     public void close(){
         try
         {
@@ -116,8 +129,16 @@ public class SQLData {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Returns the List of Animals retrived from database
+     * @return List of Animal
+     */
     public List<Animal> getAnimalList(){return this.animals;}
+
+    /**
+     * returns the List of DailyTasks retrived from database
+     * @return List of Tasks
+     */
     public List<DailyTasks> getTreatmentTasks(){return this.tasks;}
 
     public static void main(String[] args){
