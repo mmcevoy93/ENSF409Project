@@ -86,7 +86,7 @@ public class Animal {
      * Checks if animal's cage has been cleaned yet
      * @return boolean of cage cleaned status
      */
-    public int getFeedPrep(){return this.feedPrep;}
+
 
      /**
      * Checks if animal has been feed yet

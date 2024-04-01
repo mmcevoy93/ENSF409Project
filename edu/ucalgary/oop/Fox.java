@@ -32,7 +32,7 @@ public class Fox extends Nocturnal{
     }
 
     // Getter method for CLEAN_TIME
-    public static int getCleanTime() {
+    public  int getCleanTime() {
         return CLEAN_TIME;
     }
     

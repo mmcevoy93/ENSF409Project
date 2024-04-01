@@ -29,7 +29,7 @@ public class Beaver extends Diurnal {
     }
 
     // Getter method for CLEAN_TIME
-    public static int getCleanTime() {
+    public  int getCleanTime() {
         return CLEAN_TIME;
     }
     public static int getFeedStart(){return Diurnal.FEED_START;}

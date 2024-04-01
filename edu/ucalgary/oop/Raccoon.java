@@ -29,7 +29,7 @@ public class Raccoon extends  Nocturnal{
     }
 
     // Getter method for CLEAN_TIME
-    public static int getCleanTime() {
+    public int getCleanTime() {
         return CLEAN_TIME;
     }
     public static int getFeedStart(){return Nocturnal.FEED_START;}

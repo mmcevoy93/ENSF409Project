@@ -125,34 +125,34 @@ public class Schedule{
      * Ebube's Test *COMMENT OUT IF NOT NEEDED*
      */
     public void printTesting(){
-        System.out.println();
-        int count = 0;
-        //1. Print out information from treatements list
-        System.out.println("EBUBE'S TEST TO VIEW - PRINT TREATMENTS");
-        for (DailyTasks task : this.tasks){
-            count++;
-            System.out.println(String.format("Animal Name %d: " + task.getAnimalName(), count));
-            System.out.println("Treatment: " + task.getDescription());
-            System.out.println("Start hour: " + task.getStartHour());
-            System.out.println("maxWindow: " + task.getMaxWindow());
-            System.out.println();
-            System.out.println();
-        }
+        // System.out.println();
+        // int count = 0;
+        // //1. Print out information from treatements list
+        // System.out.println("EBUBE'S TEST TO VIEW - PRINT TREATMENTS");
+        // for (DailyTasks task : this.tasks){
+        //     count++;
+        //     System.out.println(String.format("Animal Name %d: " + task.getAnimalName(), count));
+        //     System.out.println("Treatment: " + task.getDescription());
+        //     System.out.println("Start hour: " + task.getStartHour());
+        //     System.out.println("maxWindow: " + task.getMaxWindow());
+        //     System.out.println();
+        //     System.out.println();
+        // }
 
-        // 2. Print out information from animals list *COMMENT OUT IF NOT NEEDED*
-        System.out.println();
-        System.out.println("EBUBE'S TEST TO VIEW - PRINT ANIMALS");
-        for (Animal animal : this.animals){
-            count++;
-            System.out.println(String.format("Animal ID %d: " + animal.getAnimalID(), count));
-            System.out.println("Nickname: " + animal.getName());
-            System.out.println("Feed Time: " + animal.getfeedTime());
-            System.out.println("Feed Window: " + animal.feedWindow());
-            System.out.println("Feed Prep: " +animal.getFeedPrep());
-            System.out.println("Clean Time: ?" + animal.getCleanTime());
-            System.out.println();
-            System.out.println();
-        }
+        // // 2. Print out information from animals list *COMMENT OUT IF NOT NEEDED*
+        // System.out.println();
+        // System.out.println("EBUBE'S TEST TO VIEW - PRINT ANIMALS");
+        // for (Animal animal : this.animals){
+        //     count++;
+        //     System.out.println(String.format("Animal ID %d: " + animal.getAnimalID(), count));
+        //     System.out.println("Nickname: " + animal.getName());
+        //     System.out.println("Feed Time: " + animal.getfeedTime());
+        //     System.out.println("Feed Window: " + animal.feedWindow());
+        //     System.out.println("Feed Prep: " +animal.getFeedPrep());
+        //     System.out.println("Clean Time: ?" + animal.getCleanTime());
+        //     System.out.println();
+        //     System.out.println();
+        // }
     }
 
 
@@ -164,5 +164,4 @@ public class Schedule{
         Schedule schedule = new Schedule(myJDBC.getAnimalList(), myJDBC.getTreatmentTasks());  // Instantiates a Schedule with information form the AnimalList
         //schedule.printTesting();      //Moved Ebube's testing to it's own method
     }
-
 }
