@@ -1,21 +1,21 @@
 @startuml
 class Animal{
--int ANIMAL_ID
--String ANIMAL_NICKNAME
--boolean feed = false
--boolean dailyClean = false
--boolean IS_ORPHAN
+-int ID
+-String NICKNAME
+-boolean ORPHAN
 
-+Animal(animalID:int, animalNickname:String, orphan:boolean) 
-+isClean():boolean
-+clean(boolean)
-+isFeed():boolean
-+feed(boolean)
-+getAnimalID():int
-+getAnimalNickname():String
-+isOrphan(boolean)
++Animal(animalID:int, nickname:String) 
+-checkOrphaned(nickname:String)
++getID():int
++getNickname():String
++isOrphan():boolean
 +getFeedTime():int
++getFeedPrep():int
 +getCleanTime():int
++{abstract}getFeedStart():int
++{abstract}getFeedWindow():int
++{abstract}getSpecies():String
++printInfo():String
 }
 
 class Nocturnal{
