@@ -127,4 +127,13 @@ public class Animal {
      * @return amount of hours you have from start
      */
     public int feedWindow(){return -1;}
+
+    public String printInfo() {
+        String format = "| %-3s | %-24s | %-15s |\n";
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format(format, String.valueOf(this.animalID), this.nickname, "this.species"));
+        return sb.toString();
+    }
+
+
 }
