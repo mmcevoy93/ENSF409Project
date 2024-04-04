@@ -15,14 +15,14 @@ public class Schedule{
     private List<List<DailyTasks>> hourlySchedule = new ArrayList<>();
 
     public Schedule(List<Animal> animals, List<DailyTasks> tasks){
-        this.animals = animals;                 // Creates an array list with animal information
+        this.animals = animals;       // Creates an array list with animal information
         this.tasks = tasks;           // Creates an array with treatments information
 
         //Initializes hourlySchedule data structure
         for (int i = 0; i < 24; i++) {
             hourlySchedule.add(new ArrayList<>());
         }
-         // does the sorting operations, generates cleaning tasks and prints schdule to terminal
+         // does the sorting operations, generates cleaning tasks and prints schedule to terminal
         printTreatments();
     }
 
@@ -32,9 +32,8 @@ public class Schedule{
      * sort tasks by time then max window
      * assign the tasks to the hour they can fit
      * keep track of minutes used in a given hour
-     * create indivdual cleaning tasks and add to hour
-     * print the hour data structure in schdule format
-     * 
+     * create individual cleaning tasks and add to hour
+     * print the hour data structure in schedule format
      * Good OOP would be breaking this down into smaller methods
      */
     public void printTreatments(){
@@ -124,10 +123,10 @@ public class Schedule{
      */
     public void addFeedToList() {
         String allSpecies[] = {"beaver","coyote","fox","porcupine","raccoon"};
-        HashMap<String, String> names = new HashMap<>();
-        HashMap<String, Integer> feed = new HashMap<>();
+        HashMap<String, String> names = new HashMap<>(); // Map of String to String
+        HashMap<String, Integer> feed = new HashMap<>(); // Map of String to Integer
         for (String s:allSpecies){
-            feed.put(s, 0);
+            feed.put(s, 0);// for key species, they have an integer value of 0
             names.put(s,"");
         }
         HashMap<String, Integer> prep = new HashMap<>();

@@ -100,4 +100,8 @@ public class Animal {
     public String printInfo() {
         return String.format("| %-3s | %-24s | %-15s |\n", ID, NICKNAME, getSpecies());
     }
+
+//    public String getNickname() {
+//
+//    }
 }

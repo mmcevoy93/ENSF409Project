@@ -23,7 +23,7 @@ public class AnimalCounter {
                 if (namesBuilder.length() > 3) {
                     namesBuilder.append(", ");
                 }
-                namesBuilder.append(animal.getNickname());
+//                namesBuilder.append(animal.getNickname());
             }
         }
         return namesBuilder.toString();
