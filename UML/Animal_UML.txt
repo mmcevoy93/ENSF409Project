@@ -12,9 +12,9 @@ class Animal{
 +getFeedTime():int
 +getFeedPrep():int
 +getCleanTime():int
-+{abstract}getFeedStart():int
-+{abstract}getFeedWindow():int
-+{abstract}getSpecies():String
++getFeedStart():int
++getFeedWindow():int
++getSpecies():String
 +printInfo():String
 }
 

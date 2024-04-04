@@ -7,31 +7,31 @@ max.mcevoy@ucalgary.ca</a>
 */
 
 public class Raccoon extends  Nocturnal{
-    private static final int FEED_TIME = 5;
-    private static final int FEED_PREP = 0;
-    private static final int CLEAN_TIME = 5;
-    public Raccoon(int id, String name){
-        super(id, name, FEED_TIME, FEED_PREP, CLEAN_TIME);   
+    private final int FEED_TIME = 5;
+    private final int FEED_PREP = 0;
+    private final int CLEAN_TIME = 5;
+
+    public Raccoon(int animalID, String name){
+        super(animalID, name); 
     }
 
-     @Override
-    public String getSpecies(){
-        return "raccoon";
-    }
-    // Getter method for FEED_TIME
-    public static int getFeedTime() {
+    @Override
+    public int getFeedTime() {
         return FEED_TIME;
     }
 
-    // Getter method for FEED_PREP
-    public static int getFeedPrep() {
+    @Override
+    public int getFeedPrep() {
         return FEED_PREP;
     }
 
-    // Getter method for CLEAN_TIME
+    @Override
     public int getCleanTime() {
         return CLEAN_TIME;
     }
-    public static int getFeedStart(){return Nocturnal.FEED_START;}
 
+    @Override
+    public String getSpecies() {
+        return "raccoon";
+    }
 }

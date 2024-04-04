@@ -4,41 +4,26 @@ import java.util.*;
 
 
 public class AnimalCounter {
-    private static final Map<Class<? extends Animal>, Integer> feedTimeMap = new HashMap<>();
-    static {
-        feedTimeMap.put(Beaver.class, Beaver.getFeedTime());
-        feedTimeMap.put(Coyote.class, Coyote.getFeedTime());
-        feedTimeMap.put(Fox.class, Fox.getFeedTime());
-        feedTimeMap.put(Porcupine.class, Porcupine.getFeedTime());
-        feedTimeMap.put(Raccoon.class, Raccoon.getFeedTime());
 
-    }
-
-
-  public static int countAnimals(List<Animal> animals, Class<? extends Animal> animalType) {
+    public static int countAnimals(List<Animal> animals, Class<? extends Animal> animalType) {
         int count = 0;
         for (Animal animal : animals) {
-            if (animalType.isInstance(animal) && !animal.getOrphaned()) {
+            if (animalType.isInstance(animal) && !animal.isOrphaned()) {
                 count++;
             }
         }
         return count;
     }
 
-    public static int getTotalFeedTime(List<Animal> animals, Class<? extends Animal> animalType) {
-        int feedTimePer = feedTimeMap.getOrDefault(animalType, 0);
-        return feedTimePer * countAnimals(animals, animalType);
-    }
-
     public static String getAnimalNames(List<Animal> animals, Class<? extends Animal> animalType) {
         StringBuilder namesBuilder = new StringBuilder();
         namesBuilder.append(String.format("%d: ", countAnimals(animals, animalType)));
         for (Animal animal : animals) {
-            if (animalType.isInstance(animal) && !animal.getOrphaned()) {
+            if (animalType.isInstance(animal) && !animal.isOrphaned()) {
                 if (namesBuilder.length() > 3) {
                     namesBuilder.append(", ");
                 }
-                namesBuilder.append(animal.getName());
+                namesBuilder.append(animal.getNickname());
             }
         }
         return namesBuilder.toString();

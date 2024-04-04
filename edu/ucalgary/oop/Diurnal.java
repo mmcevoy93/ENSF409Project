@@ -7,15 +7,40 @@ max.mcevoy@ucalgary.ca</a>
 */
 
 public class Diurnal extends Animal {
-    protected static final int FEED_START = 8;
-    protected static final int FEED_WINDOW = 3;
+    private final int FEED_START = 8;
+    private final int FEED_WINDOW = 3;
 
-    Diurnal(int id, String nickname, int feedTime, int feedPrep, int cleanTime) {
-        super(id, nickname, feedPrep, feedTime, cleanTime, FEED_START, FEED_WINDOW);
+    public Diurnal(int animalID, String nickname) {
+        super(animalID, nickname);
     }
 
     @Override
-    public int feedStart() { return FEED_START; }
+    public int getFeedTime() {
+        return -1;
+    }
+
     @Override
-    public int feedWindow() { return FEED_WINDOW; }
+    public int getFeedPrep() {
+        return -1;
+    }
+
+    @Override
+    public int getCleanTime() {
+        return -1;
+    }
+
+    @Override
+    public int getFeedStart() {
+        return FEED_START;
+    }
+
+    @Override
+    public int getFeedWindow() {
+        return FEED_WINDOW;
+    }
+
+    @Override
+    public String getSpecies() {
+        return "diurnal"; // Placeholder value, to be overridden in subclasses
+    }
 }

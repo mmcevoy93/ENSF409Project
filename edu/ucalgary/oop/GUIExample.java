@@ -38,7 +38,7 @@ public class GUIExample {
         displayTasksBtn = new JButton("Display Tasks");
         displayTasksBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                displayTasks();
+                //displayTasks();
             }
         });
 

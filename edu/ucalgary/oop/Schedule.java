@@ -34,6 +34,8 @@ public class Schedule{
      * keep track of minutes used in a given hour
      * create indivdual cleaning tasks and add to hour
      * print the hour data structure in schdule format
+     * 
+     * Good OOP would be breaking this down into smaller methods
      */
     public void printTreatments(){
         addFeedToList();
@@ -44,7 +46,6 @@ public class Schedule{
             int duration = task.getDuration();
             int maxWindow = task.getMaxWindow();
             int endHour = startHour + (duration / 60) + ((duration % 60 == 0) ? 0 : 1);
-
             for (int hour = startHour; hour < hour+maxWindow; hour++) {
                 // Calculate the total duration already scheduled within the hour for this treat's max window
                 int scheduledDurationWithinMaxWindow = 0;
@@ -69,6 +70,7 @@ public class Schedule{
             String des = "Cage Cleaning";
             int startHour = 0;
             int duration = a.getCleanTime();
+            System.out.println("Cleaning Time: " + duration);
             int maxWindow = 24;
             DailyTasks clean = new DailyTasks(name,des,startHour,duration,maxWindow);
             for (int hour = startHour; hour < hour+maxWindow; hour++) {
@@ -96,29 +98,49 @@ public class Schedule{
                 System.out.println("* " + treat.getDescription() + " (" +  treat.getAnimalName() + ")");
             }
         }
-    }
+}
+
 
     /**
-     * given an extended Animal class, feeding info will add ned Feeding tasks to
-     * Daily tasks list. Will likely chnage how this works so it is less confusing.
-     */
-    public void addFeedToList(Class<? extends Animal> animalClass, String description, int feedPrep, int startHour) {
-        if (AnimalCounter.countAnimals(animals, animalClass) != 0) {
-            String animalName = AnimalCounter.getAnimalNames(animals, animalClass);
-            int duration = AnimalCounter.getTotalFeedTime(animals, animalClass) + feedPrep;
-            tasks.add(new DailyTasks(animalName, description, startHour, duration, 3));
-        }
-    }
-    /**
-     * like above function this one calls the same addFeedtoList method but uses overflow one instead
-     * again will likely change this out
+     * A little convoluted but I didn't want to change Animal anymore
+     * Good OOP would probably be breaking this down into smaller methods
      */
     public void addFeedToList() {
-        addFeedToList(Beaver.class, "Feeding - beaver", Beaver.getFeedPrep(),Beaver.getFeedStart());
-        addFeedToList(Coyote.class, "Feeding - coyote", Coyote.getFeedPrep(),Coyote.getFeedStart());
-        addFeedToList(Fox.class, "Feeding - fox", Fox.getFeedPrep(),Fox.getFeedStart());
-        addFeedToList(Porcupine.class, "Feeding - porcupine", Porcupine.getFeedPrep(),Porcupine.getFeedStart());
-        addFeedToList(Raccoon.class, "Feeding - raccoon", Raccoon.getFeedPrep(),Raccoon.getFeedStart());
+        String allSpecies[] = {"beaver","coyote","fox","porcupine","raccoon"};
+        HashMap<String, String> names = new HashMap<>();
+        HashMap<String, Integer> feed = new HashMap<>();
+        for (String s:allSpecies){
+            feed.put(s, 0);
+            names.put(s,"");
+        }
+        HashMap<String, Integer> prep = new HashMap<>();
+        prep.putAll(feed);
+        HashMap<String, Integer> window = new HashMap<>();
+        window.putAll(feed);
+        HashMap<String, Integer> startH = new HashMap<>();
+        startH.putAll(feed);
+        String dsrt = "Feed - ";
+        for(Animal a : this.animals){
+            String species = a.getSpecies();
+            startH.put(species, a.getFeedStart());
+            window.put(species, a.getFeedWindow());
+            feed.put(species, feed.get(species)+ a.getFeedTime());
+            prep.put(species, a.getFeedPrep());
+            names.put(species, names.get(species) + ", " + a.getName());
+            System.out.println("Name : "+ a.getFeedTime());
+        }
+        for (String s : allSpecies){
+            if(!names.get(s).equals("")){
+                tasks.add(new DailyTasks(
+                    names.get(s).toString().substring(2),
+                    dsrt + s,
+                    startH.get(s),
+                    feed.get(s),
+                    window.get(s),
+                    prep.get(s)
+                ));
+            }
+        }
     }
     
     /**

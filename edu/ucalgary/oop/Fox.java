@@ -9,33 +9,31 @@ max.mcevoy@ucalgary.ca</a>
 */
 
 public class Fox extends Nocturnal{
-    private static final int FEED_TIME = 5;
-    private static final int FEED_PREP = 5;
-    private static final int CLEAN_TIME = 5;
+    private final int FEED_TIME = 5;
+    private final int FEED_PREP = 5;
+    private final int CLEAN_TIME = 5;
 
-    public Fox(int id, String name){
-        super(id, name, 1, 1, 1);    
+    public Fox(int animalID, String name){
+        super(animalID, name);   
     }
-
-     @Override
-    public String getSpecies(){
-        return "fox";
-    }
-    // Getter method for FEED_TIME
-    public static int getFeedTime() {
+    
+    @Override
+    public int getFeedTime() {
         return FEED_TIME;
     }
 
-    // Getter method for FEED_PREP
-    public static int getFeedPrep() {
+    @Override
+    public int getFeedPrep() {
         return FEED_PREP;
     }
 
-    // Getter method for CLEAN_TIME
-    public  int getCleanTime() {
+    @Override
+    public int getCleanTime() {
         return CLEAN_TIME;
     }
-    
-    public static int getFeedStart(){return Nocturnal.FEED_START;}
 
+    @Override
+    public String getSpecies() {
+        return "fox";
+    }
 }

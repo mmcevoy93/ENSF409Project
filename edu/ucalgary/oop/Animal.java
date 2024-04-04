@@ -1,139 +1,103 @@
 package edu.ucalgary.oop;
 
 /*
-@author Max McEvoy 30005167<a href="mailto:max.mcevoy@ucalgary.ca">
-max.mcevoy@ucalgary.ca</a>
+@author Max McEvoy 30005167<a href="mailto:max.mcevoy@ucalgary.ca"> max.mcevoy@ucalgary.ca</a>
 @version 1.4
 @since 1.0
 */
 import java.util.regex.*;
 import java.util.*;
 
-/**Animal class
- * Animal contains all the relavent info needed to 
- * complete all medical treatments, feedings and cleaning
+/** Animal class
+ *  Animal contains all the relevant info needed to complete all medical treatments, feedings and cleaning
  */
-
 // todo: include a throw to the IllegalArgumentException
 public class Animal {
-    private int animalID;
-    private String nickname;
-    private boolean feed = false;
-    private boolean clean = false;
-    private boolean orphaned;
-    private int feedStart;
-    private int feedWindow;
-    private int feedPrep;
-    private int feedTime;
-    private int cleanTime;
-    private final Pattern PATTERN = Pattern.compile("\\b\\w+(,\\s+\\w+)+\\b");
-
-    /**
-     * Animal constructor
-     * Needs all the info about animal
-     * 
-     * @param animalID ID of animal
-     * @param nickname Nickname of animal
-     * @param feedPrep Time in minutes to prep for animal feeding
-     * @param feedTime time to feed animal in minutes
-     * @param cleanTime time it takes to clean animal cage in minutes
-     * @param feedStart using 24h time that feeding can start
-     * @param feedWindow Window of time in hours for animal to be feed in
+    private final int ID;
+    private final String NICKNAME;
+    private boolean orphan;
+    
+    /** Constructor
+     * @param animalID The ID of the animal
+     * @param nickname The nickname of the animal
      */
-    public Animal(  int id, String nickname, int feedPrep, int feedTime, 
-                    int cleanTime, int feedStart, int feedWindow){
-        this.animalID = id;
-        this.nickname = nickname;
-        this.feedTime = feedTime;
-        this.feedWindow = feedWindow;
-        this.feedPrep = feedPrep;
-        this.cleanTime = cleanTime;
-
-        Matcher matcher = PATTERN.matcher(nickname);
-        if(matcher.find()){this.orphaned = true;}
-        else{this.orphaned = false;}
+    public Animal(int animalID, String nickname) {
+        this.ID = animalID;
+        this.NICKNAME = nickname;
+        this.orphan = checkOrphaned(nickname);
     }
-
-     /**
-     * Gets ID of animal
-     * @return int of animal ID
+    
+    /** Checks if the nickname has comma-separated values
+     * @param nickname The nickname of the animal
+     * @return true if the nickname has comma-separated values, false otherwise
      */
-    public int getAnimalID() {return this.animalID;}
-
-     /**
-     * Gets the nickname of animal
-     * @return String of nickname
+    private boolean checkOrphaned(String nickname) {
+        Pattern has_comma = Pattern.compile("\\b\\w+(,\\s+\\w+)+\\b");
+        Matcher match = has_comma.matcher(nickname);
+        return match.find();
+    }
+    
+    /** Gets the ID of the animal
+     * @return The ID of the animal
      */
-    public String getName() {return this.nickname;}
-
-     /**
-     * Gets the time it takes to feed animal
-     * @return integer of time to feed in minutes
+    public int getID() {return ID;}
+    
+    /** Gets the name of the animal
+     * @return The name of the animal
      */
-    public int getfeedTime() {return this.feedTime;}
-
-     /**
-     * Checks if animal's cage has been cleaned yet
-     * @return boolean of cage cleaned status
+    public String getName() {return NICKNAME;}
+    
+    /** Checks if the animal is orphaned
+     * @return true if the animal is orphaned, false otherwise
      */
-    public boolean getClean(){return this.clean;}
-     /**
-     * Checks if animal's cage has been cleaned yet
-     * @return boolean of cage cleaned status
+    public boolean isOrphaned() {return orphan;}
+    
+    /** Gets the feed time of the animal
+     * @return The feed time of the animal
      */
-    public int getCleanTime(){return this.cleanTime;}
-     /**
-     * Checks if animal's cage has been cleaned yet
-     * @return boolean of cage cleaned status
+    public int getFeedTime() {
+        return -1; // Placeholder value, to be overridden in subclasses
+    }
+    
+    /** Gets the feed preparation time of the animal
+     * @return The feed preparation time of the animal
      */
-
-
-     /**
-     * Checks if animal has been feed yet
-     * @return boolean on animal feeding status for day
+    public int getFeedPrep() {
+        return -1; // Placeholder value, to be overridden in subclasses
+    }
+    
+    /** Gets the cleaning time of the animal
+     * @return The cleaning time of the animal
      */
-    public boolean getFeed(){return this.feed;}
-
-    public boolean getOrphaned(){return this.orphaned;}
-
-    /**
-     * Sets the daily cleaning status of animal cage
-     * each animal needs their cage cleaned once a day
-     * @param boolean of cage cleaning status
+    public int getCleanTime() {
+        return -1; // Placeholder value, to be overridden in subclasses
+    }
+    
+    /** Gets the feed start time of the animal
+     * @return The feed start time of the animal
      */
-    public void setClean(boolean clean){ this.clean = clean;}
-
-    /**
-     * Sets the daily feeding status of animal
-     * each animal needs to be feed once a day
-     * @param boolean of feed status of animal
+    public int getFeedStart() {
+        return -1; // Placeholder value, to be overridden in subclasses
+    }
+    
+    /** Gets the feed window of the animal
+     * @return The feed window of the animal
      */
-    public void setFeed(boolean feed){this.feed = feed;}
-
-    /**
-     * gets the name of the species
-     * @return String of species
+    public int getFeedWindow() {
+        return -1; // Placeholder value, to be overridden in subclasses
+    }
+    
+    /** Gets the species of the animal
+     * @return The species of the animal
      */
-    public String getSpecies(){return "void";}
-
-    /**
-     * gets the feed start time in 24 hours
-     * @return the start hour that animal can be feed at
+    public String getSpecies() {
+        return "void"; // Placeholder value, to be overridden in subclasses
+    }
+    
+    /** Prints information about the animal
+     * @return Information about the animal
      */
-    public int feedStart(){return -1;}
-
-    /**
-     * gets the feeding window time in hours
-     * @return amount of hours you have from start
-     */
-    public int feedWindow(){return -1;}
-
     public String printInfo() {
-        String format = "| %-3s | %-24s | %-15s |\n";
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format(format, String.valueOf(this.animalID), this.nickname, "this.species"));
-        return sb.toString();
+        return String.format("| %-3s | %-24s | %-15s |\n", ID, NICKNAME, getSpecies());
     }
-
-
 }

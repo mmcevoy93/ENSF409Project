@@ -15,6 +15,7 @@ public class DailyTasks implements Comparable<DailyTasks> {
     private int startHour;
     private int duration;
     private int maxWindow;
+    private int prepTime;
 
     public DailyTasks(String animalName, String description, int startHour, int duration, int maxWindow) {
         this.animalName = animalName;
@@ -22,6 +23,18 @@ public class DailyTasks implements Comparable<DailyTasks> {
         this.startHour = startHour;
         this.duration = duration;
         this.maxWindow = maxWindow;
+        this.prepTime = 0;
+    }
+    /**
+     * Overflow constructor for tasks that require preptime
+     */
+    public DailyTasks(String animalName, String description, int startHour, int duration, int maxWindow, int prepTime) {
+        this.animalName = animalName;
+        this.description = description;
+        this.startHour = startHour;
+        this.duration = duration;
+        this.maxWindow = maxWindow;
+        this.prepTime = prepTime;
     }
 
     public String getAnimalName() {
