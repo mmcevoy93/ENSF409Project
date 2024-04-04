@@ -70,7 +70,6 @@ public class Schedule{
             String des = "Cage Cleaning";
             int startHour = 0;
             int duration = a.getCleanTime();
-            System.out.println("Cleaning Time: " + duration);
             int maxWindow = 24;
             DailyTasks clean = new DailyTasks(name,des,startHour,duration,maxWindow);
             for (int hour = startHour; hour < hour+maxWindow; hour++) {
@@ -98,7 +97,7 @@ public class Schedule{
                 System.out.println("* " + treat.getDescription() + " (" +  treat.getAnimalName() + ")");
             }
         }
-}
+    }
 
 
     /**
@@ -145,7 +144,6 @@ public class Schedule{
             feed.put(species, feed.get(species)+ a.getFeedTime());
             prep.put(species, a.getFeedPrep());
             names.put(species, names.get(species) + ", " + a.getName());
-            System.out.println("Name : "+ a.getFeedTime());
         }
         for (String s : allSpecies){
             if(!names.get(s).equals("")){
