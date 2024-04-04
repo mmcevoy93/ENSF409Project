@@ -104,6 +104,24 @@ public class Schedule{
     /**
      * A little convoluted but I didn't want to change Animal anymore
      * Good OOP would probably be breaking this down into smaller methods
+     * 
+     *  I use HashMaps (Dictionary equivalent in Python) to determine the
+     *  feeding info of each species
+     *  Species is the key and name, feedtime, prep, window, startH are the values
+     *  This way was used so that the simpler Animal class could be used.
+     *  Before there was less code but was too convoluted to troubleshoot.
+     * 
+     * HashMaps are created with each species as the key.
+     * used putAll to create a deepcopy of some similar HashMaps
+     * 
+     * loop through all the animals to get the info relavent to feeding.
+     * Adding up the feeding time for each species of animal together.
+     * start, window, prep should be the same for each species but it
+     * was simple to assigning the value to the key it is a little inefficent.
+     * 
+     * Once the hashMaps have been populated we loop again through all the species.
+     * If there are no names in names we know that that species DNE
+     * else we create a new feeding task and add it to our List of DailyTasks
      */
     public void addFeedToList() {
         String allSpecies[] = {"beaver","coyote","fox","porcupine","raccoon"};
@@ -131,6 +149,7 @@ public class Schedule{
         }
         for (String s : allSpecies){
             if(!names.get(s).equals("")){
+                //too long horizontally
                 tasks.add(new DailyTasks(
                     names.get(s).toString().substring(2),
                     dsrt + s,
