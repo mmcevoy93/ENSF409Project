@@ -7,6 +7,30 @@ import java.time.LocalDate;
 import static org.junit.Assert.*;
 public class TestClass {
 
+    //initial tests for animal class
+
+    //tests whether checkOrphaned returns true when it is supposed to
+    @Test
+    public void CheckOrphanedIsTrue(){
+        Animal testAnimal = new Animal(1, "Annie, Oliver and Mowgli");
+        assertTrue(testAnimal.checkOrphaned("Annie, Oliver and Mowgli"));
+    }
+
+    //tests whether checkOrphaned returns false when it is supposed to
+    @Test
+    public void CheckOrphanedIsFalse(){
+        Animal testAnimal = new Animal(1, "Pencil");
+        assertFalse(testAnimal.checkOrphaned("Pencil"));
+    }
+
+    //tests whether correct species is returned
+    @Test
+    public void getSpeciesTest(){
+        Coyote testAnimal = new Coyote(1, "Pencil");
+        assertEquals("coyote", testAnimal.getSpecies());
+    }
+
+
     @Test
     void printTreatmentTest(){
         String url = "jdbc:postgresql://localhost:5432/ewr";            // Database url
