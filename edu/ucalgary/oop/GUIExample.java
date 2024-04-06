@@ -1,9 +1,9 @@
 package edu.ucalgary.oop;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
-
 
 public class GUIExample {
     private JFrame frame;
@@ -12,60 +12,76 @@ public class GUIExample {
     private JButton displayTasksBtn;
 
     SQLData myJDBC = new SQLData("jdbc:postgresql://localhost:5432/ewr", "oop", "ucalgary");
-   
 
     public GUIExample() {
-        frame = new JFrame("GUI Example");
-        frame.setSize(400, 300);
+        frame = new JFrame("Wildlife Rescue Management System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new FlowLayout());
+        frame.setLayout(new BorderLayout());
         myJDBC.initializeConnection();
-        
-        printScheduleBtn = new JButton("Print Schedule");
-        printScheduleBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                printSchedule();
-            }
-        });
 
-        displayAnimalsBtn = new JButton("Display Animals");
-        displayAnimalsBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                displayAnimals();
-            }
-        });
+        // Create a panel for the buttons
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 3, 10, 0));
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        displayTasksBtn = new JButton("Display Tasks");
-        displayTasksBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //displayTasks();
-            }
-        });
+        printScheduleBtn = createButton("Print Schedule", Color.BLUE);
+        displayAnimalsBtn = createButton("Display Animals", Color.GREEN);
+        displayTasksBtn = createButton("Display Tasks", Color.ORANGE);
 
-        frame.add(printScheduleBtn);
-        frame.add(displayAnimalsBtn);
-        frame.add(displayTasksBtn);
+        buttonPanel.add(printScheduleBtn);
+        buttonPanel.add(displayAnimalsBtn);
+        buttonPanel.add(displayTasksBtn);
 
+        frame.add(buttonPanel, BorderLayout.CENTER);
+
+        // Create a header panel
+        JPanel headerPanel = new JPanel();
+        headerPanel.setBackground(Color.LIGHT_GRAY);
+        JLabel headerLabel = new JLabel("Welcome to the Wildlife Rescue Management System");
+        headerLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        headerPanel.add(headerLabel);
+
+        frame.add(headerPanel, BorderLayout.NORTH);
+
+        frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
+    private JButton createButton(String text, Color color) {
+        JButton button = new JButton(text);
+        button.setPreferredSize(new Dimension(150, 50));
+        button.setBackground(color);
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == printScheduleBtn) {
+                    printSchedule();
+                } else if (e.getSource() == displayAnimalsBtn) {
+                    displayAnimals();
+                } else if (e.getSource() == displayTasksBtn) {
+                    // displayTasks();
+                }
+            }
+        });
+        return button;
+    }
+
     private void printSchedule() {
-        // Placeholder method for printing schedule
         System.out.println("Printing Schedule...");
     }
 
     private void displayAnimals() {
-        // Placeholder method for displaying animals
         List<Animal> animals = myJDBC.getAnimalList();
         String format = "| %-3s | %-24s | %-15s |\n";
         StringBuilder sb = new StringBuilder();
-        sb.append("+----+---------------------------+-----------------+\n");
-
+        sb.append("+-----+--------------------------+-----------------+\n");
         sb.append(String.format(format, "ID", "Name", "Species"));
-        for(Animal a: animals){
-            sb.append(a.printInfo());
+        for (Animal a : animals) {
+            sb.append(a);
         }
-        sb.append("+----+---------------------------+-----------------+\n");
+        sb.append("+-----+--------------------------+-----------------+\n");
         System.out.println(sb.toString());
     }
 

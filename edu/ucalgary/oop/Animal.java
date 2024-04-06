@@ -6,7 +6,6 @@ package edu.ucalgary.oop;
 @since 1.0
 */
 import java.util.regex.*;
-import java.util.*;
 
 /** Animal class
  *  Animal contains all the relevant info needed to complete all medical treatments, feedings and cleaning
@@ -97,11 +96,8 @@ public class Animal {
     /** Prints information about the animal
      * @return Information about the animal
      */
-    public String printInfo() {
+    @Override
+    public String toString() {
         return String.format("| %-3s | %-24s | %-15s |\n", ID, NICKNAME, getSpecies());
     }
-
-//    public String getNickname() {
-//
-//    }
 }

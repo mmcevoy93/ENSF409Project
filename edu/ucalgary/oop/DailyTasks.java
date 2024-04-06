@@ -6,8 +6,6 @@ max.mcevoy@ucalgary.ca</a>
 @since 1.0
 */
 
-import java.util.*;
-
 // todo: create a throw to an IllegalArgumentException
 public class DailyTasks implements Comparable<DailyTasks> {
     private String animalName;
@@ -50,7 +48,7 @@ public class DailyTasks implements Comparable<DailyTasks> {
     }
 
     public int getDuration() {
-        return this.duration;
+        return this.duration + this.prepTime;
     }
 
     public int getMaxWindow() {
