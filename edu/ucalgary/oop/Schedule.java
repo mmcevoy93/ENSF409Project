@@ -19,44 +19,31 @@ public class Schedule{
         for (int i = 0; i < 24; i++) {
             this.hourlySchedule.add(new ArrayList<>());
         }
-        this.addFeedToList();
-        this.addTreatments();
-        this.addCleaningToList();
+        this.buildSchedule();
     }
 
     /**
-     * This will likely be broken down and simplified
-     * this will add feeding tasks to daily tasks. 
-     * sort tasks by time then max window
-     * assign the tasks to the hour they can fit
-     * keep track of minutes used in a given hour
-     * create individual cleaning tasks and add to hour
-     * print the hour data structure in schedule format
-     * Good OOP would be breaking this down into smaller methods
+     * Add provided Tasks to avaliable Hour 0-24
+     * given startHour, duration and maxWindow constraints
+     * @param task a DailyTask that needs to be added 
      */
-    public void addTreatments(){
-        Collections.sort(this.tasks);//sorts by time then by max window
-        for (DailyTasks task: tasks) {
-            int startHour = task.getStartHour();
-            int duration = task.getDuration();
-            int maxWindow = task.getMaxWindow();
-            
-            for (int hour = startHour; hour < hour+maxWindow; hour++) {
-                // Calculate the total duration already scheduled within the hour for this treat's max window
-                int scheduledDurationWithinMaxWindow = 0;
-                for (DailyTasks scheduledTreatment : hourlySchedule.get(hour)) {
-                    scheduledDurationWithinMaxWindow += scheduledTreatment.getDuration();
-                }
-                // Check if adding the treatment to the hour exceeds the max window
-                if (scheduledDurationWithinMaxWindow + duration <= 60) {
-                    hourlySchedule.get(hour).add(task);
-                    break;
-                }
+    public void addTasksToHours(DailyTasks task){
+        int startHour = task.getStartHour();
+        int duration = task.getDuration();
+        int maxWindow = 24;
+        for (int hour = startHour; hour < hour+maxWindow; hour++) {
+            // Calculate the total duration already scheduled within the hour for this treat's max window
+            int scheduledDurationWithinMaxWindow = 0;
+            for (DailyTasks scheduledTreatment : hourlySchedule.get(hour)) {
+                scheduledDurationWithinMaxWindow += scheduledTreatment.getDuration();
+            }
+            // Check if adding the treatment to the hour exceeds the max window
+            if (scheduledDurationWithinMaxWindow + duration <= 60) {
+                hourlySchedule.get(hour).add(task);
+                break;
             }
         }
     }
-
-
 
     /**
      * A little convoluted but I didn't want to change Animal anymore
@@ -80,52 +67,43 @@ public class Schedule{
      * If there are no names in names we know that that species DNE
      * else we create a new feeding task and add it to our List of DailyTasks
      */
-    public void addFeedToList() {
-        String allSpecies[] = Animal.getAllSpecies();
-        HashMap<String, String> names = new HashMap<>(); // Map of String to String
-        HashMap<String, Integer> feed = new HashMap<>(); // Map of String to Integer
-        for (String s:allSpecies){
-            feed.put(s, 0);// for key species, they have an integer value of 0
-            names.put(s,"");
-        }
+    public void addFeedingToTasks() {
+        HashMap<String, String> names = new HashMap<>();
+        HashMap<String, Integer> feed = new HashMap<>();
         HashMap<String, Integer> prep = new HashMap<>();
-        prep.putAll(feed);
         HashMap<String, Integer> window = new HashMap<>();
-        window.putAll(feed);
         HashMap<String, Integer> startHour = new HashMap<>();
-        startHour.putAll(feed);
         String description = "Feed - ";
-        for(Animal a : this.animals){
+        for (Animal a : this.animals) {
             String species = a.getSpecies();
+            names.put(species, names.getOrDefault(species, "") + ", " + a.getName());
             startHour.put(species, a.getFeedStart());
             window.put(species, a.getFeedWindow());
-            feed.put(species, feed.get(species)+ a.getFeedTime());
+            feed.put(species, feed.getOrDefault(species, 0) + a.getFeedTime());
             prep.put(species, a.getFeedPrep());
-            names.put(species, names.get(species) + ", " + a.getName());
         }
-        for (String species : allSpecies){
-            if(!names.get(species).equals("")){
+        for (String species : feed.keySet()) {
+            if (!names.get(species).isEmpty()) {
                 this.tasks.add(new DailyTasks(
-                    names.get(species).toString().substring(2),
-                    description + species,
-                    startHour.get(species),
-                    feed.get(species),
-                    window.get(species),
-                    prep.get(species)
+                        names.get(species).substring(2),
+                        description + species,
+                        startHour.get(species),
+                        feed.get(species),
+                        window.get(species),
+                        prep.get(species)
                 ));
             }
         }
     }
 
-    /*
-     * Loops through all animals including orphaned ones.
-     * creates a new cleaning task with start time at 00:00
-     * and maxwindow 24hours. Anytime during the day
-     * Adds this to hour using same logic above.
-     * This is Cleaning is lower priority than feeding and treatments 
-     * due to the maxWindow so it is arranged seperately to the rest
+    /**
+     * Cleaning tasks only need to be once
+     * There is no constraint for
+     * start or max window.
+     * This function gets all the cleaning info
+     * creats a task and adds it to the Hour
      */
-    public void addCleaningToList(){
+    public void addCleaningToTasks(){
         for(Animal a: animals){
             String name = a.getName();
             String des = "Cage Cleaning";
@@ -133,19 +111,19 @@ public class Schedule{
             int duration = a.getCleanTime();
             int maxWindow = 24;
             DailyTasks clean = new DailyTasks(name,des,startHour,duration,maxWindow);
-            for (int hour = startHour; hour < hour+maxWindow; hour++) {
-                // Calculate the total duration already scheduled within the hour for this treat's max window
-                int scheduledDurationWithinMaxWindow = 0;
-                for (DailyTasks scheduledTreatment : hourlySchedule.get(hour)) {
-                    scheduledDurationWithinMaxWindow += scheduledTreatment.getDuration();
-                }
-                // Check if adding the treatment to the hour exceeds the max window
-                if (scheduledDurationWithinMaxWindow + duration <= 60) {
-                    hourlySchedule.get(hour).add(clean);
-                    break;
-                }
-            }
+            addTasksToHours(clean);
         }
+    }
+    /**
+     * For now a simple helper function to build Schedule
+     */
+    public void buildSchedule(){
+        addFeedingToTasks();
+        Collections.sort(this.tasks);
+        for (DailyTasks t : tasks) {
+            addTasksToHours(t);
+        }
+        addCleaningToTasks();
     }
     
     @Override
@@ -178,9 +156,8 @@ public class Schedule{
         String password = "ucalgary";                                   // Password for the database ewr
         SQLData myJDBC = new SQLData(url,username,password);            // Instantiates an SQLData object with the url, username and password
         Schedule schedule = new Schedule(myJDBC.getAnimalList(), myJDBC.getTreatmentTasks());  // Instantiates a Schedule with information form the AnimalList
-        schedule.addFeedToList();
-        schedule.addTreatments();
-        schedule.addCleaningToList();
+        
+
         System.out.println(schedule);
     }
 }
