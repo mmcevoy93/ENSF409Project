@@ -25,6 +25,7 @@ public class DailyTasks implements Comparable<DailyTasks> {
         this.maxWindow = maxWindow;
         this.prepTime = 0;
     }
+
     /**
      * Overflow constructor for tasks that require preptime
      */

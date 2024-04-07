@@ -37,7 +37,7 @@ public class Schedule{
      * Good OOP would be breaking this down into smaller methods
      */
     public void printTreatments(){
-        addFeedToList();
+        addFeedToList();   // Check that DailyTask gets filled with the correct values
         Collections.sort(this.tasks);//sorts by time then by max window
         
         for (DailyTasks task: tasks) {
@@ -58,6 +58,7 @@ public class Schedule{
                 }
             }
         }
+
         //Loops through all animals including orphaned ones.
         //creates a new cleaning task with start time at 00:00
         //and maxwindow 24hours. Anytime during the day
@@ -130,11 +131,11 @@ public class Schedule{
             names.put(s,"");
         }
         HashMap<String, Integer> prep = new HashMap<>();
-        prep.putAll(feed);
+        prep.putAll(feed); // put all the species into prep HashMap
         HashMap<String, Integer> window = new HashMap<>();
-        window.putAll(feed);
+        window.putAll(feed); // put all the species into window HashMap
         HashMap<String, Integer> startH = new HashMap<>();
-        startH.putAll(feed);
+        startH.putAll(feed); // puts all the species into window HashMap
         String dsrt = "Feed - ";
         for(Animal a : this.animals){
             String species = a.getSpecies();
@@ -147,6 +148,7 @@ public class Schedule{
         for (String s : allSpecies){
             if(!names.get(s).equals("")){
                 //too long horizontally
+                // makes a new DailyTask
                 tasks.add(new DailyTasks(
                     names.get(s).toString().substring(2),
                     dsrt + s,

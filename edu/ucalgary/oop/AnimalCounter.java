@@ -2,7 +2,8 @@ package edu.ucalgary.oop;
 
 import java.util.*;
 
-
+// Unused Class!!!!!
+// TODO - Please get rid of this class
 public class AnimalCounter {
 
     public static int countAnimals(List<Animal> animals, Class<? extends Animal> animalType) {
