@@ -73,7 +73,7 @@ public class Schedule{
      * this data to Daily tasks
      */
     public void addFeedingToTasks() {
-        HashMap<String, String> names = new HashMap<>();
+        HashMap<String, List<String>> names = new HashMap<>();
         HashMap<String, Integer> feed = new HashMap<>();
         HashMap<String, Integer> prep = new HashMap<>();
         HashMap<String, Integer> window = new HashMap<>();
@@ -83,19 +83,20 @@ public class Schedule{
             String species = a.getSpecies();
             startHour.put(species, a.getFeedStart());
             window.put(species, a.getFeedWindow());
-            names.put(species, names.getOrDefault(species, "") + ", " + a.getName());
+            List<String> speciseNames = names.getOrDefault(species, new ArrayList<>());
+            System.out.println(speciseNames);
+            speciseNames.add(a.getName());
+            names.put(species, speciseNames);
             prep.put(species, a.getFeedPrep());
             feed.put(species, feed.getOrDefault(species, 0) + a.getFeedTime());
         }
         for (String species : Animal.getAllSpecies()) {
             if (names.containsKey(species)) {
                 this.tasks.add(new DailyTasks(
-                        names.get(species).substring(2),
-                        description + species,
-                        startHour.get(species),
-                        feed.get(species),
-                        window.get(species),
-                        prep.get(species)
+                        String.join(", ", names.get(species)),
+                        description + species, 
+                        startHour.get(species), feed.get(species),
+                        window.get(species),    prep.get(species)
                 ));
             }
         }

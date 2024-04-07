@@ -6,10 +6,21 @@ max.mcevoy@ucalgary.ca</a>
 @since 1.0
 */
 
+/**
+ * Diurnal
+ * 
+ * Extends animal class
+ * there to get feeding times of animal
+ */
 public class Diurnal extends Animal {
     private final int FEED_START = 8;
     private final int FEED_WINDOW = 3;
 
+    /**
+     * Diurnal are Feed at 8am
+     * @param animalID int: ID
+     * @param name String: Name
+     */
     public Diurnal(int animalID, String nickname) {
         super(animalID, nickname);
     }

@@ -6,10 +6,21 @@ max.mcevoy@ucalgary.ca</a>
 @since 1.0
 */
 
+/**
+ * Crepuscular
+ * 
+ * Extends animal class
+ * there to get feeding times of animal
+ */
 public class Crepuscular extends Animal {
     protected final int FEED_START = 19; 
     protected final int FEED_WINDOW = 3;
 
+    /**
+     * Crepuscular are Feed at 7pm
+     * @param animalID int: ID
+     * @param name String: Name
+     */
     Crepuscular(int animalID, String name) {
         super(animalID, name);
     }
@@ -41,6 +52,6 @@ public class Crepuscular extends Animal {
 
     @Override
     public String getSpecies() {
-        return "crepuscular"; // Placeholder value, to be overridden in subclasses
+        return "crepuscular"; 
     }
 }
