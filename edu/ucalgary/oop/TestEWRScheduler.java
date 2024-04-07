@@ -8,13 +8,18 @@ max.mcevoy@ucalgary.ca</a>
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * TestEWRScheduler
  * 
  * Tests all Classes that the relates to the EWR management system
  */
 public class TestEWRScheduler {
-
+    private String url = "jdbc:postgresql://localhost:5432/ewr";
+    private String username = "oop";
+    private String password = "ucalgary";
     
     @Test
     /*
@@ -49,12 +54,39 @@ public class TestEWRScheduler {
      * 
      */
     public void printTreatmentTest(){
-        String url = "jdbc:postgresql://localhost:5432/ewr";            // Database url
-        String username = "oop";                                        // Username for the database ewr
-        String password = "ucalgary";                                   // Password for the database ewr
         SQLData myJDBC = new SQLData(url,username,password);
         var schedule = new Schedule(myJDBC.getAnimalList(), myJDBC.getTreatmentTasks());
         System.out.println(schedule);
+    }
+    
+    
+    
+    
+    @Test
+    /**
+     * Will construct a schedule that should not through any errors
+     */
+    public void testValidSchedule(){
+        boolean passed = true;
+
+        List<Animal> animals = new ArrayList<>();
+        List<DailyTasks> tasks = new ArrayList<>();
+        animals.add(new Fox(1, "Robin Hood"));
+        animals.add(new Fox(2, "Maid Marian"));
+        animals.add(new Beaver(3, "Fryer Tuck"));
+        animals.add(new Porcupine(4, "Prince John"));
+        animals.add(new Coyote(5, "Sheriff of Nottingham"));
+        animals.add(new Raccoon(6, "Kilgore Trout"));
+        tasks.add(new DailyTasks("Robin Hood", "Remove arrow from knee", 12, 30, 1));
+        tasks.add(new DailyTasks("Maid Marian", "Teeth Cleaning", 12, 5, 1));
+        tasks.add(new DailyTasks("Prince John", "Thumb Removal", 12, 25, 1));
+        try{
+            Schedule testSchedule = new Schedule(animals, tasks);
+            System.out.println(testSchedule);
+        } catch (Exception e){
+            passed = false;
+        }
+        assertTrue("Valid Schedule throw IllegalArgumentException when attempting to make valid schedule", passed);
     }
 
 }
