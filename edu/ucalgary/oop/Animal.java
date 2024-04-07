@@ -61,49 +61,37 @@ public class Animal {
      * Gets the feed time of the animal
      * @return int: The feed min
      */
-    public int getFeedTime() {
-        return -1; // Placeholder value, to be overridden in subclasses
-    }
+    public int getFeedTime() {return -1;}
     
     /** 
      * Gets the feed preparation time of the animal
      * @return int: The feed prep min
      */
-    public int getFeedPrep() {
-        return -1; // Placeholder value, to be overridden in subclasses
-    }
+    public int getFeedPrep() {return -1;}
     
     /** 
      * Gets the cleaning time of the animal
      * @return int: Clean time min
      */
-    public int getCleanTime() {
-        return -1; // Placeholder value, to be overridden in subclasses
-    }
+    public int getCleanTime() {return -1;}
     
     /** 
      * Gets the feed start time of the animal
      * @return int: The feed start time (0h-24h)
      */
-    public int getFeedStart() {
-        return -1;
-    }
+    public int getFeedStart() {return -1;}
     
     /** 
      * Gets the feed window of the animal
      * @return int: The feed window hours
      */
-    public int getFeedWindow() {
-        return -1;
-    }
+    public int getFeedWindow() {return -1;}
     
     /** 
      * Gets the species of the animal
      * @return String: The species of the animal
      */
-    public String getSpecies() {
-        return "void"; 
-    }
+    public String getSpecies() {return "void";}
 
     /**
      * Static function that returns all species in EWR

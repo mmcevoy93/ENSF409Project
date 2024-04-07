@@ -28,22 +28,14 @@ public class Porcupine extends Crepuscular {
     }
 
     @Override
-    public int getFeedTime() {
-        return FEED_TIME;
-    }
+    public int getFeedTime() {return FEED_TIME;}
 
     @Override
-    public int getFeedPrep() {
-        return FEED_PREP;
-    }
+    public int getFeedPrep() {return FEED_PREP;}
 
     @Override
-    public int getCleanTime() {
-        return CLEAN_TIME;
-    }
+    public int getCleanTime() {return CLEAN_TIME;}
 
     @Override
-    public String getSpecies() { 
-        return "porcupine"; 
-    }
+    public String getSpecies() {return "porcupine";}
 }

@@ -1,8 +1,18 @@
 package edu.ucalgary.oop;
-
+/*
+@author Max McEvoy 30005167<a href="mailto:max.mcevoy@ucalgary.ca">
+max.mcevoy@ucalgary.ca</a>
+@version 1.5
+@since 1.0
+*/
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ * TestEWRScheduler
+ * 
+ * Tests all Classes that the relates to the EWR management system
+ */
 public class TestEWRScheduler {
 
     

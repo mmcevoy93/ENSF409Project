@@ -14,7 +14,11 @@ public class GUIforEWR {
     private List<Animal> animals = new ArrayList<>();
     private List<DailyTasks> tasks = new ArrayList<>();
 
-
+    /**
+     * Sets up GUI related stuff
+     * listener for buttons and sets font
+     * initializes the SQL stuff 
+     */
     public GUIforEWR() {
         frame = new JFrame("Wildlife Rescue Management System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,6 +63,12 @@ public class GUIforEWR {
         myJDBC.close();
     }
 
+    /**
+     * 
+     * @param text
+     * @param color
+     * @return
+     */
     private JButton createButton(String text, Color color) {
         JButton button = new JButton(text);
         button.setPreferredSize(new Dimension(150, 50));
@@ -80,12 +90,23 @@ public class GUIforEWR {
         return button;
     }
 
+    /**
+     * Prints Schedule
+     * 
+     */
+    //TODO need to generate a txt file double check outline for specifics
     private void printSchedule() {
         System.out.println("Printing Schedule...");
         Schedule schedule = new Schedule(animals, tasks);
         System.out.println(schedule);
     }
 
+    /**
+     * Wasn't required for project
+     * 
+     * Displays a list the animals in EWR
+     * | ID | Nickname | Species |
+     */
     private void displayAnimals() {
         System.out.println("Animal List");
         String format = "| %-3s | %-24s | %-15s |\n";
@@ -99,6 +120,13 @@ public class GUIforEWR {
         sb.append(lineBreak);
         System.out.println(sb.toString());
     }
+
+    /**
+     * Wasn't required for project
+     * 
+     * Displays a list of medical treatments done at EWR
+     * | Description | Nickname | Species |
+     */
     private void displayTasks() {
         System.out.println("Treatment List");
         String format = "| %-25s | %-10s | %-10s |\n";
@@ -108,7 +136,6 @@ public class GUIforEWR {
         sb.append(String.format(format,"Description", "Duration", "Max Window"));
         Set<String> uniqueDescriptions = new HashSet<>();
         for (DailyTasks t : tasks) {
-            // Check if the task description is unique
             if (!uniqueDescriptions.contains(t.getDescription())) {
                 sb.append(t);
                 uniqueDescriptions.add(t.getDescription());
@@ -118,12 +145,16 @@ public class GUIforEWR {
         System.out.println(sb.toString());
     }
 
+    /**
+     * Runnable GUIS
+     * Main to run for end of project
+     * @param args
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 new GUIforEWR();
             }
         });
-        
     }
 }

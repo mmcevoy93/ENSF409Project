@@ -8,7 +8,8 @@ max.mcevoy@ucalgary.ca</a>
 */
 import java.util.*;
 
-/** Schedule Class
+/** 
+ * Schedule Class
  *  
  * This class uses SQLData to create animal and tasks lists
  * Builds Schedule for EWR volunteers:
@@ -52,13 +53,12 @@ public class Schedule{
                 hourlySchedule.get(hour).add(task);
                 break;
             }
+            //TODO - Throw an argument that schedule cannot be made without backup volunteer
         }
     }
 
     /**
-     * 
-     * I use HashMaps (Dictionary equivalent in Python) to determine the
-     * feeding info of each species
+     * HashMaps used for need task info
      * Species is the key for each HashMap
      * name, feedtime, prep, window, startH are the values
      * 
@@ -84,7 +84,6 @@ public class Schedule{
             startHour.put(species, a.getFeedStart());
             window.put(species, a.getFeedWindow());
             List<String> speciseNames = names.getOrDefault(species, new ArrayList<>());
-            System.out.println(speciseNames);
             speciseNames.add(a.getName());
             names.put(species, speciseNames);
             prep.put(species, a.getFeedPrep());
@@ -120,6 +119,7 @@ public class Schedule{
             addTasksToHours(clean);
         }
     }
+
     /**
      * For now a simple helper function to build Schedule
      * This is what the GUI could call and this could

@@ -26,32 +26,20 @@ public class Crepuscular extends Animal {
     }
 
     @Override
-    public int getFeedTime() {
-        return -1;
-    }
+    public int getFeedTime() {return -1;}
 
     @Override
-    public int getFeedPrep() {
-        return -1;
-    }
+    public int getFeedPrep() {return -1;}
     
     @Override
-    public int getCleanTime() {
-        return -1;
-    }
+    public int getCleanTime() {return -1;}
 
     @Override
-    public int getFeedStart() {
-        return FEED_START;
-    }
+    public int getFeedStart() {return FEED_START;}
 
     @Override
-    public int getFeedWindow() {
-        return FEED_WINDOW;
-    }
+    public int getFeedWindow() {return FEED_WINDOW;}
 
     @Override
-    public String getSpecies() {
-        return "crepuscular"; 
-    }
+    public String getSpecies() {return "crepuscular"; }
 }
