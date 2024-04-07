@@ -33,8 +33,7 @@ public class SQLData {
         try{
             dbConnect = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
         } 
-        catch (SQLException e) 
-        {
+        catch (SQLException e) {
             System.out.println("Connection Failed");
             e.printStackTrace();
         }

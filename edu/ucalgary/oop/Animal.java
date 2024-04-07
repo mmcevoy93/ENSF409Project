@@ -2,7 +2,7 @@ package edu.ucalgary.oop;
 
 /*
 @author Max McEvoy 30005167<a href="mailto:max.mcevoy@ucalgary.ca"> max.mcevoy@ucalgary.ca</a>
-@version 1.4
+@version 2.1
 @since 1.0
 */
 import java.util.regex.*;
@@ -91,6 +91,10 @@ public class Animal {
      */
     public String getSpecies() {
         return "void"; // Placeholder value, to be overridden in subclasses
+    }
+
+    public static String[] getAllSpecies(){
+        return new String[] {"beaver","coyote","fox","porcupine","raccoon"};
     }
     
     /** Prints information about the animal

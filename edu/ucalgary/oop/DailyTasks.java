@@ -2,11 +2,10 @@ package edu.ucalgary.oop;
 /*
 @author Max McEvoy 30005167<a href="mailto:max.mcevoy@ucalgary.ca">
 max.mcevoy@ucalgary.ca</a>
-@version 1.1
+@version 1.5
 @since 1.0
 */
 
-// todo: create a throw to an IllegalArgumentException
 public class DailyTasks implements Comparable<DailyTasks> {
     private String animalName;
     private String description;
@@ -23,6 +22,7 @@ public class DailyTasks implements Comparable<DailyTasks> {
         this.maxWindow = maxWindow;
         this.prepTime = 0;
     }
+
     /**
      * Overflow constructor for tasks that require preptime
      */
@@ -56,13 +56,27 @@ public class DailyTasks implements Comparable<DailyTasks> {
     }
 
     @Override
-public int compareTo(DailyTasks other) {
-    // First, compare by startHour
-    int startHourComparison = Integer.compare(this.startHour, other.startHour);
-    if (startHourComparison != 0) {
-        return startHourComparison; // If startHour differs, return the result
+    /*
+     * compares each tasks first by starting hour
+     * then by the length of window. small to largerst
+     */
+    public int compareTo(DailyTasks other) {
+        // First, compare by startHour
+        int startHourComparison = Integer.compare(this.startHour, other.startHour);
+        if (startHourComparison != 0) {
+            return startHourComparison; // If startHour differs, return the result
+        }
+        // If startHour is the same, compare by maxWindow (smaller maxWindow comes
+        // first)
+        return Integer.compare(this.maxWindow, other.maxWindow);
     }
-    // If startHour is the same, compare by maxWindow (smaller maxWindow comes first)
-    return Integer.compare(this.maxWindow, other.maxWindow);
-}
+
+    @Override
+    /*
+     
+     */
+    public String toString(){
+        String format = "| %-25s | %2d minutes | %d hour(s)  |\n";
+        return String.format(format, this.description, this.duration, this.maxWindow);
+    }
 }
