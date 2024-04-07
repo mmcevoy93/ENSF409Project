@@ -201,7 +201,7 @@ public class TestClass {
         int animalID = 16;
         Beaver beaver = new Beaver(animalID, name);
 
-        String actual = beaver.printInfo();
+        String actual = beaver.toString();
         String expected = String.format("| %-3s | %-24s | %-15s |\n", animalID, name, "beaver");;
 
         assertEquals("place holder text", actual, expected);
