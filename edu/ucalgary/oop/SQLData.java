@@ -119,15 +119,14 @@ public class SQLData {
      * Closes database connection
      */
     public void close(){
-        try
-        {
+        try{
             dbConnect.close();
         }
-        catch (SQLException e)
-        {
+        catch (SQLException e){
             e.printStackTrace();
         }
     }
+    
     /**
      * Returns the List of Animals retrived from database
      * @return List of Animal

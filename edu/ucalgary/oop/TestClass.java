@@ -43,8 +43,8 @@ public class TestClass {
         String username = "oop";                                        // Username for the database ewr
         String password = "ucalgary";                                   // Password for the database ewr
         SQLData myJDBC = new SQLData(url,username,password);
-        //var schedule = new Schedule(myJDBC.getAnimalList(), myJDBC.getTreatmentTasks());
-        
+        var schedule = new Schedule(myJDBC.getAnimalList(), myJDBC.getTreatmentTasks());
+        System.out.println(schedule);
     }
 
 }

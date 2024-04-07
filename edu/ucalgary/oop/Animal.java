@@ -8,9 +8,9 @@ package edu.ucalgary.oop;
 import java.util.regex.*;
 
 /** Animal class
- *  Animal contains all the relevant info needed to complete all medical treatments, feedings and cleaning
+ *  
+ * Animal contains all the relevant info needed to complete all medical treatments, feedings and cleaning
  */
-// todo: include a throw to the IllegalArgumentException
 public class Animal {
     private final int ID;
     private final String NICKNAME;

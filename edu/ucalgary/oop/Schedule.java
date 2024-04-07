@@ -3,19 +3,29 @@ import java.time.LocalDate;
 /*
 @author Max McEvoy 30005167<a href="mailto:max.mcevoy@ucalgary.ca">
 max.mcevoy@ucalgary.ca</a>
-@version 1.1
+@version 1.9
 @since 1.0
 */
 import java.util.*;
 
+/** Schedule Class
+ *  
+ * This class uses SQLData to create animal and tasks lists
+ * Builds Schedule for EWR volunteers:
+ * Cleaning cages
+ * Feeding
+ * Medical Treatments
+ * 
+ * If a schedule can not be created it will catch it 
+ */
 public class Schedule{
     private List<Animal> animals; // Array of animals (from SQLData file)
     private List<DailyTasks> tasks; // Array of treatments (from SQLData file)
     private List<List<DailyTasks>> hourlySchedule = new ArrayList<>();
 
     public Schedule(List<Animal> animals, List<DailyTasks> tasks){
-        this.animals = animals;       // Creates an array list with animal information
-        this.tasks = tasks;           // Creates an array with treatments information
+        this.animals = animals;      
+        this.tasks = tasks;
         for (int i = 0; i < 24; i++) {
             this.hourlySchedule.add(new ArrayList<>());
         }
@@ -46,26 +56,21 @@ public class Schedule{
     }
 
     /**
-     * A little convoluted but I didn't want to change Animal anymore
-     * Good OOP would probably be breaking this down into smaller methods
      * 
-     *  I use HashMaps (Dictionary equivalent in Python) to determine the
-     *  feeding info of each species
-     *  Species is the key and name, feedtime, prep, window, startH are the values
-     *  This way was used so that the simpler Animal class could be used.
-     *  Before there was less code but was too convoluted to troubleshoot.
+     * I use HashMaps (Dictionary equivalent in Python) to determine the
+     * feeding info of each species
+     * Species is the key for each HashMap
+     * name, feedtime, prep, window, startH are the values
      * 
-     * HashMaps are created with each species as the key.
-     * used putAll to create a deepcopy of some similar HashMaps
+     * We loop through all the animals in the EWR
+     * Initially get it's species
+     * for each HashMap we set the appropriate value
      * 
-     * loop through all the animals to get the info relavent to feeding.
-     * Adding up the feeding time for each species of animal together.
-     * start, window, prep should be the same for each species but it
-     * was simple to assigning the value to the key it is a little inefficent.
+     * For some where we are getting a cumlitive amount
+     * we use getorDefault to set a default if empty
      * 
-     * Once the hashMaps have been populated we loop again through all the species.
-     * If there are no names in names we know that that species DNE
-     * else we create a new feeding task and add it to our List of DailyTasks
+     * then for all species we loop through and add all
+     * this data to Daily tasks
      */
     public void addFeedingToTasks() {
         HashMap<String, String> names = new HashMap<>();
@@ -76,14 +81,14 @@ public class Schedule{
         String description = "Feed - ";
         for (Animal a : this.animals) {
             String species = a.getSpecies();
-            names.put(species, names.getOrDefault(species, "") + ", " + a.getName());
             startHour.put(species, a.getFeedStart());
             window.put(species, a.getFeedWindow());
-            feed.put(species, feed.getOrDefault(species, 0) + a.getFeedTime());
+            names.put(species, names.getOrDefault(species, "") + ", " + a.getName());
             prep.put(species, a.getFeedPrep());
+            feed.put(species, feed.getOrDefault(species, 0) + a.getFeedTime());
         }
-        for (String species : feed.keySet()) {
-            if (!names.get(species).isEmpty()) {
+        for (String species : Animal.getAllSpecies()) {
+            if (names.containsKey(species)) {
                 this.tasks.add(new DailyTasks(
                         names.get(species).substring(2),
                         description + species,
@@ -116,6 +121,8 @@ public class Schedule{
     }
     /**
      * For now a simple helper function to build Schedule
+     * This is what the GUI could call and this could
+     * throw the schedule error
      */
     public void buildSchedule(){
         addFeedingToTasks();
@@ -150,14 +157,16 @@ public class Schedule{
         return sb.toString();
     }
 
+    /**
+     * to be removed just for testing right now
+     * @param args
+     */
     public static void main(String[] args){
         String url = "jdbc:postgresql://localhost:5432/ewr";            // Database url
         String username = "oop";                                        // Username for the database ewr
         String password = "ucalgary";                                   // Password for the database ewr
         SQLData myJDBC = new SQLData(url,username,password);            // Instantiates an SQLData object with the url, username and password
         Schedule schedule = new Schedule(myJDBC.getAnimalList(), myJDBC.getTreatmentTasks());  // Instantiates a Schedule with information form the AnimalList
-        
-
         System.out.println(schedule);
     }
 }

@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.*;
 
-public class GUIExample {
+public class GUIforEWR {
     private JFrame frame;
     private JButton printScheduleBtn;
     private JButton displayAnimalsBtn;
@@ -15,12 +15,10 @@ public class GUIExample {
     private List<DailyTasks> tasks = new ArrayList<>();
 
 
-    public GUIExample() {
+    public GUIforEWR() {
         frame = new JFrame("Wildlife Rescue Management System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        
-
         // Create a panel for the buttons
         JPanel buttonPanel = new JPanel(new GridLayout(1, 3, 10, 0));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -48,6 +46,11 @@ public class GUIExample {
         initSQL();
     }
 
+    /**
+     * Initializes SQL via SQLData class
+     * Gets the needed info
+     * closes connection
+     */
     private void initSQL(){
         SQLData myJDBC = new SQLData("jdbc:postgresql://localhost:5432/ewr", "oop", "ucalgary");
         myJDBC.initializeConnection();
@@ -118,7 +121,7 @@ public class GUIExample {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new GUIExample();
+                new GUIforEWR();
             }
         });
         
