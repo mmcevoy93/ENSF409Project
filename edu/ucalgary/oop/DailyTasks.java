@@ -53,7 +53,7 @@ public class DailyTasks implements Comparable<DailyTasks> {
     public DailyTasks(String animalName, String description, int startHour, int duration, int maxWindow, int prepTime) {
         this.animalName = animalName;
         this.description = description;
-        this.startHour = startHour;
+        this.startHour = startHour; //TODO throw an illegal argument if not valid hour
         this.duration = duration;
         this.maxWindow = maxWindow;
         this.prepTime = prepTime;
@@ -99,7 +99,7 @@ public class DailyTasks implements Comparable<DailyTasks> {
         // Used to sort by start hour then by max window
         int startHourComparison = Integer.compare(this.startHour, other.startHour);
         if (startHourComparison != 0) {
-            return startHourComparison; // If startHour differs, return the result
+            return startHourComparison;
         }
         return Integer.compare(this.maxWindow, other.maxWindow);
     }

@@ -72,6 +72,7 @@ public class Schedule{
      * then for all species we loop through and add all
      * this data to Daily tasks
      */
+    //TODO - Does not consider feeding same species animals at different hours
     public void addFeedingToTasks() {
         HashMap<String, List<String>> names = new HashMap<>();
         HashMap<String, Integer> feed = new HashMap<>();
@@ -131,7 +132,7 @@ public class Schedule{
         for (DailyTasks t : tasks) {
             addTasksToHours(t);
         }
-        addCleaningToTasks();
+        addCleaningToTasks();//lowest priority
     }
     
     @Override
