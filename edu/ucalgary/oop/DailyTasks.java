@@ -34,23 +34,38 @@ public class DailyTasks implements Comparable<DailyTasks> {
         this.maxWindow = maxWindow;
         this.prepTime = prepTime;
     }
-
+    /**
+     * gets Animal Name(s) related to task
+     * @return
+     */    
     public String getAnimalName() {
         return this.animalName;
     }
-
+    /**
+     * gets Description of task
+     * @return Description of task
+     */
     public String getDescription() {
         return this.description;
     }
-
+    /**
+     * gets the start Hour of task
+     * @return 24h time task can start
+     */
     public int getStartHour() {
         return this.startHour;
     }
-
+    /**
+     * gets the Duration of task
+     * @return Duration in Minutes
+     */
     public int getDuration() {
         return this.duration + this.prepTime;
     }
-
+    /**
+     * gets maximum window of task
+     * @return Max Window in Hours
+     */
     public int getMaxWindow() {
         return this.maxWindow;
     }
@@ -72,8 +87,9 @@ public class DailyTasks implements Comparable<DailyTasks> {
     }
 
     @Override
-    /*
-     
+    /**
+     * Used to print formated Task info
+     * Right now used for GUI
      */
     public String toString(){
         String format = "| %-25s | %2d minutes | %d hour(s)  |\n";
