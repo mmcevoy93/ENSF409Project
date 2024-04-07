@@ -1,23 +1,24 @@
 package edu.ucalgary.oop;
-
 /*
 @author Max McEvoy 30005167<a href="mailto:max.mcevoy@ucalgary.ca"> max.mcevoy@ucalgary.ca</a>
-@version 1.4
+@version 2.1
 @since 1.0
 */
 import java.util.regex.*;
-import java.util.*;
 
-/** Animal class
- *  Animal contains all the relevant info needed to complete all medical treatments, feedings and cleaning
+/** 
+ * Animal class
+ *  
+ * Animal contains all the relevant info needed to complete all medical treatments, feedings and cleaning
+ * Animal is composed of Species and time of day they are active
  */
-// todo: include a throw to the IllegalArgumentException
 public class Animal {
     private final int ID;
     private final String NICKNAME;
     private boolean orphan;
     
-    /** Constructor
+    /** 
+     * Constructor
      * @param animalID The ID of the animal
      * @param nickname The nickname of the animal
      */
@@ -27,7 +28,8 @@ public class Animal {
         this.orphan = checkOrphaned(nickname);
     }
     
-    /** Checks if the nickname has comma-separated values
+    /** 
+     * Checks if the nickname has comma-separated values
      * @param nickname The nickname of the animal
      * @return true if the nickname has comma-separated values, false otherwise
      */
@@ -37,71 +39,74 @@ public class Animal {
         return match.find();
     }
     
-    /** Gets the ID of the animal
-     * @return The ID of the animal
+    /** 
+     * Gets the ID of the animal
+     * @return int: The ID of the animal
      */
     public int getID() {return ID;}
     
-    /** Gets the name of the animal
-     * @return The name of the animal
+    /** 
+     * Gets the name of the animal
+     * @return String: The name of the animal
      */
     public String getName() {return NICKNAME;}
     
-    /** Checks if the animal is orphaned
-     * @return true if the animal is orphaned, false otherwise
+    /** 
+     * Checks if the animal is orphaned
+     * @return boolean: animal is orphaned
      */
     public boolean isOrphaned() {return orphan;}
     
-    /** Gets the feed time of the animal
-     * @return The feed time of the animal
+    /** 
+     * Gets the feed time of the animal
+     * @return int: The feed min
      */
-    public int getFeedTime() {
-        return -1; // Placeholder value, to be overridden in subclasses
+    public int getFeedTime() {return -1;}
+    
+    /** 
+     * Gets the feed preparation time of the animal
+     * @return int: The feed prep min
+     */
+    public int getFeedPrep() {return -1;}
+    
+    /** 
+     * Gets the cleaning time of the animal
+     * @return int: Clean time min
+     */
+    public int getCleanTime() {return -1;}
+    
+    /** 
+     * Gets the feed start time of the animal
+     * @return int: The feed start time (0h-24h)
+     */
+    public int getFeedStart() {return -1;}
+    
+    /** 
+     * Gets the feed window of the animal
+     * @return int: The feed window hours
+     */
+    public int getFeedWindow() {return -1;}
+    
+    /** 
+     * Gets the species of the animal
+     * @return String: The species of the animal
+     */
+    public String getSpecies() {return "void";}
+
+    /**
+     * Static function that returns all species in EWR
+     * @return String[]: species in EWR
+     */
+    public static String[] getAllSpecies(){
+        return new String[] {"beaver","coyote","fox","porcupine","raccoon"};
     }
     
-    /** Gets the feed preparation time of the animal
-     * @return The feed preparation time of the animal
+    /** 
+     * Prints information about the animal
+     * @return String: Information about the animal
      */
-    public int getFeedPrep() {
-        return -1; // Placeholder value, to be overridden in subclasses
-    }
-    
-    /** Gets the cleaning time of the animal
-     * @return The cleaning time of the animal
-     */
-    public int getCleanTime() {
-        return -1; // Placeholder value, to be overridden in subclasses
-    }
-    
-    /** Gets the feed start time of the animal
-     * @return The feed start time of the animal
-     */
-    public int getFeedStart() {
-        return -1; // Placeholder value, to be overridden in subclasses
-    }
-    
-    /** Gets the feed window of the animal
-     * @return The feed window of the animal
-     */
-    public int getFeedWindow() {
-        return -1; // Placeholder value, to be overridden in subclasses
-    }
-    
-    /** Gets the species of the animal
-     * @return The species of the animal
-     */
-    public String getSpecies() {
-        return "void"; // Placeholder value, to be overridden in subclasses
-    }
-    
-    /** Prints information about the animal
-     * @return Information about the animal
-     */
-    public String printInfo() {
+    @Override
+    public String toString() {
         return String.format("| %-3s | %-24s | %-15s |\n", ID, NICKNAME, getSpecies());
     }
-
-//    public String getNickname() {
-//
-//    }
 }

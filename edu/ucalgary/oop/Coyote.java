@@ -2,33 +2,40 @@ package edu.ucalgary.oop;
 /*
 @author Max McEvoy 30005167<a href="mailto:max.mcevoy@ucalgary.ca">
 max.mcevoy@ucalgary.ca</a>
-@version 1.1
+@version 1.3
 @since 1.0
 */
 
+/**
+ * Coyote
+ * 
+ * Species used to construct animal.
+ * Has methods that return values
+ * specific to Coyote
+ */
 public class Coyote extends Crepuscular {
     private final int FEED_TIME = 5;
     private final int FEED_PREP = 10;
     private final int CLEAN_TIME = 5;
 
+    /**
+     * Coyote needs an ID and a Name
+     * @param animalID int: EWR ID
+     * @param name StringL EWR Nickname
+     */
     public Coyote(int animalID, String name) {
         super(animalID, name);
     }
+    
     @Override
-    public int getFeedTime() {
-        return FEED_TIME;
-    }
+    public int getFeedTime() {return FEED_TIME;}
+    
     @Override
-    public int getFeedPrep() {
-        return FEED_PREP;
-    }
+    public int getFeedPrep() {return FEED_PREP;}
+    
     @Override
-    public int getCleanTime() {
-        return CLEAN_TIME;
-    }
+    public int getCleanTime() {return CLEAN_TIME;}
 
     @Override
-    public String getSpecies() {
-        return "coyote";
-    }
+    public String getSpecies() {return "coyote";}
 }
