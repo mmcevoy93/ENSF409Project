@@ -24,7 +24,7 @@ public class Schedule{
     private List<DailyTasks> tasks; // Array of treatments (from SQLData file)
     private List<List<DailyTasks>> hourlySchedule = new ArrayList<>();
 
-    public Schedule(List<Animal> animals, List<DailyTasks> tasks){
+    public Schedule(List<Animal> animals, List<DailyTasks> tasks) throws BackUpVolunteerNeededException{
         this.animals = animals;      
         this.tasks = tasks;
         for (int i = 0; i < 24; i++) {
@@ -33,12 +33,18 @@ public class Schedule{
         this.buildSchedule();
     }
 
+    // TODO - perhaps add getter methods to check proper population of animals, tasks, and hourlySchedule
+
+    public List<List<DailyTasks>> getHourlySchedule(){
+        return this.hourlySchedule;
+    }
+
     /**
      * Add provided Tasks to avaliable Hour 0-24
      * given startHour, duration and maxWindow constraints
      * @param task a DailyTask that needs to be added 
      */
-    public void addTasksToHours(DailyTasks task){
+    public void addTasksToHours(DailyTasks task) throws BackUpVolunteerNeededException{
         int startHour = task.getStartHour();
         int duration = task.getDuration();
         int maxWindow = 24;
@@ -53,7 +59,15 @@ public class Schedule{
                 hourlySchedule.get(hour).add(task);
                 break;
             }
-            //TODO - Throw an argument that schedule cannot be made without backup volunteer
+            else if(scheduledDurationWithinMaxWindow + duration >= 60){
+                if(duration/2 <= 60){
+                    throw new BackUpVolunteerNeededException("Schedule cannot be made without backup volunteer");
+                }
+
+            }
+            //TODO - Throw an argument that schedule cannot be made without backup volunteer - DONE???
+            // TODO - test if exception is thrown - DONE
+            // TODO - test if hourly task is added to houlrySchedule
         }
     }
 
@@ -109,7 +123,7 @@ public class Schedule{
      * This function gets all the cleaning info
      * creats a task and adds it to the Hour
      */
-    public void addCleaningToTasks(){
+    public void addCleaningToTasks() throws BackUpVolunteerNeededException{
         for(Animal a: animals){
             String name = a.getName();
             String des = "Cage Cleaning";
@@ -126,7 +140,7 @@ public class Schedule{
      * This is what the GUI could call and this could
      * throw the schedule error
      */
-    public void buildSchedule(){
+    public void buildSchedule() throws BackUpVolunteerNeededException{
         addFeedingToTasks();
         Collections.sort(this.tasks);
         for (DailyTasks t : tasks) {
@@ -163,7 +177,7 @@ public class Schedule{
      * to be removed just for testing right now
      * @param args
      */
-    public static void main(String[] args){
+    public static void main(String[] args) throws BackUpVolunteerNeededException{
         String url = "jdbc:postgresql://localhost:5432/ewr";            // Database url
         String username = "oop";                                        // Username for the database ewr
         String password = "ucalgary";                                   // Password for the database ewr

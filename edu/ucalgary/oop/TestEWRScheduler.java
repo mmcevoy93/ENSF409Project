@@ -54,13 +54,53 @@ public class TestEWRScheduler {
      * Test to see if a structure for the hourly schedule is made
      * Should be 24 hours
      */
-    public void printTreatmentHourlyScheduleTest(){
-        SQLData myJDBC = new SQLData(url,username,password);            // Instantiates an SQLData object with the url, username and password
-        Schedule schedule = new Schedule(myJDBC.getAnimalList(), myJDBC.getTreatmentTasks());
-        schedule.hourlySchedule.size();
-        assertTrue(" ", beaver instanceof Diurnal);
+    public void printTreatmentHourlyScheduleTest() throws BackUpVolunteerNeededException {
+
+        List<Animal> animals = new ArrayList<>();
+        List<DailyTasks> tasks = new ArrayList<>();
+        animals.add(new Fox(1, "Robin Hood"));
+        animals.add(new Fox(2, "Maid Marian"));
+        animals.add(new Beaver(3, "Fryer Tuck"));
+        animals.add(new Porcupine(4, "Prince John"));
+
+        tasks.add(new DailyTasks("Robin Hood", "Remove arrow from knee", 12, 30, 1));
+        tasks.add(new DailyTasks("Maid Marian", "Teeth Cleaning", 12, 5, 1));
+
+        Schedule schedule = new Schedule(animals, tasks);
+        schedule.getHourlySchedule().size();
+
+        int actual = schedule.getHourlySchedule().size();;
+        int expected = 24;
+
+        assertEquals("Hourly Schedule does not consist of 24 hours", actual, expected);
 
     }
+
+    @Test
+    public void testVolunteerBackupException() {
+        boolean correctException = false;
+        try{
+            List<Animal> animals = new ArrayList<>();
+            List<DailyTasks> tasks = new ArrayList<>();
+            animals.add(new Fox(1, "Robin Hood"));
+            animals.add(new Fox(2, "Maid Marian"));
+            animals.add(new Beaver(3, "Fryer Tuck"));
+            animals.add(new Porcupine(4, "Prince John"));
+            animals.add(new Coyote(5, "Sheriff of Nottingham"));
+            animals.add(new Raccoon(6, "Kilgore Trout"));
+            tasks.add(new DailyTasks("Maid Marian", "Teeth Cleaning", 12, 5, 1));
+            tasks.add(new DailyTasks("Robin Hood", "Remove arrow from knee", 12, 45, 1));
+            tasks.add(new DailyTasks("Prince John", "Thumb Removal", 12, 25, 1));
+
+            Schedule schedule = new Schedule(animals, tasks);
+        }
+        catch(Exception e){
+            correctException = true;
+        }
+        assertEquals("BackUpVolunteerNeededException not thrown", true, correctException);
+    }
+
+
 
 //    @Test
 //    public void insertDataUnitTest(){
@@ -114,7 +154,7 @@ public class TestEWRScheduler {
         int animalID = 16;
 
         Beaver beaver = new Beaver(animalID, name);
-        assertTrue(" ", beaver instanceof Beaver);
+        assertTrue("'beaver' is not an object of the Beaver class ", beaver instanceof Beaver);
 
     }
 
@@ -128,7 +168,7 @@ public class TestEWRScheduler {
         int animalID = 16;
 
         Beaver beaver = new Beaver(animalID, name);
-        assertTrue(" ", beaver instanceof Diurnal);
+        assertTrue("beaver does not inherit from the Diurnal Class properly", beaver instanceof Diurnal);
 
     }
 
@@ -141,7 +181,7 @@ public class TestEWRScheduler {
         int animalID = 16;
 
         Beaver beaver = new Beaver(animalID, name);
-        assertTrue(" ", beaver instanceof Animal);
+        assertTrue("beaver does not extend from the Animal Class properly ", beaver instanceof Animal);
 
     }
 
@@ -160,7 +200,7 @@ public class TestEWRScheduler {
         // make new beaver object
         // get beaver feed time
         // assert result
-        assertEquals("place holder text", actual, expected);
+        assertEquals("getFeed() does not return the correct value", actual, expected);
     }
 
     /**
@@ -178,7 +218,7 @@ public class TestEWRScheduler {
         // make new beaver object
         // get beaver feed time
         // assert result
-        assertEquals("place holder text", actual, expected);
+        assertEquals("getPrep() does not return the correct value", actual, expected);
     }
 
     /**
@@ -196,7 +236,7 @@ public class TestEWRScheduler {
         // make new beaver object
         // get beaver feed time
         // assert result
-        assertEquals("place holder text", actual, expected);
+        assertEquals("getCleanTime() does not return the correct value", actual, expected);
     }
 
     /**
@@ -214,7 +254,7 @@ public class TestEWRScheduler {
         // make new beaver object
         // get beaver feed time
         // assert result
-        assertEquals("place holder text", actual, expected);
+        assertEquals("getSpecies() does not return the correct value", actual, expected);
     }
 
     /**
@@ -229,7 +269,7 @@ public class TestEWRScheduler {
         int actual = beaver.getFeedWindow();
         int expected = 3;
 
-        assertEquals("place holder text", actual, expected);
+        assertEquals("Beaver does not inherit from the Diurnal Class properly to access getFeedWindow()", actual, expected);
     }
 
     /**
@@ -244,7 +284,7 @@ public class TestEWRScheduler {
         int actual = beaver.getFeedStart();
         int expected = 8;
 
-        assertEquals("place holder text", actual, expected);
+        assertEquals("Beaver does not inherit form the Diurnal Class properly to access getFeedStart ", actual, expected);
 
     }
 
@@ -260,7 +300,7 @@ public class TestEWRScheduler {
         String actual = beaver.toString();
         String expected = String.format("| %-3s | %-24s | %-15s |\n", animalID, name, "beaver");;
 
-        assertEquals("place holder text", actual, expected);
+        assertEquals("Beaver does not inherit from the Animal Class properly to access toString() method", actual, expected);
 
     }
 
