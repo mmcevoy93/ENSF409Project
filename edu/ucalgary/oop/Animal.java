@@ -33,7 +33,7 @@ public class Animal {
      * @param nickname The nickname of the animal
      * @return true if the nickname has comma-separated values, false otherwise
      */
-    private boolean checkOrphaned(String nickname) {
+    public boolean checkOrphaned(String nickname) {
         Pattern has_comma = Pattern.compile("\\b\\w+(,\\s+\\w+)+\\b");
         Matcher match = has_comma.matcher(nickname);
         return match.find();

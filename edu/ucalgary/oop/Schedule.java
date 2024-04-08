@@ -38,7 +38,18 @@ public class Schedule{
     public List<List<DailyTasks>> getHourlySchedule(){
         return this.hourlySchedule;
     }
-
+    public boolean isBackupVolunteerRequired() {
+        for (List<DailyTasks> hourlyTasks : hourlySchedule) {
+            int totalDuration = 0;
+            for (DailyTasks task : hourlyTasks) {
+                totalDuration += task.getDuration();
+            }
+            if (totalDuration > 60) {
+                return true;
+            }
+        }
+        return false;
+    }
     /**
      * Add provided Tasks to avaliable Hour 0-24
      * given startHour, duration and maxWindow constraints
@@ -47,8 +58,9 @@ public class Schedule{
     public void addTasksToHours(DailyTasks task) throws BackUpVolunteerNeededException{
         int startHour = task.getStartHour();
         int duration = task.getDuration();
-        int maxWindow = 24;
-        for (int hour = startHour; hour < hour+maxWindow; hour++) {
+        int maxWindow = task.getMaxWindow();
+        boolean added = false;
+        for (int hour = startHour; hour < startHour+maxWindow; hour++) {
             // Calculate the total duration already scheduled within the hour for this treat's max window
             int scheduledDurationWithinMaxWindow = 0;
             for (DailyTasks scheduledTreatment : hourlySchedule.get(hour)) {
@@ -57,18 +69,14 @@ public class Schedule{
             // Check if adding the treatment to the hour exceeds the max window
             if (scheduledDurationWithinMaxWindow + duration <= 60) {
                 hourlySchedule.get(hour).add(task);
+                added = true;
                 break;
-            }
-            else if(scheduledDurationWithinMaxWindow + duration >= 60){
-                if(duration/2 <= 60){
-                    throw new BackUpVolunteerNeededException("Schedule cannot be made without backup volunteer");
-                }
-
-            }
-            //TODO - Throw an argument that schedule cannot be made without backup volunteer - DONE???
-            // TODO - test if exception is thrown - DONE
-            // TODO - test if hourly task is added to houlrySchedule
+            } 
         }
+        if(!added){
+            throw new BackUpVolunteerNeededException("Schedule cannot be made without backup volunteer\n" + "Task: " + task.getDescription() + " at " + task.getStartHour() + ":00 for " + task.getAnimalName());
+        }
+        
     }
 
     /**

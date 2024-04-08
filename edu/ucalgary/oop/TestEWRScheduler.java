@@ -17,9 +17,6 @@ import java.util.ArrayList;
  * Tests all Classes that the relates to the EWR management system
  */
 public class TestEWRScheduler {
-    private String url = "jdbc:postgresql://localhost:5432/ewr";
-    private String username = "oop";
-    private String password = "ucalgary";
     
     @Test
     /*
@@ -93,6 +90,7 @@ public class TestEWRScheduler {
             tasks.add(new DailyTasks("Prince John", "Thumb Removal", 12, 25, 1));
 
             Schedule schedule = new Schedule(animals, tasks);
+            System.out.println(schedule);
         }
         catch(Exception e){
             correctException = true;

@@ -38,7 +38,42 @@ public class SQLData {
         selectTreatmentsData();
         close();
     }
-
+    /**
+     * Updates the start hour of a treatment in the database
+     *
+     * @param startHour the new start hour for the treatment
+     */
+    public void updateTreatmentStartHour(String startHour) {
+        String query = "UPDATE TREATMENTS SET StartHour = ? WHERE TaskID = ?";
+        try {
+            PreparedStatement preparedStmt = dbConnect.prepareStatement(query);
+            preparedStmt.setString(1, startHour);
+            preparedStmt.setInt(2, getTaskIDFromDescription(startHour));
+            preparedStmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * Retrieves the task ID based on the task description
+     *
+     * @param description the description of the task
+     * @return the task ID
+     */
+    private int getTaskIDFromDescription(String description) {
+        String query = "SELECT TaskID FROM TASKS WHERE Description = ?";
+        try {
+            PreparedStatement preparedStmt = dbConnect.prepareStatement(query);
+            preparedStmt.setString(1, description);
+            ResultSet resultSet = preparedStmt.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("TaskID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
     /**
      * Initializes connection to database
      */
