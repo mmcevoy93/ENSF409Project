@@ -7,6 +7,8 @@ import java.util.*;
 import org.junit.Test;
 
 public class TestClass {
+
+
 //    @Test
 //    public void getAnimalListIsNotNullTest() {
 //        String url = "jdbc:postgresql://localhost:5432/ewr";            // Database url
@@ -50,7 +52,71 @@ public class TestClass {
 //        animalCount.countAnimals();
 
     /**
-     * Test to see if a Beaver object is created when instantiated
+     * Test to see if checkOrphaned returns true when commas are present in the nickname
+     * */
+    @Test
+    public void checkOrphanedIsTrue(){
+    Animal testAnimal = new Animal(3, "this, has, commas");
+    assertTrue(testAnimal.checkOrphaned("this, has, commas"));
+    }
+
+    /**
+     * Test to see if checkOrphaned returns false when commas are not present in the nickname
+     * */
+    @Test
+    public void checkOrphanedIsFalse(){
+        Animal testAnimal = new Animal(3, "this has no commas");
+        assertFalse(testAnimal.checkOrphaned("this has no commas"));
+    }
+
+    /**
+     * Test to see if correct ID is returned
+     * */
+    @Test
+    public void properIDIsReturned(){
+        Coyote testAnimal = new Coyote(7, "Pencil");
+        assertEquals(7, testAnimal.getID());
+    }
+
+    /**
+     * Test to see if the correct nickname is returned
+     * */
+    @Test
+    public void properNameIsReturned(){
+        Coyote testAnimal = new Coyote(1, "Pencil");
+        assertEquals("Pencil", testAnimal.getName());
+    }
+
+    /**
+     * Test to see if isOrphaned returns true when orphan animals are run through it
+     * */
+
+    @Test
+    public void isOrphanedIsTrue(){
+        Animal testAnimal = new Animal(1, "Annie, Oliver and Mowgli");
+        assertTrue(testAnimal.checkOrphaned("Annie, Oliver and Mowgli"));
+    }
+
+    /**
+     * Test to see if isOrphaned returns false when animals that are not orphans are run through it
+     * */
+    @Test
+    public void isOrphanedIsFalse(){
+        Animal testAnimal = new Animal(1, "Pencil");
+        assertFalse(testAnimal.checkOrphaned("Pencil"));
+    }
+    
+    /**
+     * Test to see if the correct species is returned
+     * */
+    @Test
+    public void getSpeciesTest(){
+        Coyote testAnimal = new Coyote(1, "Pencil");
+        assertEquals("coyote", testAnimal.getSpecies());
+    }
+
+    /**
+     * Test to see if a Beaver object is created with instantiated
      * */
     @Test
     public void beaverObjectTest(){
@@ -201,7 +267,7 @@ public class TestClass {
         int animalID = 16;
         Beaver beaver = new Beaver(animalID, name);
 
-        String actual = beaver.printInfo();
+        String actual = beaver.toString();
         String expected = String.format("| %-3s | %-24s | %-15s |\n", animalID, name, "beaver");;
 
         assertEquals("place holder text", actual, expected);
