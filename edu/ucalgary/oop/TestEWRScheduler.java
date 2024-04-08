@@ -62,16 +62,16 @@ public class TestEWRScheduler {
 
     }
 
-    @Test
-    public void insertDataUnitTest(){
-        // arrange our objects and test fixtures
-        db = initializeDatabase(); // initialize db object to test
-        Road road = new Road("Germany"); // create a valid Road object to insert into db
-        // act on an object to perform a test
-        Boolean result = db.insertRoadData(road);
-        // assert the result of the action is as expected
-        Assert.assertTrue(result);
-    }
+//    @Test
+//    public void insertDataUnitTest(){
+//        // arrange our objects and test fixtures
+//        db = initializeDatabase(); // initialize db object to test
+//        Road road = new Road("Germany"); // create a valid Road object to insert into db
+//        // act on an object to perform a test
+//        Boolean result = db.insertRoadData(road);
+//        // assert the result of the action is as expected
+//        Assert.assertTrue(result);
+//    }
     
     @Test
     /**

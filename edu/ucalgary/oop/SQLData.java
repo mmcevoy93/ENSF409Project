@@ -82,7 +82,8 @@ public class SQLData {
                         this.animals.add(new Porcupine(animalID, animalNickname));
                         break;
                     default:
-                        System.out.println("Invalid Species"); //TODO - Throw an animal not valid 
+                        throw new IllegalArgumentException("Invalid Species");
+                        // System.out.println("Invalid Species"); //TODO - Throw an animal not valid
                 }
             }
             animalResults.close();
