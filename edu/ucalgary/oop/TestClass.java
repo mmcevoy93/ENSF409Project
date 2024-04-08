@@ -50,7 +50,7 @@ public class TestClass {
 //        animalCount.countAnimals();
 
     /**
-     * Test to see if a Beaver object is created with instantiated
+     * Test to see if a Beaver object is created when instantiated
      * */
     @Test
     public void beaverObjectTest(){

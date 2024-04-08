@@ -46,7 +46,7 @@ public class Schedule{
             int maxWindow = task.getMaxWindow();
             int endHour = startHour + (duration / 60) + ((duration % 60 == 0) ? 0 : 1);
             for (int hour = startHour; hour < hour+maxWindow; hour++) {
-                // Calculate the total duration already scheduled within the hour for this treat's max window
+                // Calculate the total duration already scheduled within the hour for this treatment's max window
                 int scheduledDurationWithinMaxWindow = 0;
                 for (DailyTasks scheduledTreatment : hourlySchedule.get(hour)) {
                     scheduledDurationWithinMaxWindow += scheduledTreatment.getDuration();
@@ -126,7 +126,7 @@ public class Schedule{
         String allSpecies[] = {"beaver","coyote","fox","porcupine","raccoon"};
         HashMap<String, String> names = new HashMap<>(); // Map of String to String
         HashMap<String, Integer> feed = new HashMap<>(); // Map of String to Integer
-        for (String s:allSpecies){
+        for (String s: allSpecies){
             feed.put(s, 0);// for key species, they have an integer value of 0
             names.put(s,"");
         }
