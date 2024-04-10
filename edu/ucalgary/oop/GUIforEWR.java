@@ -19,7 +19,7 @@ public class GUIforEWR {
     private JButton displayAnimalsBtn;
     private JButton displayTasksBtn;
     private List<Animal> animals = new ArrayList<>();
-    private List<DailyTasks> tasks = new ArrayList<>();
+    private List<DailyTasks> treatments = new ArrayList<>();
     private Schedule schedule;
     /**
      * Constructs a new GUIforEWR object and initializes the GUI components.
@@ -70,15 +70,9 @@ public class GUIforEWR {
     private void initSQL() {
         SQLData myJDBC = new SQLData("jdbc:postgresql://localhost:5432/ewr", "oop", "ucalgary");
         myJDBC.initializeConnection();
-        tasks = myJDBC.getTreatmentTasks();
-        animals = myJDBC.getAnimalList();
-        // animals.add(new Beaver(1, "Robin Hood"));
-        // animals.add(new Beaver(2, "Maid Marian"));
-        // animals.add(new Porcupine(4, "Prince John"));
-        // tasks.add(new DailyTasks("Maid Marian", "Teeth Cleaning", 12, 5, 1));
-        // tasks.add(new DailyTasks("Robin Hood", "Remove arrow from knee", 12, 45, 1));
-        // tasks.add(new DailyTasks("Prince John", "Thumb Removal", 12, 25, 1));
-        this.schedule = new Schedule(animals, tasks);
+        this.treatments = myJDBC.getTreatmentTasks();
+        this.animals = myJDBC.getAnimalList();
+        this.schedule = new Schedule(animals, treatments);
     }
 
     /**
@@ -113,41 +107,79 @@ public class GUIforEWR {
      * Prints the daily schedule.
      */
     private void printSchedule() {
-        try {
-            // Generate the schedule
-            schedule.buildSchedule();
+        try{
+            while(!scheduleTreatments()){}
+        }
+        catch (Exception e){
+            JOptionPane.showMessageDialog(null,e.getMessage());
+        }
+        // Display the schedule in a dialog box
+        JTextArea scheduleArea = new JTextArea(schedule.toString());
+        scheduleArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(scheduleArea);
+        scrollPane.setPreferredSize(new Dimension(500, 400));
+        JOptionPane.showMessageDialog(frame, scrollPane, "Daily Schedule", JOptionPane.PLAIN_MESSAGE);
 
-            // Display the schedule in a dialog box
-            JTextArea scheduleArea = new JTextArea(schedule.toString());
-            scheduleArea.setEditable(false);
-            JScrollPane scrollPane = new JScrollPane(scheduleArea);
-            scrollPane.setPreferredSize(new Dimension(500, 400));
-            JOptionPane.showMessageDialog(frame, scrollPane, "Daily Schedule", JOptionPane.PLAIN_MESSAGE);
+        // Save the schedule to a file
+        String fileName = "schedule_" + java.time.LocalDate.now() + ".txt";
+        try (FileWriter writer = new FileWriter(fileName)) {
+            writer.write(schedule.toString());
+            System.out.println("Schedule saved to " + fileName);
+        } catch (IOException e) {
+            System.out.println("Error saving schedule to file: " + e.getMessage());
+        }        
+    }
 
-            // Save the schedule to a file
-            String fileName = "schedule_" + java.time.LocalDate.now() + ".txt";
-            try (FileWriter writer = new FileWriter(fileName)) {
-                writer.write(schedule.toString());
-                System.out.println("Schedule saved to " + fileName);
-            } catch (IOException e) {
-                System.out.println("Error saving schedule to file: " + e.getMessage());
-            }
 
-        } catch (BackUpVolunteerNeededException e) {
+    /**
+     * Attempts to add all Treatments to Schedule
+     * If it is impossible it will ask user if they
+     * want to add a backup volunteer
+     * if buildSchedule throws exception it will return false
+     * @return boolean: Treatments added to schedule
+     */
+    private boolean scheduleTreatments() throws IllegalArgumentException{
+        boolean scheduleMade = false;
+        try{
+            schedule.buildSchedule("treatment");
+            scheduleMade = true;
+        } 
+        catch (BackUpVolunteerNeededException e) {
+            DailyTasks errorTask = e.getTask();
             // Display an error message if it's not possible to create a schedule
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Scheduling Error", JOptionPane.ERROR_MESSAGE);
-            String backupVolunterOption = String.format("Do you want to add a Backup Volunteer at:\n %s:00", e.getHour());
+            String backupVolunterOption = String.format("Do you want to add a Backup Volunteer?");
             //Ask if we want to add a backupvolunteer
-            int dialogResult = JOptionPane.showConfirmDialog(null, backupVolunterOption, "Backup Volunteer", JOptionPane.YES_NO_OPTION);
-            if (dialogResult == JOptionPane.YES_OPTION) {
-                schedule.addBackupVolunteer(e.getHour());
-                printSchedule();
-            } else {
-
-                // Perform action for No option or do nothing
+            int TryBackup = JOptionPane.showConfirmDialog(null, backupVolunterOption, "Backup Volunteer", JOptionPane.YES_NO_OPTION);
+            
+            if (TryBackup == JOptionPane.YES_OPTION) {
+                JSlider slider = new JSlider(errorTask.getStartHour(), errorTask.getStartHour()+errorTask.getMaxWindow()-1);
+                slider.setMajorTickSpacing(1);
+                slider.setPaintTicks(true);
+                slider.setPaintLabels(true);
+                int option = JOptionPane.showOptionDialog(null, slider, "Select an hour for a backup volunteer:",
+                        JOptionPane.YES_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+                if(option != JOptionPane.NO_OPTION && option != JOptionPane.CLOSED_OPTION){
+                    int selectedValue = slider.getValue();
+                    int confirm = JOptionPane.showConfirmDialog(null,"Are you sure you want an extra volunteer at: " + selectedValue + ":00", "Backup Volunteer", JOptionPane.YES_NO_OPTION);
+                    if(confirm == JOptionPane.YES_OPTION){
+                        schedule.addBackupVolunteer(errorTask.getStartHour());
+                    }
+                    else{
+                        throw new IllegalArgumentException("Schedule not Generated");
+                    }
+                }else{
+                    throw new IllegalArgumentException("Schedule not Generated");
+                }
+            }
+            else{
+                throw new IllegalArgumentException("Schedule not Generated");
             }
         }
+        return scheduleMade;
     }
+
+
 
     /**
      * Displays the list of animals.
@@ -170,18 +202,18 @@ public class GUIforEWR {
      * Displays the list of treatment tasks.
      */
     private void displayTasks() {
-        System.out.println("Treatment List");
-        StringBuilder sb = new StringBuilder();
-        sb.append(tasks + "\n");
-        Set<String> uniqueDescriptions = new HashSet<>();
-        for (DailyTasks t : tasks) {
-            if (!uniqueDescriptions.contains(t.getDescription())) {
-                sb.append(t);
-                uniqueDescriptions.add(t.getDescription());
-            }
-        }
+        // System.out.println("Treatment List");
+        // StringBuilder sb = new StringBuilder();
+        // sb.append(tasks + "\n");
+        // Set<String> uniqueDescriptions = new HashSet<>();
+        // for (DailyTasks t : tasks) {
+        //     if (!uniqueDescriptions.contains(t.getDescription())) {
+        //         sb.append(t);
+        //         uniqueDescriptions.add(t.getDescription());
+        //     }
+        // }
 
-        System.out.println(sb.toString());
+        // System.out.println(sb.toString());
     }
 
     public static void main(String[] args) {

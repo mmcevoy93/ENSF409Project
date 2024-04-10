@@ -12,7 +12,7 @@ import java.util.regex.*;
  * Animal contains all the relevant info needed to complete all medical treatments, feedings and cleaning
  * Animal is composed of Species and time of day they are active
  */
-public class Animal {
+public class Animal{
     private final int ID;
     private final String NICKNAME;
     private boolean orphan;
