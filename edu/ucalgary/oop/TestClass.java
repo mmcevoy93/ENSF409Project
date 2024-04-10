@@ -1,9 +1,7 @@
 package edu.ucalgary.oop;
 
-import org.junit.*;
+
 import static org.junit.Assert.*;
-import java.io.*;
-import java.util.*;
 import org.junit.Test;
 
 public class TestClass {

@@ -53,7 +53,7 @@ public class DailyTasks implements Comparable<DailyTasks>, Cloneable  {
     public DailyTasks(String animalName, String description, int startHour, int duration, int maxWindow, int prepTime) {
         this.animalName = animalName;
         this.description = description;
-        this.startHour = startHour; //TODO throw an illegal argument if not valid hour
+        this.startHour = startHour;
         this.duration = duration;
         this.maxWindow = maxWindow;
         this.prepTime = prepTime;

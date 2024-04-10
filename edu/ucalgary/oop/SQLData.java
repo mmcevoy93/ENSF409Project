@@ -60,7 +60,7 @@ public class SQLData {
     
         try {
             Statement myStmt = dbConnect.createStatement();
-            int rowsAffected = myStmt.executeUpdate(query);
+            myStmt.executeUpdate(query);
         } catch (SQLException e) {
             e.printStackTrace();
         }

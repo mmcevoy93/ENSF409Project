@@ -3,7 +3,7 @@ import java.time.LocalDate;
 /*
 @author Max McEvoy 30005167<a href="mailto:max.mcevoy@ucalgary.ca">
 max.mcevoy@ucalgary.ca</a>
-@version 1.9
+@version 2.1
 @since 1.0
 */
 import java.util.*;
@@ -26,6 +26,13 @@ public class Schedule{
     private List<List<DailyTasks>> hourlySchedule = new ArrayList<>();
     private List<Integer> numVolunteers = new ArrayList<>();
 
+    /**
+     * Constructor accepets a list of animals and DailyTasks
+     * clones treatments so as not to affect the original treatments in GUI
+     * Initiallizes HourlySchedule by clearing and assigning values
+     * @param animals Animal: List of animals in EWR
+     * @param treatments DailyTasks: The treatments that need to be done for today
+     */
     public Schedule(List<Animal> animals, List<DailyTasks> treatments){
         this.animals = animals;      
         for (DailyTasks t : treatments) {
@@ -34,11 +41,19 @@ public class Schedule{
         resetHourlySchedule();
     }
 
-
+    /**
+     * Gets the List of List of Daily Tasks
+     * @return Hourly Schedule of all Tasks
+     */
     public List<List<DailyTasks>> getHourlySchedule(){
         return this.hourlySchedule;
     }
 
+    /**
+     * Adds a Backup volunteer to a provided hour
+     * Adds 60 minutes to that hour for more tasks
+     * @param hour int: Hour that you want to addd a Volunteer
+     */
     public void addBackupVolunteer(int hour){
         int current = this.numVolunteers.get(hour);
         this.numVolunteers.set(hour, current+1);
@@ -81,6 +96,11 @@ public class Schedule{
 
         /**
          * Adds feeding tasks to the schedule for animals.
+         * Checks each hour in feeding window of species.
+         * Adds the names, total feed time and prep time to a new task
+         * task is added to that hour
+         * 
+         * If no hour avaliable will throw BackUpVolunteerNeeded.
          *
          * @throws BackUpVolunteerNeededException if a backup volunteer is needed to complete the schedule
          */
