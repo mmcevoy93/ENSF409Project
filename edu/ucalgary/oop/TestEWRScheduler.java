@@ -7,6 +7,8 @@ max.mcevoy@ucalgary.ca</a>
 */
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -173,7 +175,8 @@ public class TestEWRScheduler {
     }
 
     /** The following are tests ran for a specific species to ensure inheritance
-     * is followed properly
+     * is followed properly: Beaver, Coyote, and Raccoon are tested.
+     * This allows for Diurnal, Crepuscular, and Nocturnal to be tested as well
      * */
 
     /**
@@ -335,5 +338,143 @@ public class TestEWRScheduler {
 
     }
 
+    /**
+     * Test to see if a Coyote object is created when instantiated
+     * */
+    @Test
+    public void coyoteObjectTest(){
+        String name = "yote";
+        int animalID = 7;
+
+        Coyote testCoyote = new Coyote(animalID, name);
+        assertInstanceOf(Coyote.class, testCoyote, "'testCoyote' is not an object of the Coyote class");
+
+    }
+
+    /**
+     * Test to see if Coyote object extends Crepuscular
+     **/
+    @Test
+    public void coyoteObjectCrepuscularTest(){
+        String name = "yote";
+        int animalID = 7;
+
+        Coyote testCoyote = new Coyote(animalID, name);
+        assertInstanceOf(Crepuscular.class, testCoyote, "'testCoyote' does not inherit from the Crepuscular Class properly");
+    }
+
+    /**
+     * Test to see if Coyote object extends Animal
+     **/
+    @Test
+    public void coyoteObjectAnimalTest(){
+        String name = "yote";
+        int animalID = 7;
+
+        Coyote testCoyote = new Coyote(animalID, name);
+        assertInstanceOf(Animal.class, testCoyote, "coyote does not extend from the Animal Class properly ");
+
+    }
+
+    /**
+     * Test to see if getFeed() method returns the correct value
+     **/
+    @Test
+    public void coyoteGetFeedTest() {
+        String name = "yote";
+        int animalID = 7;
+
+        Coyote testCoyote = new Coyote(animalID, name);
+        int actual = testCoyote.getFeedTime();
+        int expected = 5;
+
+        // make new Coyote object
+        // get Coyote feed time
+        // assert result
+        assertEquals(actual, expected, "getFeed() does not return the correct value");
+    }
+
+    /**
+     * Test to see if getPrep() method returns the correct value
+     **/
+    @Test
+    public void coyoteGetFeedPrepTest() {
+        String name = "yote";
+        int animalID = 7;
+
+        Coyote testCoyote = new Coyote(animalID, name);
+        int actual = testCoyote.getFeedPrep();
+        int expected = 10;
+
+        // make new coyote object
+        // get coyote feed time
+        // assert result
+        assertEquals(actual, expected, "getPrep() does not return the correct value");
+    }
+
+    /**
+     * Test to see if getCleanTime() method returns the correct value
+     **/
+    @Test
+    public void coyoteGetCleanTimeTest() {
+        String name = "yote";
+        int animalID = 7;
+
+        Coyote testCoyote = new Coyote(animalID, name);
+        int actual = testCoyote.getCleanTime();
+        int expected = 5;
+
+        // make new Coyote object
+        // get Coyote feed time
+        // assert result
+        assertEquals(actual, expected, "getCleanTime() does not return the correct value");
+    }
+
+    /**
+     * Test extension of Crepuscular Class for getFeedWindow method
+     * */
+    @Test
+    public void getFeedWindowTestForCrepuscular(){
+        String name = "yote";
+        int animalID = 7;
+        Coyote testCoyote = new Coyote(animalID, name);
+
+        int actual =  testCoyote.getFeedWindow();
+        int expected = 3;
+
+        assertEquals(actual, expected, "Coyote does not inherit from the Crepuscular Class properly to access getFeedWindow()");
+    }
+
+    /**
+     * Test inheritance of Crepuscular Class for getFeedStart method
+     * */
+    @Test
+    public void getFeedStartTestForCrepuscular(){
+        String name = "yote";
+        int animalID = 7;
+        Coyote testCoyote = new Coyote(animalID, name);
+
+        int actual = testCoyote.getFeedStart();
+        int expected = 19;
+
+        assertEquals(actual, expected, "Coyote does not inherit form the Crepuscular Class properly to access getFeedStart ");
+
+    }
+
+    /**
+     * Test inheritance of Animal Class for Coyote
+     * */
+    @Test
+    public void printToStringTestForCoyote(){
+        String name = "yote";
+        int animalID = 16;
+        Coyote testCoyote = new Coyote(animalID, name);
+
+        String actual = testCoyote.toString();
+        String expected = String.format("| %-3s | %-24s | %-15s |\n", animalID, name, "coyote");;
+
+        assertEquals(actual, expected, "Coyote does not inherit from the Animal Class properly to access toString() method");
+
+    }
 
 }
