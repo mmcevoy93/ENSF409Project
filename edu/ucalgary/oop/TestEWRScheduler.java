@@ -138,6 +138,39 @@ public class TestEWRScheduler {
         assertTrue("Valid Schedule throw IllegalArgumentException when attempting to make valid schedule", passed);
     }
 
+    /**
+     * Daily Tasks Tests
+     **/
+
+    @Test
+    public void dailyTasksWithoutPrepTimeTest(){
+        List<Animal> animals = new ArrayList<>();
+        List<DailyTasks> tasks = new ArrayList<>();
+
+        animals.add(new Fox(2, "Maid Marian"));
+        animals.add(new Fox(1, "Robin Hood"));
+        tasks.add(new DailyTasks("Maid Marian", "Teeth Cleaning", 12, 5, 1, 10));
+        tasks.add(new DailyTasks("Robin Hood", "Remove arrow from knee", 12, 30, 1));
+
+        int actual = 0;
+        assertEquals("getPrepTime() does not return the correct value", actual, tasks.get(1).getPrepTime());
+
+    }
+
+    @Test
+    public void dailyTasksWithPrepTimeTest(){
+        List<Animal> animals = new ArrayList<>();
+        List<DailyTasks> tasks = new ArrayList<>();
+
+        animals.add(new Fox(2, "Maid Marian"));
+        animals.add(new Fox(1, "Robin Hood"));
+        tasks.add(new DailyTasks("Maid Marian", "Teeth Cleaning", 12, 5, 1, 10));
+        tasks.add(new DailyTasks("Robin Hood", "Remove arrow from knee", 12, 30, 1));
+
+        int actual = 10;
+        assertEquals("getPrepTime() does not return the correct value", actual, tasks.get(0).getPrepTime());
+
+    }
 
     /** The following are tests ran for a specific species to ensure inheritance
      * is followed properly

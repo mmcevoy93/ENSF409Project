@@ -58,6 +58,7 @@ public class DailyTasks implements Comparable<DailyTasks> {
         this.maxWindow = maxWindow;
         this.prepTime = prepTime;
     }
+
     /**
      * gets Animal Name(s) related to task
      * @return String: Animal Nickname
@@ -92,6 +93,14 @@ public class DailyTasks implements Comparable<DailyTasks> {
      */
     public int getMaxWindow() {
         return this.maxWindow;
+    }
+
+    /**
+     * gets prep time of task
+     * @return int: prep time for the task
+     * */
+    public int getPrepTime(){
+        return this.prepTime;
     }
 
     @Override

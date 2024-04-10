@@ -71,7 +71,7 @@ public class Schedule{
                 hourlySchedule.get(hour).add(task);
                 added = true;
                 break;
-            } 
+            }
         }
         if(!added){
             throw new BackUpVolunteerNeededException("Schedule cannot be made without backup volunteer\n" + "Task: " + task.getDescription() + " at " + task.getStartHour() + ":00 for " + task.getAnimalName());
