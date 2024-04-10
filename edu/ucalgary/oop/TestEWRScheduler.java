@@ -8,8 +8,6 @@ max.mcevoy@ucalgary.ca</a>
 import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -497,7 +495,7 @@ public class TestEWRScheduler {
         // make new Coyote object
         // get Coyote feed time
         // assert result
-        assertEquals(actual, expected, "getFeed() does not return the correct value");
+        assertEquals("getFeed() does not return the correct value",actual, expected );
     }
 
     /**
@@ -515,7 +513,7 @@ public class TestEWRScheduler {
         // make new coyote object
         // get coyote feed time
         // assert result
-        assertEquals(actual, expected, "getPrep() does not return the correct value");
+        assertEquals("getPrep() does not return the correct value", actual, expected);
     }
 
     /**
@@ -533,7 +531,7 @@ public class TestEWRScheduler {
         // make new Coyote object
         // get Coyote feed time
         // assert result
-        assertEquals(actual, expected, "getCleanTime() does not return the correct value");
+        assertEquals("getCleanTime() does not return the correct value",actual, expected);
     }
 
     /**
@@ -548,7 +546,7 @@ public class TestEWRScheduler {
         int actual =  testCoyote.getFeedWindow();
         int expected = 3;
 
-        assertEquals(actual, expected, "Coyote does not inherit from the Crepuscular Class properly to access getFeedWindow()");
+        assertEquals("Coyote does not inherit from the Crepuscular Class properly to access getFeedWindow()", actual, expected);
     }
 
     /**
@@ -563,7 +561,7 @@ public class TestEWRScheduler {
         int actual = testCoyote.getFeedStart();
         int expected = 19;
 
-        assertEquals(actual, expected, "Coyote does not inherit form the Crepuscular Class properly to access getFeedStart ");
+        assertEquals("Coyote does not inherit form the Crepuscular Class properly to access getFeedStart ",actual, expected);
 
     }
 
@@ -577,7 +575,7 @@ public class TestEWRScheduler {
         Coyote testCoyote = new Coyote(animalID, name);
 
         String actual = testCoyote.toString();
-        String expected = String.format("| %-3s | %-24s | %-15s |\n", animalID, name, "coyote");;
+        String expected = String.format("| %-3s | %-24s | %-15s |\n", animalID, name, "coyote");
 
         assertEquals(actual, expected, "Coyote does not inherit from the Animal Class properly to access toString() method");
 
@@ -636,7 +634,7 @@ public class TestEWRScheduler {
         // make new Raccoon object
         // get Raccoon feed time
         // assert result
-        assertEquals(actual, expected, "getFeed() does not return the correct value");
+        assertEquals("getFeed() does not return the correct value",actual, expected);
     }
 
     /**
@@ -654,7 +652,7 @@ public class TestEWRScheduler {
         // make new raccoon object
         // get raccoon feed time
         // assert result
-        assertEquals(actual, expected, "getPrep() does not return the correct value");
+        assertEquals("getPrep() does not return the correct value",actual, expected);
     }
 
     /**
@@ -672,7 +670,7 @@ public class TestEWRScheduler {
         // make new Raccoon object
         // get Raccoon feed time
         // assert result
-        assertEquals(actual, expected, "getCleanTime() does not return the correct value");
+        assertEquals("getCleanTime() does not return the correct value",actual, expected);
     }
 
     /**
@@ -687,7 +685,7 @@ public class TestEWRScheduler {
         int actual =  testRaccoon.getFeedWindow();
         int expected = 3;
 
-        assertEquals(actual, expected, "Raccoon does not inherit from the Nocturnal Class properly to access getFeedWindow()");
+        assertEquals("Raccoon does not inherit from the Nocturnal Class properly to access getFeedWindow()", actual, expected);
     }
 
     /**
@@ -702,7 +700,7 @@ public class TestEWRScheduler {
         int actual = testRaccoon.getFeedStart();
         int expected = 0;
 
-        assertEquals(actual, expected, "Raccoon does not inherit form the Nocturnal Class properly to access getFeedStart ");
+        assertEquals("Raccoon does not inherit form the Nocturnal Class properly to access getFeedStart ", actual, expected);
 
     }
 
