@@ -30,20 +30,13 @@ public class SQLData {
      * @param user String: username
      * @param pw   String: password
      */
-    public SQLData(String url, String user, String pw) throws Exception {
+    public SQLData(String url, String user, String pw) throws SQLException {
         this.DBURL = url;
         this.USERNAME = user;
         this.PASSWORD = pw;
-        try{
-            initializeConnection();
-        }
-        catch(SQLException e){
-            throw new Exception("Database connection failed!");
-
-        }
+        initializeConnection();
         selectAnimalData();
         selectTreatmentsData();
-        close();
     }
 
     /**
@@ -52,7 +45,7 @@ public class SQLData {
      * @param newStart int: hour to move treatment
      * @param selectedTreatment DailyTask: Treatment task to be moved
      */
-    public void updateTreatmentStartHour(int newStart, DailyTasks selectedTreatment) {
+    public void updateTreatmentStartHour(int newStart, DailyTasks selectedTreatment) throws SQLException {
         String animalNickname=selectedTreatment.getAnimalName();
         String description =selectedTreatment.getDescription();
         int oldStart =selectedTreatment.getStartHour();
@@ -62,13 +55,8 @@ public class SQLData {
                         "AND TaskID = (SELECT TaskID FROM TASKS WHERE Description = '%s') " +
                         "AND StartHour = %d;";
         query = String.format(query, newStart, animalNickname, description, oldStart);
-
-        try {
-            Statement myStmt = dbConnect.createStatement();
-            myStmt.executeUpdate(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Statement myStmt = dbConnect.createStatement();
+        myStmt.executeUpdate(query);
     }    
    
     /**

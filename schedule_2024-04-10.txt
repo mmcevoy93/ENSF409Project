@@ -1,30 +1,37 @@
 2024-04-10
 00:00
- * Kit feeding (Annie, Oliver and Mowgli)
- * Feeding - fox (Slinky)
- * Cage Cleaning (Loner)
- * Cage Cleaning (Biter)
- * Cage Cleaning (Bitter)
+ * Teeth Cleaning (Maid Marian)
+ * Feeding - fox (Slinky, Robin Hood)
 
 01:00
+ * Kit feeding (Annie, Oliver and Mowgli)
+ * Feeding - fox (Maid Marian, Prince John)
+ * Cage Cleaning (Loner)
+ * Cage Cleaning (Biter)
+
+02:00
+ * Kit feeding (Annie, Oliver and Mowgli)
+ * Cage Cleaning (Bitter)
  * Cage Cleaning (Pencil)
  * Cage Cleaning (Eraser)
  * Cage Cleaning (Annie, Oliver and Mowgli)
  * Cage Cleaning (Slinky)
+ * Cage Cleaning (Boots)
+
+03:00
  * Cage Cleaning (Spike)
  * Cage Cleaning (Javelin)
  * Cage Cleaning (Gatekeeper)
  * Cage Cleaning (Sunshine)
-
-02:00
- * Kit feeding (Annie, Oliver and Mowgli)
  * Cage Cleaning (Shadow)
- * Cage Cleaning (Boots)
  * Cage Cleaning (Spin)
  * Cage Cleaning (Spot)
 
 04:00
  * Kit feeding (Annie, Oliver and Mowgli)
+ * Cage Cleaning (Robin Hood)
+ * Cage Cleaning (Maid Marian)
+ * Cage Cleaning (Prince John)
 
 06:00
  * Flush neck wound (Spike)
@@ -37,7 +44,9 @@
 10:00
  * Kit feeding (Annie, Oliver and Mowgli)
 
-12:00
+12:00 [+ backup volunteer]
+ * Remove arrow from knee (Robin Hood)
+ * Remove Thumb (Prince John)
  * Kit feeding (Annie, Oliver and Mowgli)
 
 13:00

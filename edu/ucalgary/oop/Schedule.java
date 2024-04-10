@@ -222,7 +222,7 @@ public class Schedule{
         }
     }
 
-    private void resetHourlySchedule(){
+    public void resetHourlySchedule(){
         this.hourlySchedule.clear();
         for (int i = 0; i < 24; i++) {
             this.hourlySchedule.add(new ArrayList<>());
