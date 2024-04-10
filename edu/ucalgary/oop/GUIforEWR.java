@@ -37,12 +37,13 @@ public class GUIforEWR {
     public GUIforEWR() {
         // Create the main frame
         frame = new JFrame("Wildlife Rescue Management System");
+        
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
         // Create a panel for the buttons
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 3, 10, 0));
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 3, 20, 0));
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
 
         // Create the buttons
         printScheduleBtn = createButton("Print Schedule", Color.BLUE);
@@ -59,7 +60,7 @@ public class GUIforEWR {
         JPanel headerPanel = new JPanel();
         headerPanel.setBackground(Color.LIGHT_GRAY);
         JLabel headerLabel = new JLabel("Welcome to the Wildlife Rescue Management System");
-        headerLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        headerLabel.setFont(new Font("Arial", Font.BOLD, 12));
         headerPanel.add(headerLabel);
 
         // Add the header panel to the frame
@@ -68,6 +69,7 @@ public class GUIforEWR {
         // Set the frame properties
         frame.pack();
         frame.setLocationRelativeTo(null);
+        
         frame.setVisible(true);
         while(!login()) {
             
@@ -96,7 +98,7 @@ public class GUIforEWR {
      */
     private JButton createButton(String text, Color color) {
         JButton button = new JButton(text);
-        button.setPreferredSize(new Dimension(150, 50));
+        button.setPreferredSize(new Dimension(200, 50));
         button.setBackground(color);
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
@@ -141,7 +143,7 @@ public class GUIforEWR {
                 return false;
             }
         } else {
-            return false;
+            System.exit(0);
         }
         return true;
     }
@@ -275,7 +277,7 @@ public class GUIforEWR {
         initSQL(url, user, pass);
     }
     catch (Exception e){
-        
+
     }
         Collections.sort(this.treatments);
         JFrame treatmentFrame = new JFrame("Select Treatment");
