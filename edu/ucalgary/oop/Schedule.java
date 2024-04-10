@@ -69,7 +69,7 @@ public class Schedule{
                 hourlySchedule.get(hour).add(task);
                 added = true;
                 break;
-            } 
+            }
         }
         if(!added){
             String ScheduleError = "Schedule cannot be made without backup volunteer\n" + task.toString() + "\nCould not be Scheduled";
