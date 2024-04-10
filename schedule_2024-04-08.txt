@@ -42,19 +42,18 @@
 
 13:00
  * Eyedrops (Biter)
- * Rebandage leg wound (Loner)
  * Inspect broken leg (Biter)
  * Inspect broken leg (Spin)
+ * Mange treatment (Spin)
  * Give vitamin injection (Bitter)
+ * Give vitamin injection (Pencil)
 
 14:00
- * Mange treatment (Spin)
  * Mange treatment (Spot)
- * Give vitamin injection (Pencil)
  * Give vitamin injection (Eraser)
+ * Kit feeding (Annie, Oliver and Mowgli)
 
 15:00
- * Kit feeding (Annie, Oliver and Mowgli)
  * Apply burn ointment back (Shadow)
 
 16:00

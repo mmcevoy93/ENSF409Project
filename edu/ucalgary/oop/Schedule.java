@@ -23,14 +23,19 @@ public class Schedule{
     private List<Animal> animals; // Array of animals (from SQLData file)
     private List<DailyTasks> tasks; // Array of treatments (from SQLData file)
     private List<List<DailyTasks>> hourlySchedule = new ArrayList<>();
+    private List<Integer> numVolunteers = new ArrayList<>();
 
-    public Schedule(List<Animal> animals, List<DailyTasks> tasks) throws BackUpVolunteerNeededException{
+    public Schedule(List<Animal> animals, List<DailyTasks> tasks){
         this.animals = animals;      
-        this.tasks = tasks;
+        this.tasks = new ArrayList<>();
+        for (DailyTasks task : tasks) {
+            this.tasks.add(task.clone());
+        }
         for (int i = 0; i < 24; i++) {
             this.hourlySchedule.add(new ArrayList<>());
+            this.numVolunteers.add(1);
         }
-        this.buildSchedule();
+        addFeedingToTasks();
     }
 
     // TODO - perhaps add getter methods to check proper population of animals, tasks, and hourlySchedule
@@ -38,18 +43,16 @@ public class Schedule{
     public List<List<DailyTasks>> getHourlySchedule(){
         return this.hourlySchedule;
     }
-    public boolean isBackupVolunteerRequired() {
-        for (List<DailyTasks> hourlyTasks : hourlySchedule) {
-            int totalDuration = 0;
-            for (DailyTasks task : hourlyTasks) {
-                totalDuration += task.getDuration();
-            }
-            if (totalDuration > 60) {
-                return true;
-            }
+
+    public void addBackupVolunteer(int hour){
+        int current = this.numVolunteers.get(hour);
+        this.numVolunteers.set(hour, current+1);
+        this.hourlySchedule.clear();
+        for (int i = 0; i < 24; i++) {
+            this.hourlySchedule.add(new ArrayList<>());
         }
-        return false;
     }
+    
     /**
      * Add provided Tasks to avaliable Hour 0-24
      * given startHour, duration and maxWindow constraints
@@ -67,16 +70,15 @@ public class Schedule{
                 scheduledDurationWithinMaxWindow += scheduledTreatment.getDuration();
             }
             // Check if adding the treatment to the hour exceeds the max window
-            if (scheduledDurationWithinMaxWindow + duration <= 60) {
+            if (scheduledDurationWithinMaxWindow + duration <= 60 * this.numVolunteers.get(hour)) {
                 hourlySchedule.get(hour).add(task);
                 added = true;
                 break;
             }
         }
         if(!added){
-            throw new BackUpVolunteerNeededException("Schedule cannot be made without backup volunteer\n" + "Task: " + task.getDescription() + " at " + task.getStartHour() + ":00 for " + task.getAnimalName());
+            throw new BackUpVolunteerNeededException("Schedule cannot be made without backup volunteer\n" + task.toString() + "\nCould not be Scheduled", startHour);
         }
-        
     }
 
     /**
@@ -103,6 +105,9 @@ public class Schedule{
         HashMap<String, Integer> startHour = new HashMap<>();
         String description = "Feed - ";
         for (Animal a : this.animals) {
+            if(a.isOrphaned()){
+               continue;
+            }
             String species = a.getSpecies();
             startHour.put(species, a.getFeedStart());
             window.put(species, a.getFeedWindow());
@@ -120,6 +125,7 @@ public class Schedule{
                         startHour.get(species), feed.get(species),
                         window.get(species),    prep.get(species)
                 ));
+                
             }
         }
     }
@@ -149,9 +155,9 @@ public class Schedule{
      * throw the schedule error
      */
     public void buildSchedule() throws BackUpVolunteerNeededException{
-        addFeedingToTasks();
+        
         Collections.sort(this.tasks);
-        for (DailyTasks t : tasks) {
+        for (DailyTasks t : this.tasks) {
             addTasksToHours(t);
         }
         addCleaningToTasks();//lowest priority
@@ -167,12 +173,14 @@ public class Schedule{
     public String toString(){
         String formatTask = " * %s (%s)\n";
         String formatHour = "\n%02d:00\n";
+        String BackupNeeded = "\n%02d:00 [+ backup volunteer]\n";
         StringBuilder sb = new StringBuilder();
         sb.append(LocalDate.now());
         for (int hour = 0; hour < 24; hour++) {
             List<DailyTasks> treatmentsForHour = hourlySchedule.get(hour); 
             if(!treatmentsForHour.isEmpty()){
-                sb.append(String.format(formatHour,hour));
+                if(numVolunteers.get(hour)>=2){sb.append(String.format(BackupNeeded,hour));}
+                else{sb.append(String.format(formatHour,hour));}
             }
             for (DailyTasks treat : treatmentsForHour) {
                 sb.append(String.format(formatTask, treat.getDescription(),treat.getAnimalName()));
