@@ -1,8 +1,16 @@
 package edu.ucalgary.oop;
 
 public class BackUpVolunteerNeededException extends Exception {
-    BackUpVolunteerNeededException(String error){
+
+    private int hour;
+
+    BackUpVolunteerNeededException(String error, int hour){
         super(error);
+        this.hour = hour;
     }
 
+
+    public int getHour() {
+        return hour;
+    }
 }

@@ -22,6 +22,11 @@
  * Cage Cleaning (Shadow)
  * Cage Cleaning (Spin)
  * Cage Cleaning (Spot)
+ * Cage Cleaning (Robin Hood)
+ * Cage Cleaning (Maid Marian)
+
+03:00
+ * Cage Cleaning (Prince John)
 
 04:00
  * Kit feeding (Annie, Oliver and Mowgli)
@@ -33,11 +38,15 @@
 
 08:00
  * Kit feeding (Annie, Oliver and Mowgli)
+ * Feed - beaver (Robin Hood, Maid Marian)
 
 10:00
  * Kit feeding (Annie, Oliver and Mowgli)
 
-12:00
+12:00 [+ backup volunteer]
+ * Teeth Cleaning (Maid Marian)
+ * Remove arrow from knee (Robin Hood)
+ * Thumb Removal (Prince John)
  * Kit feeding (Annie, Oliver and Mowgli)
 
 13:00
@@ -65,7 +74,7 @@
 
 19:00
  * Rebandage leg wound (Slinky)
- * Feed - porcupine (Spike, Javelin, Gatekeeper, Sunshine, Shadow)
+ * Feed - porcupine (Spike, Javelin, Gatekeeper, Sunshine, Shadow, Prince John)
 
 20:00
  * Feed - coyote (Loner, Biter, Bitter, Pencil, Eraser, Boots, Spin, Spot)
