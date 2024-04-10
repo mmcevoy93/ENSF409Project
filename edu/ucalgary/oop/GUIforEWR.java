@@ -84,12 +84,12 @@ public class GUIforEWR {
         myJDBC.initializeConnection();
         this.treatments = myJDBC.getTreatmentTasks();
         this.animals = myJDBC.getAnimalList();
-        this.animals.add(new Fox(1, "Robin Hood"));
-        this.animals.add(new Fox(2, "Maid Marian"));
-        this.animals.add(new Fox(4, "Prince John"));
-        this.treatments.add(new DailyTasks("Maid Marian", "Teeth Cleaning", 0, 45, 1));
-        this.treatments.add(new DailyTasks("Robin Hood", "Remove arrow from knee", 12, 40, 1));
-        this.treatments.add(new DailyTasks("Prince John", "Remove Thumb", 12, 40, 1));
+        // this.animals.add(new Fox(1, "Robin Hood"));
+        // this.animals.add(new Fox(2, "Maid Marian"));
+        // this.animals.add(new Fox(4, "Prince John"));
+        // this.treatments.add(new DailyTasks("Maid Marian", "Teeth Cleaning", 0, 45, 1));
+        // this.treatments.add(new DailyTasks("Robin Hood", "Remove arrow from knee", 12, 40, 1));
+        // this.treatments.add(new DailyTasks("Prince John", "Remove Thumb", 12, 40, 1));
         this.schedule = new Schedule(this.animals, this.treatments);
     }
 

@@ -577,7 +577,7 @@ public class TestEWRScheduler {
         String actual = testCoyote.toString();
         String expected = String.format("| %-3s | %-24s | %-15s |\n", animalID, name, "coyote");
 
-        assertEquals(actual, expected, "Coyote does not inherit from the Animal Class properly to access toString() method");
+        assertTrue("Coyote does not inherit from the Animal Class properly to access toString() method",actual.equals(expected));
 
     }
 
@@ -716,7 +716,7 @@ public class TestEWRScheduler {
         String actual = testRaccoon.toString();
         String expected = String.format("| %-3s | %-24s | %-15s |\n", animalID, name, "raccoon");;
 
-        assertEquals(actual, expected, "Raccoon does not inherit from the Animal Class properly to access toString() method");
+        assertTrue( "Raccoon does not inherit from the Animal Class properly to access toString() method", actual.equals(expected));
 
     }
 }
