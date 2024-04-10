@@ -102,18 +102,6 @@ public class TestEWRScheduler {
         assertEquals("BackUpVolunteerNeededException not thrown", true, correctException);
     }
 
-
-
-//    @Test
-//    public void insertDataUnitTest(){
-//        // arrange our objects and test fixtures
-//        db = initializeDatabase(); // initialize db object to test
-//        Road road = new Road("Germany"); // create a valid Road object to insert into db
-//        // act on an object to perform a test
-//        Boolean result = db.insertRoadData(road);
-//        // assert the result of the action is as expected
-//        Assert.assertTrue(result);
-//    }
     
     @Test
     /**
@@ -205,7 +193,6 @@ public class TestEWRScheduler {
         animals.add(new Fox(1, "Robin Hood"));
         animals.add(new Fox(2, "Maid Marian"));
         animals.add(new Porcupine(4, "Prince John"));
-
         tasks.add(new DailyTasks("Maid Marian", "Teeth Cleaning", 0, 45, 1));
 
         //initializing schedule class
