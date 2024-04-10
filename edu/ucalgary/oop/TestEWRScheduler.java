@@ -346,8 +346,8 @@ public class TestEWRScheduler {
         String name = "yote";
         int animalID = 7;
 
-        Coyote testCoyote = new Coyote(animalID, name);
-        assertInstanceOf(Coyote.class, testCoyote, "'testCoyote' is not an object of the Coyote class");
+        Coyote coyote = new Coyote(animalID, name);
+        assertTrue("'coyote' is not an object of the Coyote class ", coyote instanceof Coyote);
 
     }
 
@@ -359,8 +359,8 @@ public class TestEWRScheduler {
         String name = "yote";
         int animalID = 7;
 
-        Coyote testCoyote = new Coyote(animalID, name);
-        assertInstanceOf(Crepuscular.class, testCoyote, "'testCoyote' does not inherit from the Crepuscular Class properly");
+        Coyote coyote = new Coyote(animalID, name);
+        assertTrue("coyote does not inherit from the Crespuscular class properly", coyote instanceof Crepuscular);
     }
 
     /**
@@ -371,8 +371,8 @@ public class TestEWRScheduler {
         String name = "yote";
         int animalID = 7;
 
-        Coyote testCoyote = new Coyote(animalID, name);
-        assertInstanceOf(Animal.class, testCoyote, "coyote does not extend from the Animal Class properly ");
+        Coyote coyote = new Coyote(animalID, name);
+        assertTrue("coyote does not extend from the Animal Class properly ", coyote instanceof Animal);
 
     }
 
@@ -485,8 +485,8 @@ public class TestEWRScheduler {
         String name = "roony";
         int animalID = 7;
 
-        Raccoon testRaccoon = new Raccoon(animalID, name);
-        assertInstanceOf(Raccoon.class, testRaccoon, "'testRaccoon' is not an object of the Raccoon class");
+        Raccoon raccoon = new Raccoon(animalID, name);
+        assertTrue("'raccoon' is not an object of the Raccoon class ", raccoon instanceof Raccoon);
 
     }
 
@@ -498,8 +498,8 @@ public class TestEWRScheduler {
         String name = "roony";
         int animalID = 7;
 
-        Raccoon testRaccoon = new Raccoon(animalID, name);
-        assertInstanceOf(Nocturnal.class, testRaccoon, "'testRaccoon' does not inherit from the Nocturnal Class properly");
+        Raccoon raccoon = new Raccoon(animalID, name);
+        assertTrue("raccoon does not inherit from the Nocturnal class properly", raccoon instanceof Nocturnal);
     }
 
     /**
@@ -510,8 +510,8 @@ public class TestEWRScheduler {
         String name = "roony";
         int animalID = 7;
 
-        Raccoon testRaccoon = new Raccoon(animalID, name);
-        assertInstanceOf(Animal.class, testRaccoon, "raccoon does not extend from the Animal Class properly ");
+        Raccoon raccoon = new Raccoon(animalID, name);
+        assertTrue("raccoon does not extend from the Animal Class properly ", raccoon instanceof Animal);
 
     }
 
