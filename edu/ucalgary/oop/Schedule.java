@@ -79,58 +79,80 @@ public class Schedule{
         }
     }
 
-    /**
-     */
-    public void addFeedingToTasks() throws BackUpVolunteerNeededException{
-        HashMap<String, List<String>> namesMap = new HashMap<>();
-        HashMap<String, Integer> feedMap = new HashMap<>();
-        HashMap<String, Integer> prepMap = new HashMap<>();
-        HashMap<String, Integer> windowMap = new HashMap<>();
-        HashMap<String, Integer> startHourMap = new HashMap<>();
+        /**
+         * Adds feeding tasks to the schedule for animals.
+         *
+         * @throws BackUpVolunteerNeededException if a backup volunteer is needed to complete the schedule
+         */
+        public void addFeedingToTasks() throws BackUpVolunteerNeededException {
+            // Create maps to store feeding-related information for each species
+            HashMap<String, List<String>> namesMap = new HashMap<>();
+            HashMap<String, Integer> feedMap = new HashMap<>();
+            HashMap<String, Integer> prepMap = new HashMap<>();
+            HashMap<String, Integer> windowMap = new HashMap<>();
+            HashMap<String, Integer> startHourMap = new HashMap<>();
         
-        for (Animal a : this.animals) {
-            if(!a.isOrphaned()){
-                String species = a.getSpecies();
-                startHourMap.put(species, a.getFeedStart());
-                windowMap.put(species, a.getFeedWindow());
-                List<String> speciseNames = namesMap.getOrDefault(species, new ArrayList<>());
-                speciseNames.add(a.getName());
-                namesMap.put(species, speciseNames);
-                prepMap.put(species, a.getFeedPrep());
-                feedMap.put(species, a.getFeedTime());
-            }
-        }
-        for (String species : namesMap.keySet()) {
-            List<String> nicknames = namesMap.get(species);
-            int startHour = startHourMap.get(species);
-            int maxWindow = windowMap.get(species);
-            int prep = prepMap.get(species);
-            String description = "Feeding - " + species;
-            boolean added = false;
-            do{
-                for (int hour = startHour; hour < startHour+maxWindow; hour++) {
-                    int scheduledDurationWithinMaxWindow = 0;
-                    int feed = feedMap.get(species);
-                    for (DailyTasks scheduledTreatment : hourlySchedule.get(hour)) {
-                        scheduledDurationWithinMaxWindow += scheduledTreatment.getDuration();
-                    }
-                    int feedTotal = feed;
-                    if(scheduledDurationWithinMaxWindow + (feed+prep)<= 60 * this.numVolunteers.get(hour)) {
-                        String foo = nicknames.remove(0);
-                        feedTotal += feed;
-                        do{
-                            if(nicknames.isEmpty()){break;}
-                            foo += ", " + nicknames.remove(0);
-                            feedTotal += feed;
-                        }while(scheduledDurationWithinMaxWindow + (feedTotal+prep)<= 60 * this.numVolunteers.get(hour));
-                        DailyTasks task = new DailyTasks(foo, description, startHour, feedTotal,maxWindow,prep);
-                        hourlySchedule.get(hour).add(task);
-                        added = true;
-                        break;
-                    }
+            // Populate the maps with feeding information for each animal
+            for (Animal a : this.animals) {
+                if (!a.isOrphaned()) {
+                    String species = a.getSpecies();
+                    startHourMap.put(species, a.getFeedStart());
+                    windowMap.put(species, a.getFeedWindow());
+                    List<String> speciesNames = namesMap.getOrDefault(species, new ArrayList<>());
+                    speciesNames.add(a.getName());
+                    namesMap.put(species, speciesNames);
+                    prepMap.put(species, a.getFeedPrep());
+                    feedMap.put(species, a.getFeedTime());
                 }
-            } while(!nicknames.isEmpty());
-            if(!added){
+            }
+        
+            // Iterate over each species and schedule feeding tasks
+            for (String species : namesMap.keySet()) {
+                List<String> nicknames = namesMap.get(species);
+                int startHour = startHourMap.get(species);
+                int maxWindow = windowMap.get(species);
+                int prep = prepMap.get(species);
+                String description = "Feeding - " + species;
+                boolean added = false;
+        
+                // Attempt to schedule feeding tasks within the available time window
+                do {
+                    for (int hour = startHour; hour < startHour + maxWindow; hour++) {
+                        int scheduledDurationWithinMaxWindow = 0;
+                        int feed = feedMap.get(species);
+        
+                        // Calculate the total scheduled duration within the max window
+                        for (DailyTasks scheduledTreatment : hourlySchedule.get(hour)) {
+                            scheduledDurationWithinMaxWindow += scheduledTreatment.getDuration();
+                        }
+        
+                        int feedTotal = feed;
+        
+                        // Check if there is enough time for feeding and preparation within the available volunteer hours
+                        if (scheduledDurationWithinMaxWindow + (feed + prep) <= 60 * this.numVolunteers.get(hour)) {
+                            String foo = nicknames.remove(0);
+                            feedTotal += feed;
+        
+                            // Add additional animals to the feeding task if time permits
+                            do {
+                                if (nicknames.isEmpty()) {
+                                    break;
+                                }
+                                foo += ", " + nicknames.remove(0);
+                                feedTotal += feed;
+                            } while (scheduledDurationWithinMaxWindow + (feedTotal + prep) <= 60 * this.numVolunteers.get(hour));
+        
+                            // Create a new feeding task and add it to the schedule
+                            DailyTasks task = new DailyTasks(foo, description, startHour, feedTotal, maxWindow, prep);
+                            hourlySchedule.get(hour).add(task);
+                            added = true;
+                            break;
+                        }
+                    }
+                } while (!nicknames.isEmpty());
+        
+                // If feeding tasks couldn't be scheduled, throw an exception indicating the need for a backup volunteer
+                if (!added) {
                     String ScheduleError = "Schedule cannot be made without backup volunteer\n" + species + " Could not be Feed";
                     resetHourlySchedule();
                     throw new BackUpVolunteerNeededException(ScheduleError);
