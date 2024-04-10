@@ -1,8 +1,11 @@
 package edu.ucalgary.oop;
 import java.time.LocalDate;
 /*
-@author Max McEvoy 30005167<a href="mailto:max.mcevoy@ucalgary.ca">
-max.mcevoy@ucalgary.ca</a>
+@author Group 10
+@author Max McEvoy <a href="mailto:max.mcevoy@ucalgary.ca"> max.mcevoy@ucalgary.ca</a>
+@author Chukwudiebube Anachebe
+@author Daniel Lee
+@author Michael Attia
 @version 2.1
 @since 1.0
 */

@@ -1,7 +1,10 @@
 package edu.ucalgary.oop;
 /*
-@author Max McEvoy 30005167<a href="mailto:max.mcevoy@ucalgary.ca">
-max.mcevoy@ucalgary.ca</a>
+@author Group 10
+@author Max McEvoy <a href="mailto:max.mcevoy@ucalgary.ca"> max.mcevoy@ucalgary.ca</a>
+@author Chukwudiebube Anachebe
+@author Daniel Lee
+@author Michael Attia
 @version 1.2
 @since 1.0
 */
