@@ -1,5 +1,10 @@
 package edu.ucalgary.oop;
-
+/*
+@author Max McEvoy 30005167<a href="mailto:max.mcevoy@ucalgary.ca">
+max.mcevoy@ucalgary.ca</a>
+@version 1.1
+@since 1.0
+*/
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -8,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.*;
@@ -75,7 +79,7 @@ public class GUIforEWR {
      * Initializes the SQL data by retrieving the treatment tasks and animal list
      * from the database.
      */
-    private void initSQL(String url, String user, String pw) throws SQLException {
+    public void initSQL(String url, String user, String pw) throws SQLException {
         myJDBC = new SQLData(url, user, pw);
         myJDBC.initializeConnection();
         this.treatments = myJDBC.getTreatmentTasks();
@@ -96,7 +100,7 @@ public class GUIforEWR {
      * @param color the background color of the button
      * @return the created button
      */
-    private JButton createButton(String text, Color color) {
+    public JButton createButton(String text, Color color) {
         JButton button = new JButton(text);
         button.setPreferredSize(new Dimension(200, 50));
         button.setBackground(color);
@@ -126,7 +130,7 @@ public class GUIforEWR {
      * 
      * @return boolean: connected successfully
      */
-    private boolean login() {
+    public boolean login() {
         JPanel panel = new JPanel(new GridLayout(0, 1));
         JTextField urlField = new JTextField(url);
         JTextField usernameField = new JTextField(user);
@@ -170,7 +174,7 @@ public class GUIforEWR {
      * any exceptions caught will appear as a dialog box
      * and will end this method without printing
      */
-    private void printSchedule() {
+    public void printSchedule() {
         schedule.resetHourlySchedule();
         try {
             while (!scheduleTasks("treatment")) {
@@ -207,7 +211,7 @@ public class GUIforEWR {
      * 
      * @return boolean: Treatments added to schedule
      */
-    private boolean scheduleTasks(String type) throws IllegalArgumentException {
+    public boolean scheduleTasks(String type) {
         boolean scheduleMade = false;
         try {
             schedule.buildSchedule(type);
@@ -238,7 +242,7 @@ public class GUIforEWR {
      * @param errorTask DailyTask: Task that could not be scheduled
      * @return boolean: Users choice
      */
-    private boolean askToAddBackupVolunteer(DailyTasks errorTask) {
+    public boolean askToAddBackupVolunteer(DailyTasks errorTask) {
         String backupVolunteerOption = String.format("Do you want to add a Backup Volunteer?");
         int tryBackup = JOptionPane.showConfirmDialog(null, backupVolunteerOption, "Backup Volunteer",
                 JOptionPane.YES_NO_OPTION);
@@ -254,7 +258,7 @@ public class GUIforEWR {
      * @param errorTask DailyTask: Task that could not be scheduled
      * @return hour that user selected to have a volunteer
      */
-    private int askForBackupVolunteerHour(DailyTasks errorTask) {
+    public int askForBackupVolunteerHour(DailyTasks errorTask) {
         JSlider slider = new JSlider(errorTask.getStartHour(),
                 errorTask.getStartHour() + errorTask.getMaxWindow() - 1);
         slider.setMajorTickSpacing(1);
@@ -272,7 +276,7 @@ public class GUIforEWR {
      * @param selectedValue hour to add a backup volunteer
      * @return boolean: Called backup volunteer to confirm
      */
-    private boolean confirmBackupVolunteer(int selectedValue) {
+    public boolean confirmBackupVolunteer(int selectedValue) {
         int confirm = JOptionPane.showConfirmDialog(null,
                 "Are you sure you want an extra volunteer at: " + selectedValue + ":00", "Backup Volunteer",
                 JOptionPane.YES_NO_OPTION);
@@ -283,7 +287,7 @@ public class GUIforEWR {
      * throws exception that schedule was not generated at
      * any point the user attempts to cancel or declines an option
      */
-    private void throwScheduleNotGeneratedException() {
+    public void throwScheduleNotGeneratedException() {
         throw new IllegalArgumentException("Schedule not Generated");
     }
 
@@ -291,7 +295,7 @@ public class GUIforEWR {
      * Displays the list of animals.
      * Not a requirement but we tossed it in anyway.
      */
-    private void displayAnimals() {
+    public void displayAnimals() {
         JFrame frame = new JFrame("Animal List");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(300, 350);
@@ -312,7 +316,7 @@ public class GUIforEWR {
      * Prompts the user to chose an hour that the
      * selected treatment will be moved to
      */
-    private int pickHour(int startHour) {
+    public int pickHour(int startHour) {
         JSpinner spinner = new JSpinner(new SpinnerNumberModel(startHour, 0, 23, 1));
         JLabel message = new JLabel("Please select a new hour:");
         JPanel panel = new JPanel(new GridLayout(0, 1));
@@ -346,7 +350,7 @@ public class GUIforEWR {
      * will stop any progress and return to
      * main frame.
      */
-    private void changeTreatmentTime() {
+    public void changeTreatmentTime() {
         try {
             initSQL(url, user, pass);
         } catch (Exception e) {

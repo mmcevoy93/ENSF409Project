@@ -142,17 +142,19 @@ class GUIforEWR{
 +changeTreatmentTime()
 }
 
+exception BackUpVolunteerNeededException{}
+
 exception SQLException{}
 interface Comparable{}
 interface Clonable{}
-GUIforEWR-->Schedule
-GUIforEWR-->SQLData
+GUIforEWR<..Schedule
+GUIforEWR<..SQLData
 DailyTasks::compareTo..|>Comparable
 DailyTasks::clone..|>Clonable
 SQLData..>SQLException : <throws>
-GUIforEWR..>SQLException : <throws>
-Schedule -- DailyTasks
-Schedule -- Animal
+Schedule <.. DailyTasks
+Schedule <.. Animal
+Schedule ..|> BackUpVolunteerNeededException:<throws>
 Nocturnal *-- Fox
 Nocturnal *-- Raccoon
 Crepuscular *-- Coyote
