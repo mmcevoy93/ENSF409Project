@@ -72,7 +72,6 @@ public class GUIforEWR {
         myJDBC.initializeConnection();
         tasks = myJDBC.getTreatmentTasks();
         animals = myJDBC.getAnimalList();
-        myJDBC.close();
     }
 
     /**
@@ -108,10 +107,16 @@ public class GUIforEWR {
      */
     private void printSchedule() {
         try {
+            // animals.add(new Beaver(1, "Robin Hood"));
+            // animals.add(new Beaver(2, "Maid Marian"));
+            // animals.add(new Porcupine(4, "Prince John"));
+            // tasks.add(new DailyTasks("Maid Marian", "Teeth Cleaning", 12, 5, 1));
+            // tasks.add(new DailyTasks("Robin Hood", "Remove arrow from knee", 12, 45, 1));
+            // tasks.add(new DailyTasks("Prince John", "Thumb Removal", 12, 25, 1));
             // Generate the schedule
             Schedule schedule = new Schedule(animals, tasks);
             String scheduleText = schedule.toString();
-
+            
             // Display the schedule in a dialog box
             JTextArea scheduleArea = new JTextArea(scheduleText);
             scheduleArea.setEditable(false);
@@ -142,21 +147,11 @@ public class GUIforEWR {
             // Display an error message if it's not possible to create a schedule
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Scheduling Error", JOptionPane.ERROR_MESSAGE);
 
-            // Prompt the user to modify treatment start hours
-            String input = JOptionPane.showInputDialog(frame,
-                    "Enter the new start hours for the affected treatments (comma-separated):");
-            if (input != null && !input.isEmpty()) {
-                String[] newStartHours = input.split(",");
-                SQLData myJDBC = new SQLData("jdbc:postgresql://localhost:5432/ewr", "oop", "ucalgary");
-                myJDBC.initializeConnection();
-                for (String startHour : newStartHours) {
-                    myJDBC.updateTreatmentStartHour(startHour.trim());
-                }
-                myJDBC.close();
-
-                // Regenerate the schedule
-                printSchedule();
-            }
+            //TODO 
+            //String input = JOptionPane.showInputDialog(frame,"Enter the new start hours for the affected treatments (comma-separated):");
+            // if (input != null && !input.isEmpty()) {
+                
+            // }
         }
     }
 
@@ -182,11 +177,8 @@ public class GUIforEWR {
      */
     private void displayTasks() {
         System.out.println("Treatment List");
-        String format = "| %-25s | %-10s | %-10s |\n";
-        String lineBreak = "+---------------------------+------------+------------+\n";
         StringBuilder sb = new StringBuilder();
-        sb.append(lineBreak);
-        sb.append(String.format(format, "Description", "Duration", "Max Window"));
+        sb.append(tasks + "\n");
         Set<String> uniqueDescriptions = new HashSet<>();
         for (DailyTasks t : tasks) {
             if (!uniqueDescriptions.contains(t.getDescription())) {
@@ -194,7 +186,7 @@ public class GUIforEWR {
                 uniqueDescriptions.add(t.getDescription());
             }
         }
-        sb.append(lineBreak);
+
         System.out.println(sb.toString());
     }
 

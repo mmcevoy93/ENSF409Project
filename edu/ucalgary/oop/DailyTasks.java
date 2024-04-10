@@ -16,7 +16,7 @@ max.mcevoy@ucalgary.ca</a>
  * Medical Treatments
  * Feeding
  */
-public class DailyTasks implements Comparable<DailyTasks> {
+public class DailyTasks implements Comparable<DailyTasks>, Cloneable  {
     private String animalName;
     private String description;
     private int startHour;
@@ -95,6 +95,15 @@ public class DailyTasks implements Comparable<DailyTasks> {
     }
 
     @Override
+    public DailyTasks clone() {
+        try {
+            return (DailyTasks) super.clone();
+        } catch (CloneNotSupportedException e) {
+            // This should never happen since we are Cloneable
+            throw new InternalError(e);
+        }
+    }
+    @Override
     public int compareTo(DailyTasks other) {
         // Used to sort by start hour then by max window
         int startHourComparison = Integer.compare(this.startHour, other.startHour);
@@ -107,7 +116,7 @@ public class DailyTasks implements Comparable<DailyTasks> {
     @Override
     public String toString(){
         //Used for GUI printing
-        String format = "| %-25s | %2d minutes | %d hour(s)  |\n";
-        return String.format(format, this.description, this.duration, this.maxWindow);
+        String format = "Task: %s for %s\nDuration: %s minutes\nBetween: %s:00 - %s:00";
+        return String.format(format, this.description, this.animalName,this.duration, this.startHour, this.startHour+this.maxWindow);
     }
 }

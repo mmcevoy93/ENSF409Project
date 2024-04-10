@@ -26,7 +26,10 @@ public class Schedule{
 
     public Schedule(List<Animal> animals, List<DailyTasks> tasks) throws BackUpVolunteerNeededException{
         this.animals = animals;      
-        this.tasks = tasks;
+        this.tasks = new ArrayList<>();
+        for (DailyTasks task : tasks) {
+            this.tasks.add(task.clone());
+        }
         for (int i = 0; i < 24; i++) {
             this.hourlySchedule.add(new ArrayList<>());
         }
@@ -74,7 +77,7 @@ public class Schedule{
             } 
         }
         if(!added){
-            throw new BackUpVolunteerNeededException("Schedule cannot be made without backup volunteer\n" + "Task: " + task.getDescription() + " at " + task.getStartHour() + ":00 for " + task.getAnimalName());
+            throw new BackUpVolunteerNeededException("Schedule cannot be made without backup volunteer\n" + task.toString() + "\nCould not be Scheduled");
         }
         
     }
@@ -103,6 +106,9 @@ public class Schedule{
         HashMap<String, Integer> startHour = new HashMap<>();
         String description = "Feed - ";
         for (Animal a : this.animals) {
+            if(a.isOrphaned()){
+               continue;
+            }
             String species = a.getSpecies();
             startHour.put(species, a.getFeedStart());
             window.put(species, a.getFeedWindow());
@@ -120,6 +126,7 @@ public class Schedule{
                         startHour.get(species), feed.get(species),
                         window.get(species),    prep.get(species)
                 ));
+                
             }
         }
     }
@@ -151,7 +158,7 @@ public class Schedule{
     public void buildSchedule() throws BackUpVolunteerNeededException{
         addFeedingToTasks();
         Collections.sort(this.tasks);
-        for (DailyTasks t : tasks) {
+        for (DailyTasks t : this.tasks) {
             addTasksToHours(t);
         }
         addCleaningToTasks();//lowest priority
