@@ -93,6 +93,9 @@ public class TestEWRScheduler {
             tasks.add(new DailyTasks("Prince John", "Thumb Removal", 12, 25, 1));
 
             Schedule schedule = new Schedule(animals, tasks);
+            schedule.buildSchedule("treatment");
+            schedule.buildSchedule("feeding");
+            schedule.buildSchedule("cleaning");
             System.out.println(schedule);
         }
         catch(Exception e){
@@ -152,7 +155,7 @@ public class TestEWRScheduler {
 
         animals.add(new Fox(1, "Robin Hood"));
         animals.add(new Fox(2, "Maid Marian"));
-        animals.add(new Porcupine(4, "Prince John"));
+        animals.add(new Fox(4, "Prince John"));
 
         tasks.add(new DailyTasks("Maid Marian", "Teeth Cleaning", 0, 40, 1));
 
@@ -168,6 +171,7 @@ public class TestEWRScheduler {
 
         try {
             testSchedule.buildSchedule("feeding");
+            testSchedule.buildSchedule("cleaning");
         } catch (BackUpVolunteerNeededException e) {
             throw new RuntimeException(e);
         }
@@ -180,15 +184,12 @@ public class TestEWRScheduler {
                 "2024-04-10\n" +
                         "00:00\n" +
                         " * Teeth Cleaning (Maid Marian)\n" +
-                        " * Feed - fox (Robin Hood, Maid Marian, Prince John)\n" +
+                        " * Feeding - fox (Robin Hood, Maid Marian, Prince John)\n" +
                         "\n" +
                         "01:00\n" +
                         " * Cage Cleaning (Robin Hood)\n" +
                         " * Cage Cleaning (Maid Marian)\n" +
-                        " * Cage Cleaning (Prince John)\n" +
-                        "\n" +
-                        "12:00\n" +
-                        " * Remove arrow from knee (Robin Hood)\n";
+                        " * Cage Cleaning (Prince John)\n";
 
 
         Assert.assertEquals("feeding and treatment do not fit in the same hour", expected, scheduleOutput);
