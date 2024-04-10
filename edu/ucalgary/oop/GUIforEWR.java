@@ -7,7 +7,6 @@ max.mcevoy@ucalgary.ca</a>
 */
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -84,12 +83,6 @@ public class GUIforEWR {
         myJDBC.initializeConnection();
         this.treatments = myJDBC.getTreatmentTasks();
         this.animals = myJDBC.getAnimalList();
-        // this.animals.add(new Fox(1, "Robin Hood"));
-        // this.animals.add(new Fox(2, "Maid Marian"));
-        // this.animals.add(new Fox(4, "Prince John"));
-        // this.treatments.add(new DailyTasks("Maid Marian", "Teeth Cleaning", 0, 45, 1));
-        // this.treatments.add(new DailyTasks("Robin Hood", "Remove arrow from knee", 12, 40, 1));
-        // this.treatments.add(new DailyTasks("Prince John", "Remove Thumb", 12, 40, 1));
         this.schedule = new Schedule(this.animals, this.treatments);
     }
 
@@ -278,7 +271,7 @@ public class GUIforEWR {
      */
     public boolean confirmBackupVolunteer(int selectedValue) {
         int confirm = JOptionPane.showConfirmDialog(null,
-                "Are you sure you want an extra volunteer at: " + selectedValue + ":00", "Backup Volunteer",
+                "Have you called and confirmed a backup volunteer at\n: " + selectedValue + ":00", "Backup Volunteer",
                 JOptionPane.YES_NO_OPTION);
         return confirm == JOptionPane.YES_OPTION;
     }

@@ -163,10 +163,4 @@ Diurnal *-- Beaver
 Animal *-- Diurnal
 Animal *-- Crepuscular
 Animal *-- Nocturnal
-
-
-
-
-
-
 @enduml
