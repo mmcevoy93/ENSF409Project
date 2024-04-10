@@ -5,6 +5,7 @@ max.mcevoy@ucalgary.ca</a>
 @version 1.5
 @since 1.0
 */
+import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -138,6 +139,110 @@ public class TestEWRScheduler {
             passed = false;
         }
         assertTrue("Valid Schedule throw IllegalArgumentException when attempting to make valid schedule", passed);
+    }
+
+    /**
+     * Test to check that feeding and treatments can fit in the same hour if possible
+     **/
+    @Test
+    public void feedingAndTreatmentInSameHour(){
+        //initializing list of animals and tasks
+        List<Animal> animals = new ArrayList<>();
+        List<DailyTasks> tasks = new ArrayList<>();
+
+        animals.add(new Fox(1, "Robin Hood"));
+        animals.add(new Fox(2, "Maid Marian"));
+        animals.add(new Porcupine(4, "Prince John"));
+
+        tasks.add(new DailyTasks("Maid Marian", "Teeth Cleaning", 0, 40, 1));
+
+        //initializing schedule class
+        Schedule testSchedule = new Schedule(animals, tasks);
+
+        //building schedule for treatment and for feeding
+        try {
+            testSchedule.buildSchedule("treatment");
+        } catch (BackUpVolunteerNeededException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            testSchedule.buildSchedule("feeding");
+        } catch (BackUpVolunteerNeededException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Storing actual result from the code
+        String scheduleOutput = testSchedule.toString();
+
+        // Storing expected result
+        String expected =
+                "2024-04-10\n" +
+                        "00:00\n" +
+                        " * Teeth Cleaning (Maid Marian)\n" +
+                        " * Feed - fox (Robin Hood, Maid Marian, Prince John)\n" +
+                        "\n" +
+                        "01:00\n" +
+                        " * Cage Cleaning (Robin Hood)\n" +
+                        " * Cage Cleaning (Maid Marian)\n" +
+                        " * Cage Cleaning (Prince John)\n" +
+                        "\n" +
+                        "12:00\n" +
+                        " * Remove arrow from knee (Robin Hood)\n";
+
+
+        Assert.assertEquals("feeding and treatment do not fit in the same hour", expected, scheduleOutput);
+
+    }
+
+    /**
+     * Test to check that feeding the same species can split across two hours
+     **/
+    public void splittingFeedingSameSpecies(){
+        //initializing list of animals and tasks
+        List<Animal> animals = new ArrayList<>();
+        List<DailyTasks> tasks = new ArrayList<>();
+
+        animals.add(new Fox(1, "Robin Hood"));
+        animals.add(new Fox(2, "Maid Marian"));
+        animals.add(new Porcupine(4, "Prince John"));
+
+        tasks.add(new DailyTasks("Maid Marian", "Teeth Cleaning", 0, 45, 1));
+
+        //initializing schedule class
+        Schedule testSchedule = new Schedule(animals, tasks);
+
+        //building schedule for treatment and for feeding
+        try {
+            testSchedule.buildSchedule("treatment");
+        } catch (BackUpVolunteerNeededException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            testSchedule.buildSchedule("feeding");
+        } catch (BackUpVolunteerNeededException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Storing actual result from the code
+        String scheduleOutput = testSchedule.toString();
+
+        // Storing expected result
+        String expected =
+                "2024-04-10\n" +
+                        "00:00\n" +
+                        " * Teeth Cleaning (Maid Marian)\n" +
+                        " * Feed - fox (Robin Hood, Maid Marian)\n" +
+                        "\n" +
+                        "01:00\n" +
+                        " * Feed - fox (Prince John)\n" +
+                        " * Cage Cleaning (Robin Hood)\n" +
+                        " * Cage Cleaning (Maid Marian)\n" +
+                        " * Cage Cleaning (Prince John)\n";
+
+        
+        Assert.assertEquals("feeding and treatment do not fit in the same hour", expected, scheduleOutput);
     }
 
     /**
