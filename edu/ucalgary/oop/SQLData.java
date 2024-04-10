@@ -24,6 +24,7 @@ public class SQLData {
     private List<DailyTasks> tasks = new ArrayList<>();
 
     /**
+     * Constructor initalizes, makes two queries then closes.
      * 
      * @param url  String: database address
      * @param user String: username
@@ -44,28 +45,31 @@ public class SQLData {
         selectTreatmentsData();
         close();
     }
+
     /**
-     * Updates the start hour of a treatment in the database
-     *
-     * @param startHour the new start hour for the treatment
+     * Updates Treatment start time given new hour and
+     * A Daily Task. Does not check if a proper treatment
+     * @param newStart int: hour to move treatment
+     * @param selectedTreatment DailyTask: Treatment task to be moved
      */
-    public void updateTreatmentStartHour(int newStart, String animalNickname, String description, int oldStart) {
+    public void updateTreatmentStartHour(int newStart, DailyTasks selectedTreatment) {
+        String animalNickname=selectedTreatment.getAnimalName();
+        String description =selectedTreatment.getDescription();
+        int oldStart =selectedTreatment.getStartHour();
         String query = "UPDATE TREATMENTS " +
-        "SET StartHour = %d " +
-        "WHERE AnimalID = (SELECT AnimalID FROM ANIMALS WHERE AnimalNickname = '%s') " +
-        "AND TaskID = (SELECT TaskID FROM TASKS WHERE Description = '%s') " +
-        "AND StartHour = %d;";
+                        "SET StartHour = %d " +
+                        "WHERE AnimalID = (SELECT AnimalID FROM ANIMALS WHERE AnimalNickname = '%s') " +
+                        "AND TaskID = (SELECT TaskID FROM TASKS WHERE Description = '%s') " +
+                        "AND StartHour = %d;";
         query = String.format(query, newStart, animalNickname, description, oldStart);
 
-    
         try {
             Statement myStmt = dbConnect.createStatement();
             myStmt.executeUpdate(query);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-    
+    }    
    
     /**
      * Initializes connection to database

@@ -321,10 +321,7 @@ public class GUIforEWR {
                                                             JOptionPane.YES_NO_OPTION);
                         if (confirm == JOptionPane.YES_OPTION) {
                             try{
-                                myJDBC.updateTreatmentStartHour(newHour, 
-                                                            selectedTreatment.getAnimalName(), 
-                                                            selectedTreatment.getDescription(),
-                                                            selectedTreatment.getStartHour());
+                                myJDBC.updateTreatmentStartHour(newHour, selectedTreatment);
                             } catch(Exception ex){
                                 return;
                             }
