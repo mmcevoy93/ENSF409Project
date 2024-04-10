@@ -438,7 +438,7 @@ public class TestEWRScheduler {
         Coyote testCoyote = new Coyote(animalID, name);
 
         String actual = testCoyote.toString();
-        String expected = String.format("| %-3s | %-24s | %-15s |\n", animalID, name, "testCoyote");;
+        String expected = String.format("| %-3s | %-24s | %-15s |\n", animalID, name, "coyote");;
 
         assertEquals(actual, expected, "Coyote does not inherit from the Animal Class properly to access toString() method");
 
