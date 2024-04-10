@@ -477,4 +477,142 @@ public class TestEWRScheduler {
 
     }
 
+    /**
+     * Test to see if a Raccoon object is created when instantiated
+     * */
+    @Test
+    public void RaccoonObjectTest(){
+        String name = "roony";
+        int animalID = 7;
+
+        Raccoon testRaccoon = new Raccoon(animalID, name);
+        assertInstanceOf(Raccoon.class, testRaccoon, "'testRaccoon' is not an object of the Raccoon class");
+
+    }
+
+    /**
+     * Test to see if Raccoon object extends Nocturnal
+     **/
+    @Test
+    public void raccoonObjectCrepuscularTest(){
+        String name = "roony";
+        int animalID = 7;
+
+        Raccoon testRaccoon = new Raccoon(animalID, name);
+        assertInstanceOf(Nocturnal.class, testRaccoon, "'testRaccoon' does not inherit from the Nocturnal Class properly");
+    }
+
+    /**
+     * Test to see if Raccoon object extends Animal
+     **/
+    @Test
+    public void raccoonObjectAnimalTest(){
+        String name = "roony";
+        int animalID = 7;
+
+        Raccoon testRaccoon = new Raccoon(animalID, name);
+        assertInstanceOf(Animal.class, testRaccoon, "raccoon does not extend from the Animal Class properly ");
+
+    }
+
+    /**
+     * Test to see if getFeed() method returns the correct value
+     **/
+    @Test
+    public void raccoonGetFeedTest() {
+        String name = "roony";
+        int animalID = 7;
+
+        Raccoon testRaccoon = new Raccoon(animalID, name);
+        int actual = testRaccoon.getFeedTime();
+        int expected = 5;
+
+        // make new Raccoon object
+        // get Raccoon feed time
+        // assert result
+        assertEquals(actual, expected, "getFeed() does not return the correct value");
+    }
+
+    /**
+     * Test to see if getPrep() method returns the correct value
+     **/
+    @Test
+    public void raccoonGetFeedPrepTest() {
+        String name = "roony";
+        int animalID = 7;
+
+        Raccoon testRaccoon = new Raccoon(animalID, name);
+        int actual = testRaccoon.getFeedPrep();
+        int expected = 0;
+
+        // make new raccoon object
+        // get raccoon feed time
+        // assert result
+        assertEquals(actual, expected, "getPrep() does not return the correct value");
+    }
+
+    /**
+     * Test to see if getCleanTime() method returns the correct value
+     **/
+    @Test
+    public void raccoonGetCleanTimeTest() {
+        String name = "roony";
+        int animalID = 7;
+
+        Raccoon testRaccoon = new Raccoon(animalID, name);
+        int actual = testRaccoon.getCleanTime();
+        int expected = 5;
+
+        // make new Raccoon object
+        // get Raccoon feed time
+        // assert result
+        assertEquals(actual, expected, "getCleanTime() does not return the correct value");
+    }
+
+    /**
+     * Test extension of Nocturnal Class for getFeedWindow method
+     * */
+    @Test
+    public void getFeedWindowTestForNocturnal(){
+        String name = "roony";
+        int animalID = 7;
+        Raccoon testRaccoon = new Raccoon(animalID, name);
+
+        int actual =  testRaccoon.getFeedWindow();
+        int expected = 3;
+
+        assertEquals(actual, expected, "Raccoon does not inherit from the Nocturnal Class properly to access getFeedWindow()");
+    }
+
+    /**
+     * Test inheritance of Nocturnal Class for getFeedStart method
+     * */
+    @Test
+    public void getFeedStartTestForNocturnal(){
+        String name = "roony";
+        int animalID = 7;
+        Raccoon testRaccoon = new Raccoon(animalID, name);
+
+        int actual = testRaccoon.getFeedStart();
+        int expected = 0;
+
+        assertEquals(actual, expected, "Raccoon does not inherit form the Nocturnal Class properly to access getFeedStart ");
+
+    }
+
+    /**
+     * Test inheritance of Animal Class for Raccoon
+     * */
+    @Test
+    public void printToStringTestForRaccoon(){
+        String name = "roony";
+        int animalID = 16;
+        Raccoon testRaccoon = new Raccoon(animalID, name);
+
+        String actual = testRaccoon.toString();
+        String expected = String.format("| %-3s | %-24s | %-15s |\n", animalID, name, "raccoon");;
+
+        assertEquals(actual, expected, "Raccoon does not inherit from the Animal Class properly to access toString() method");
+
+    }
 }
