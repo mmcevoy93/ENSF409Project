@@ -1,6 +1,8 @@
 package edu.ucalgary.oop;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,11 +11,16 @@ import java.io.IOException;
 import java.util.List;
 import java.util.*;
 
+
+
 /**
- * The GUIforEWR class represents the graphical user interface for the Wildlife Rescue Management System.
- * It provides functionality to display the daily schedule, animal list, and treatment tasks.
+ * The GUIforEWR class represents the graphical user interface for the Wildlife
+ * Rescue Management System.
+ * It provides functionality to display the daily schedule, animal list, and
+ * treatment tasks.
  */
 public class GUIforEWR {
+    private SQLData myJDBC;
     private JFrame frame;
     private JButton printScheduleBtn;
     private JButton displayAnimalsBtn;
@@ -21,6 +28,9 @@ public class GUIforEWR {
     private List<Animal> animals = new ArrayList<>();
     private List<DailyTasks> treatments = new ArrayList<>();
     private Schedule schedule;
+    private String url = "jdbc:postgresql://localhost:5432/ewr";
+    private String user = "oop";
+    private String pass = "ucalgary";
     /**
      * Constructs a new GUIforEWR object and initializes the GUI components.
      */
@@ -37,7 +47,7 @@ public class GUIforEWR {
         // Create the buttons
         printScheduleBtn = createButton("Print Schedule", Color.BLUE);
         displayAnimalsBtn = createButton("Display Animals", Color.GREEN);
-        displayTasksBtn = createButton("Display Tasks", Color.ORANGE);
+        displayTasksBtn = createButton("Move a Treatment", Color.ORANGE);
 
         // Add the buttons to the button panel
         buttonPanel.add(printScheduleBtn);
@@ -59,16 +69,18 @@ public class GUIforEWR {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        while(!login()) {
+            
+        }
 
-        // Initialize the SQL data
-        initSQL();
     }
 
     /**
-     * Initializes the SQL data by retrieving the treatment tasks and animal list from the database.
+     * Initializes the SQL data by retrieving the treatment tasks and animal list
+     * from the database.
      */
-    private void initSQL() {
-        SQLData myJDBC = new SQLData("jdbc:postgresql://localhost:5432/ewr", "oop", "ucalgary");
+    private void initSQL(String url, String user, String pw) throws Exception {
+        myJDBC = new SQLData(url, user, pw);
         myJDBC.initializeConnection();
         this.treatments = myJDBC.getTreatmentTasks();
         this.animals = myJDBC.getAnimalList();
@@ -96,22 +108,59 @@ public class GUIforEWR {
                 } else if (e.getSource() == displayAnimalsBtn) {
                     displayAnimals();
                 } else if (e.getSource() == displayTasksBtn) {
-                    displayTasks();
+                    changeTreatmentTime();
                 }
             }
         });
         return button;
     }
 
+    private boolean login() {
+
+        JPanel panel = new JPanel(new GridLayout(0, 1));
+        JTextField urlField = new JTextField(url);
+        JTextField usernameField = new JTextField(user);
+        JTextField passwordField = new JPasswordField(pass);
+        panel.add(new JLabel("URL:"));
+        panel.add(urlField);
+        panel.add(new JLabel("Username:"));
+        panel.add(usernameField);
+        panel.add(new JLabel("Password:"));
+        panel.add(passwordField);
+        // Show the option dialog
+        int result = JOptionPane.showConfirmDialog(null, panel, "Login", JOptionPane.OK_CANCEL_OPTION);
+
+        if (result == JOptionPane.OK_OPTION) {
+            user = usernameField.getText();
+            pass = passwordField.getText();
+            url = urlField.getText();
+            try {
+                initSQL(url, user, pass);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+                return false;
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Prints the daily schedule.
      */
     private void printSchedule() {
-        try{
-            while(!scheduleTreatments()){}
-        }
-        catch (Exception e){
-            JOptionPane.showMessageDialog(null,e.getMessage());
+        
+        try {
+            while (!scheduleTasks("treatment")) {
+            }
+            while (!scheduleTasks("feeding")) {
+            }
+            while (!scheduleTasks("cleaning")) {
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            return;
         }
         // Display the schedule in a dialog box
         JTextArea scheduleArea = new JTextArea(schedule.toString());
@@ -127,59 +176,58 @@ public class GUIforEWR {
             System.out.println("Schedule saved to " + fileName);
         } catch (IOException e) {
             System.out.println("Error saving schedule to file: " + e.getMessage());
-        }        
+        }
     }
-
 
     /**
      * Attempts to add all Treatments to Schedule
      * If it is impossible it will ask user if they
      * want to add a backup volunteer
      * if buildSchedule throws exception it will return false
+     * 
      * @return boolean: Treatments added to schedule
      */
-    private boolean scheduleTreatments() throws IllegalArgumentException{
+    private boolean scheduleTasks(String type) throws IllegalArgumentException {
         boolean scheduleMade = false;
-        try{
-            schedule.buildSchedule("treatment");
+        try {
+            schedule.buildSchedule(type);
             scheduleMade = true;
-        } 
-        catch (BackUpVolunteerNeededException e) {
+        } catch (BackUpVolunteerNeededException e) {
             DailyTasks errorTask = e.getTask();
             // Display an error message if it's not possible to create a schedule
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Scheduling Error", JOptionPane.ERROR_MESSAGE);
             String backupVolunterOption = String.format("Do you want to add a Backup Volunteer?");
-            //Ask if we want to add a backupvolunteer
-            int TryBackup = JOptionPane.showConfirmDialog(null, backupVolunterOption, "Backup Volunteer", JOptionPane.YES_NO_OPTION);
-            
+            // Ask if we want to add a backupvolunteer
+            int TryBackup = JOptionPane.showConfirmDialog(null, backupVolunterOption, "Backup Volunteer",
+                    JOptionPane.YES_NO_OPTION);
+
             if (TryBackup == JOptionPane.YES_OPTION) {
-                JSlider slider = new JSlider(errorTask.getStartHour(), errorTask.getStartHour()+errorTask.getMaxWindow()-1);
+                JSlider slider = new JSlider(errorTask.getStartHour(),
+                        errorTask.getStartHour() + errorTask.getMaxWindow() - 1);
                 slider.setMajorTickSpacing(1);
                 slider.setPaintTicks(true);
                 slider.setPaintLabels(true);
                 int option = JOptionPane.showOptionDialog(null, slider, "Select an hour for a backup volunteer:",
                         JOptionPane.YES_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
-                if(option != JOptionPane.NO_OPTION && option != JOptionPane.CLOSED_OPTION){
+                if (option != JOptionPane.NO_OPTION && option != JOptionPane.CLOSED_OPTION) {
                     int selectedValue = slider.getValue();
-                    int confirm = JOptionPane.showConfirmDialog(null,"Are you sure you want an extra volunteer at: " + selectedValue + ":00", "Backup Volunteer", JOptionPane.YES_NO_OPTION);
-                    if(confirm == JOptionPane.YES_OPTION){
+                    int confirm = JOptionPane.showConfirmDialog(null,
+                            "Are you sure you want an extra volunteer at: " + selectedValue + ":00", "Backup Volunteer",
+                            JOptionPane.YES_NO_OPTION);
+                    if (confirm == JOptionPane.YES_OPTION) {
                         schedule.addBackupVolunteer(errorTask.getStartHour());
-                    }
-                    else{
+                    } else {
                         throw new IllegalArgumentException("Schedule not Generated");
                     }
-                }else{
+                } else {
                     throw new IllegalArgumentException("Schedule not Generated");
                 }
-            }
-            else{
+            } else {
                 throw new IllegalArgumentException("Schedule not Generated");
             }
         }
         return scheduleMade;
     }
-
-
 
     /**
      * Displays the list of animals.
@@ -201,19 +249,100 @@ public class GUIforEWR {
     /**
      * Displays the list of treatment tasks.
      */
-    private void displayTasks() {
-        // System.out.println("Treatment List");
-        // StringBuilder sb = new StringBuilder();
-        // sb.append(tasks + "\n");
-        // Set<String> uniqueDescriptions = new HashSet<>();
-        // for (DailyTasks t : tasks) {
-        //     if (!uniqueDescriptions.contains(t.getDescription())) {
-        //         sb.append(t);
-        //         uniqueDescriptions.add(t.getDescription());
-        //     }
-        // }
+    private int pickHour(int startHour) {
+        JSpinner spinner = new JSpinner(new SpinnerNumberModel(startHour, 0, 23, 1));
+        JLabel message = new JLabel("Please select a new hour:");
+        JPanel panel = new JPanel(new GridLayout(0, 1));
+        panel.add(message);
+        panel.add(spinner);
 
-        // System.out.println(sb.toString());
+        int option = JOptionPane.showConfirmDialog(
+                null,
+                panel,
+                "Select Hour",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
+
+        if (option == JOptionPane.OK_OPTION) {
+            return (int) spinner.getValue();
+        } else {
+            return -1;
+        }
+    }
+
+    private void changeTreatmentTime() {
+        try{
+        initSQL(url, user, pass);
+    }
+    catch (Exception e){
+        
+    }
+        Collections.sort(this.treatments);
+        JFrame treatmentFrame = new JFrame("Select Treatment");
+        treatmentFrame.setSize(600, 400);
+        treatmentFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.addColumn("Start Hour");
+        tableModel.addColumn("Animal");
+        tableModel.addColumn("Description");
+        tableModel.addColumn("Duration");
+        tableModel.addColumn("Max Window");
+
+        // Populate table model with treatment data
+        for (DailyTasks task : treatments) {
+            tableModel.addRow(new Object[] { task.getStartHour()+":00",task.getAnimalName(), task.getDescription(),
+                    task.getDuration(), task.getMaxWindow() });
+        }
+
+        JTable treatmentTable = new JTable(tableModel);
+        treatmentTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane scrollPane = new JScrollPane(treatmentTable);
+
+        JButton selectButton = new JButton("Select");
+        selectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = treatmentTable.getSelectedRow();
+                if (selectedRow != -1) {
+                    // Get the selected treatment
+                    DailyTasks selectedTreatment = treatments.get(selectedRow);
+                    int newHour = pickHour(selectedTreatment.getStartHour());
+                    // Perform further actions with the selected treatment
+                    if(newHour!=-1){
+                        int confirm = JOptionPane.showConfirmDialog(null, "Are you Sure you want to move" +
+                                                            "\nTreatment: " + selectedTreatment.getDescription()+
+                                                            "\nFor: " + selectedTreatment.getAnimalName() +
+                                                            "\nfrom: " + selectedTreatment.getStartHour()+
+                                                            "\nto: " + newHour,
+                                                            "Confirm Change",
+                                                            JOptionPane.YES_NO_OPTION);
+                        if (confirm == JOptionPane.YES_OPTION) {
+                            try{
+                                myJDBC.updateTreatmentStartHour(newHour, 
+                                                            selectedTreatment.getAnimalName(), 
+                                                            selectedTreatment.getDescription(),
+                                                            selectedTreatment.getStartHour());
+                            } catch(Exception ex){
+                                return;
+                            }
+                            treatmentFrame.dispose();
+                        }
+                        // Close the frame after selecting
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Please select a treatment.");
+                    }
+                }
+                
+            }
+        });
+
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(selectButton, BorderLayout.SOUTH);
+
+        treatmentFrame.add(panel);
+        treatmentFrame.setVisible(true);
     }
 
     public static void main(String[] args) {

@@ -22,6 +22,7 @@ import java.util.*;
 public class Schedule{
     private List<Animal> animals; // Array of animals (from SQLData file)
     private List<DailyTasks> treatments = new ArrayList<>();
+    private List<DailyTasks> cleanings = new ArrayList<>();
     private List<List<DailyTasks>> hourlySchedule = new ArrayList<>();
     private List<Integer> numVolunteers = new ArrayList<>();
 
@@ -30,11 +31,7 @@ public class Schedule{
         for (DailyTasks t : treatments) {
             this.treatments.add(t.clone());
         }
-        this.hourlySchedule.clear();
-        for (int i = 0; i < 24; i++) {
-            this.hourlySchedule.add(new ArrayList<>());
-            this.numVolunteers.add(1);
-        }
+        resetHourlySchedule();
     }
 
 
@@ -73,13 +70,18 @@ public class Schedule{
         }
         if(!added){
             String ScheduleError = "Schedule cannot be made without backup volunteer\n" + task.toString() + "\nCould not be Scheduled";
+            this.hourlySchedule.clear();
+            for (int i = 0; i < 24; i++) {
+                this.hourlySchedule.add(new ArrayList<>());
+                this.numVolunteers.add(1);
+            }
             throw new BackUpVolunteerNeededException(ScheduleError, task);
         }
     }
 
     /**
      */
-    public void addFeedingToTasks() throws BackUpVolunteerNeededException {
+    public void addFeedingToTasks() throws BackUpVolunteerNeededException{
         HashMap<String, List<String>> namesMap = new HashMap<>();
         HashMap<String, Integer> feedMap = new HashMap<>();
         HashMap<String, Integer> prepMap = new HashMap<>();
@@ -98,20 +100,17 @@ public class Schedule{
                 feedMap.put(species, a.getFeedTime());
             }
         }
-        
         for (String species : namesMap.keySet()) {
             List<String> nicknames = namesMap.get(species);
             int startHour = startHourMap.get(species);
             int maxWindow = windowMap.get(species);
             int prep = prepMap.get(species);
+            String description = "Feeding - " + species;
             boolean added = false;
-            String description = "Feed - " + species;
-            
             do{
                 for (int hour = startHour; hour < startHour+maxWindow; hour++) {
                     int scheduledDurationWithinMaxWindow = 0;
                     int feed = feedMap.get(species);
-
                     for (DailyTasks scheduledTreatment : hourlySchedule.get(hour)) {
                         scheduledDurationWithinMaxWindow += scheduledTreatment.getDuration();
                     }
@@ -131,12 +130,13 @@ public class Schedule{
                     }
                 }
             } while(!nicknames.isEmpty());
-            if(!added) {
-                String ScheduleError = "Schedule cannot be made without backup volunteer\n" + species + " Could not be Feed";
-                throw new BackUpVolunteerNeededException(ScheduleError);
+            if(!added){
+                    String ScheduleError = "Schedule cannot be made without backup volunteer\n" + species + " Could not be Feed";
+                    resetHourlySchedule();
+                    throw new BackUpVolunteerNeededException(ScheduleError);
+                }
             }
         }
-    }
 
     /**
      * Cleaning tasks only need to be once
@@ -163,7 +163,6 @@ public class Schedule{
      * throw the schedule error
      */
     public void buildSchedule(String type) throws BackUpVolunteerNeededException{
-        
         if(type.equals("treatment")){
             Collections.sort(this.treatments);
             for (DailyTasks t : this.treatments) {
@@ -174,7 +173,18 @@ public class Schedule{
             addFeedingToTasks();
         }
         if(type.equals("cleaning")){
-            addCleaningToTasks();     
+            addCleaningToTasks();
+            for (DailyTasks c : this.cleanings){
+                addTaskToHours(c);
+            }  
+        }
+    }
+
+    private void resetHourlySchedule(){
+        this.hourlySchedule.clear();
+        for (int i = 0; i < 24; i++) {
+            this.hourlySchedule.add(new ArrayList<>());
+            this.numVolunteers.add(1);
         }
     }
     
@@ -214,12 +224,13 @@ public class Schedule{
         animals.add(new Fox(1, "Robin Hood"));
         animals.add(new Fox(2, "Maid Marian"));
         animals.add(new Fox(4, "Prince John"));
-        treatments.add(new DailyTasks("Maid Marian", "Teeth Cleaning", 0, 40, 1));
+        treatments.add(new DailyTasks("Maid Marian", "Teeth Cleaning", 0, 45, 1));
         treatments.add(new DailyTasks("Robin Hood", "Remove arrow from knee", 12, 40, 1));
 
         Schedule schedule = new Schedule(animals,treatments );  // Instantiates a Schedule with information form the AnimalList
         schedule.buildSchedule("treatment");
         schedule.buildSchedule("feeding");
+        schedule.buildSchedule("cleaning");
         System.out.println(schedule);
     }
 }

@@ -5,16 +5,15 @@
  
  */
 
-DROP DATABASE IF EXISTS EWR;
-CREATE DATABASE EWR; 
-USE EWR;
+-- DROP DATABASE IF EXISTS EWR;
+-- CREATE DATABASE EWR; 
+-- \c EWR
 
 DROP TABLE IF EXISTS ANIMALS;
 CREATE TABLE ANIMALS (
-	AnimalID		int not null AUTO_INCREMENT,
-    AnimalNickname		varchar(25),
-	AnimalSpecies		varchar(25),
-	primary key (AnimalID)
+	AnimalID		int not null PRIMARY KEY,
+        AnimalNickname		varchar(25),
+	AnimalSpecies		varchar(25)
 );
 
 INSERT INTO ANIMALS (AnimalID, AnimalNickname, AnimalSpecies) VALUES
@@ -36,11 +35,10 @@ INSERT INTO ANIMALS (AnimalID, AnimalNickname, AnimalSpecies) VALUES
 
 DROP TABLE IF EXISTS TASKS;
 CREATE TABLE TASKS (
-	TaskID			int not null AUTO_INCREMENT,
+	TaskID			int not null PRIMARY KEY,
 	Description		varchar(50),
         Duration                int,
-        MaxWindow               int,
-	primary key (TaskID)
+        MaxWindow               int
 );
 
 INSERT INTO TASKS (TaskID, Description, Duration, MaxWindow) VALUES
@@ -57,42 +55,40 @@ INSERT INTO TASKS (TaskID, Description, Duration, MaxWindow) VALUES
 
 DROP TABLE IF EXISTS TREATMENTS;
 CREATE TABLE TREATMENTS (
-    TreatmentID	int not null AUTO_INCREMENT,
+      	TreatmentID	int not null PRIMARY KEY,
 	AnimalID	int not null,
 	TaskID		int not null,
-	StartHour	int not null,
-	primary key (TreatmentID)
+	StartHour	int not null
 );
 
-INSERT INTO TREATMENTS (AnimalID, TaskID, StartHour) VALUES
-(6, 1, 0),
-(6, 1, 2),
-(6, 1, 4),
-(6, 1, 6),
-(6, 1, 8),
-(6, 1, 10),
-(6, 1, 12),
-(6, 1, 14),
-(6, 1, 16),
-(6, 1, 18),
-(6, 1, 20),
-(6, 1, 22),
-(1, 9, 22),
-(2, 10, 13),
-(2, 9, 13),
-(3, 7, 13),
-(4, 7, 13),
-(5, 7, 13),
-(7, 2, 19),
-(8, 5, 6),
-(8, 4, 6),
-(8, 4, 18),
-(9, 9, 22),
-(10, 7, 23),
-(11, 8, 23),
-(12, 3, 15),
-(13, 6, 22),
-(14, 10, 13),
-(14, 8, 13),
-(15, 8, 13);
-
+INSERT INTO TREATMENTS (TreatmentID, AnimalID, TaskID, StartHour) VALUES
+(1,6, 1, 0),
+(2,6, 1, 2),
+(3, 6, 1, 4),
+(4, 6, 1, 6),
+(5, 6, 1, 8),
+(6, 6, 1, 10),
+(7, 6, 1, 12),
+(8, 6, 1, 14),
+(9, 6, 1, 16),
+(10, 6, 1, 18),
+(11, 6, 1, 20),
+(12, 6, 1, 22),
+(13, 1, 9, 22),
+(14, 2, 10, 13),
+(15, 2, 9, 13),
+(16, 3, 7, 13),
+(17, 4, 7, 13),
+(18, 5, 7, 13),
+(19, 7, 2, 19),
+(20, 8, 5, 6),
+(21, 8, 4, 6),
+(22, 8, 4, 18),
+(23, 9, 9, 22),
+(24, 10, 7, 23),
+(25, 11, 8, 23),
+(26, 12, 3, 15),
+(27, 13, 6, 22),
+(28, 14, 10, 13),
+(29, 14, 8, 13),
+(30, 15, 8, 13);

@@ -29,11 +29,17 @@ public class SQLData {
      * @param user String: username
      * @param pw   String: password
      */
-    public SQLData(String url, String user, String pw) {
+    public SQLData(String url, String user, String pw) throws Exception {
         this.DBURL = url;
         this.USERNAME = user;
         this.PASSWORD = pw;
-        initializeConnection();
+        try{
+            initializeConnection();
+        }
+        catch(SQLException e){
+            throw new Exception("Database connection failed!");
+
+        }
         selectAnimalData();
         selectTreatmentsData();
         close();
@@ -43,47 +49,29 @@ public class SQLData {
      *
      * @param startHour the new start hour for the treatment
      */
-    public void updateTreatmentStartHour(String startHour) {
-        String query = "UPDATE TREATMENTS SET StartHour = ? WHERE TaskID = ?";
+    public void updateTreatmentStartHour(int newStart, String animalNickname, String description, int oldStart) {
+        String query = "UPDATE TREATMENTS " +
+        "SET StartHour = %d " +
+        "WHERE AnimalID = (SELECT AnimalID FROM ANIMALS WHERE AnimalNickname = '%s') " +
+        "AND TaskID = (SELECT TaskID FROM TASKS WHERE Description = '%s') " +
+        "AND StartHour = %d;";
+        query = String.format(query, newStart, animalNickname, description, oldStart);
+
+    
         try {
-            PreparedStatement preparedStmt = dbConnect.prepareStatement(query);
-            preparedStmt.setString(1, startHour);
-            preparedStmt.setInt(2, getTaskIDFromDescription(startHour));
-            preparedStmt.executeUpdate();
+            Statement myStmt = dbConnect.createStatement();
+            int rowsAffected = myStmt.executeUpdate(query);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    /**
-     * Retrieves the task ID based on the task description
-     *
-     * @param description the description of the task
-     * @return the task ID
-     */
-    private int getTaskIDFromDescription(String description) {
-        String query = "SELECT TaskID FROM TASKS WHERE Description = ?";
-        try {
-            PreparedStatement preparedStmt = dbConnect.prepareStatement(query);
-            preparedStmt.setString(1, description);
-            ResultSet resultSet = preparedStmt.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt("TaskID");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
+    
+   
     /**
      * Initializes connection to database
      */
-    public void initializeConnection() {
-        try {
-            dbConnect = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            System.out.println("Connection Failed");
-            e.printStackTrace();
-        }
+    public void initializeConnection() throws SQLException {
+        dbConnect = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
     }
 
     /**
@@ -118,7 +106,6 @@ public class SQLData {
                         break;
                     default:
                         throw new IllegalArgumentException("Invalid Species");
-                        // System.out.println("Invalid Species"); //TODO - Throw an animal not valid
                 }
             }
             animalResults.close();
@@ -189,9 +176,4 @@ public class SQLData {
      * Temporary used to test This Class and Database connection
      * @param args
      */
-    public static void main(String[] args) {
-        SQLData myJDBC = new SQLData("jdbc:postgresql://localhost:5432/ewr", "oop", "ucalgary");
-        myJDBC.initializeConnection();
-        myJDBC.close();
-    }
 }
