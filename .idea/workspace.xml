@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dad7b334-3da9-4c21-8002-95b1d2c2209e" name="Changes" comment="" />
+    <list default="true" id="dad7b334-3da9-4c21-8002-95b1d2c2209e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/edu/ucalgary/oop/Animal.java" beforeDir="false" afterPath="$PROJECT_DIR$/edu/ucalgary/oop/Animal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/edu/ucalgary/oop/Beaver.java" beforeDir="false" afterPath="$PROJECT_DIR$/edu/ucalgary/oop/Beaver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/edu/ucalgary/oop/TestClass.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/edu/ucalgary/oop/TestEWRScheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/edu/ucalgary/oop/TestEWRScheduler.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

@@ -14,8 +14,8 @@ max.mcevoy@ucalgary.ca</a>
  * specific to Beaver
  */
 public class Beaver extends Diurnal {
-    private final int FEED_TIME = 5;
     private final int FEED_PREP = 0;
+    private final int FEED_TIME = 5;
     private final int CLEAN_TIME = 5;
 
     /**

@@ -102,7 +102,6 @@ public class TestEWRScheduler {
         assertEquals("BackUpVolunteerNeededException not thrown", true, correctException);
     }
 
-    
     @Test
     /**
      * Will construct a schedule that should not through any errors

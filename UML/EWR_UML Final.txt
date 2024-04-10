@@ -1,0 +1,205 @@
+@startuml
+class Schedule{
+-animals:List<Animal>
+-treatments:List<DailyTasks>
+-cleanings:List<DailyTasks>
+-hourlySchedule:List<List<DailyTasks>>
+-numVolunteers:List<Integer>
++Schedule(animals:List<Animal>, treatments:List<DailyTasks>)
++getHourlySchedule():List<List<DailyTasks>>
++addBackupVolunteer(hour:int)
++addTaskToHours(task:DailyTask)
++addFeedingToTasks()
++addCleaningToTasks()
++buildSchedule(type:String)
++resetHourlySchedule()
++toString():String{abstract}
+}
+class DailyTasks{
+-animalName:String 
+-String description:String 
+-int startHour:int
+-int duration:int
+-int maxWindow:int
+-int prepTime:int
++DailyTasks(animalName:String, description:String, startHour:int, duration:int, maxWindow:int)
++DailyTasks(animalName:String, description:String, startHour:int, duration:int, maxWindow:int, prepTime:int)
++getAnimalName():String
++getDescription():String
++getStartHour():int
++getDuration():int
++getMaxWindow():int
++getPrepTime():int
++clone():Object
++compareTo(DailyTasks):int
++toString():String{abstract}
+}
+
+class SQLData{
+-dbConnect:Connection
+-DBURL:String
+-USERNAME:String
+-PASSWORD:String
+-animals:List<Animal>
+-tasks:List<DailyTasks>
+
++SQLData(url:String, user:String, pw:String)
++updateTreatmentStartHour(newStart:int, selectedTreatment)
++initializeConnection()
++selectAnimalData()
++selectTreatmentsData()
++close()
++getAnimalList():List<Animal>
++getTreatmentTasks():List<DailyTasks>
+}
+
+class Animal{
+-ID:int
+-NICKNAME:String
+-ORPHAN:boolean
++Animal(animalID:int, nickname:String) 
++checkOrphaned(nickname:String)
++getID():int
++getName():String
++isOrphan():boolean
++getFeedTime():int
++getFeedPrep():int
++getCleanTime():int
++getFeedStart():int
++getFeedWindow():int
++getSpecies():String[]
++toString():String{abstract}
+}
+
+class Nocturnal{
+-FEED_START:boolean = 0
+-FEED_WINDOW:int = 3
++getFeedTime():int
++getFeedPrep():int
++getCleanTime():int
++getFeedStart():int
++getFeedWindow():int
++getSpecies():String[]
+}
+
+class Crepuscular{
+-FEED_START:int = 19
+-FEED_WINDOW:int = 3
++getFeedTime():int
++getFeedPrep():int
++getCleanTime():int
++getFeedStart():int
++getFeedWindow():int
++getSpecies():String[]
+}
+
+class Diurnal{
+-FEED_START:int = 8
+-FEED_WINDOW:int = 3
++getFeedTime():int
++getFeedPrep():int
++getCleanTime():int
++getFeedStart():int
++getFeedWindow():int
++getSpecies():String[]
+}
+
+class Raccoon{
+-FEED_TIME:int = 5
+-FEED_PREP:int = 0
+-CLEAN_TIME:int = 5
++getFeedTime():int
++getFeedPrep():int
++getCleanTime():int
++getSpecies():String[]
+}
+
+class Coyote{
+-FEED_TIME:int = 5
+-FEED_PREP:int = 10
+-CLEAN_TIME:int = 5
++getFeedTime():int
++getFeedPrep():int
++getCleanTime():int
++getSpecies():String[]
+}
+
+class Fox{
+-FEED_PREP:int = 5
+-FEED_TIME:int = 5
+-CLEAN_TIME:int = 5
++getFeedTime():int
++getFeedPrep():int
++getCleanTime():int
++getSpecies():String[]
+}
+class Beaver{
+-FEED_PREP:int = 0
+-FEED_TIME:int = 5
+-CLEAN_TIME:int = 5
++getFeedTime():int
++getFeedPrep():int
++getCleanTime():int
++getSpecies():String[]
+
+}
+class Porcupine{
+-FEED_TIME:int = 5
+-FEED_PREP:int = 0
+-CLEAN_TIME:int = 10
++getFeedTime():int
++getFeedPrep():int
++getCleanTime():int
++getSpecies():String[]
+}
+
+
+class GUIforEWR{
+-myJDBC:SQLData 
+-frame:JFrame 
+-printScheduleBtn:JButton
+-displayAnimalsBtn:JButton 
+-displayTasksBtn:JButton
+-animals:List<Animal>
+-treatments:List<DailyTasks>
+-schedule:Schedule
+-url:String = "jdbc:postgresql://localhost:5432/ewr";
+-user:String = "oop";
+-pass:String = "ucalgary";
++GUIforEWR()
++initSQL(url:String, user:String, pw:String)
++createButton(text:String, color:Color):JButton
++login():boolean
++printSchedule()
++scheduleTasks():boolean
++askToAddBackupVolunteer(errorTask):boolean
++askForBackupVolunteerHour(errorTask):int
++confirmBackupVolunteer(selectedValue):boolean
++throwScheduleNotGeneratedException()
++displayAnimals()
++pickHour(startHour:int):int
++changeTreatmentTime()
+}
+
+exception BackUpVolunteerNeededException{}
+
+exception SQLException{}
+interface Comparable{}
+interface Clonable{}
+GUIforEWR<..Schedule
+GUIforEWR<..SQLData
+DailyTasks::compareTo..|>Comparable
+DailyTasks::clone..|>Clonable
+SQLData..>SQLException : <throws>
+Schedule <.. DailyTasks
+Schedule <.. Animal
+Schedule ..|> BackUpVolunteerNeededException:<throws>
+Nocturnal *-- Fox
+Nocturnal *-- Raccoon
+Crepuscular *-- Coyote
+Crepuscular *--Porcupine
+Diurnal *-- Beaver
+Animal *-- Diurnal
+Animal *-- Crepuscular
+Animal *-- Nocturnal
+@enduml

@@ -93,13 +93,13 @@ public class Animal{
      */
     public String getSpecies() {return "void";}
 
-    /**
-     * Static function that returns all species in EWR
-     * @return String[]: species in EWR
-     */
-    public static String[] getAllSpecies(){
-        return new String[] {"beaver","coyote","fox","porcupine","raccoon"};
-    }
+//    /**
+//     * Static function that returns all species in EWR
+//     * @return String[]: species in EWR
+//     */
+//    public static String[] getAllSpecies(){
+//        return new String[] {"beaver","coyote","fox","porcupine","raccoon"};
+//    }
     
     /** 
      * Prints information about the animal
