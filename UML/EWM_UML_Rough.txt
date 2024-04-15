@@ -1,0 +1,155 @@
+@startuml EWR
+
+class Day{
+-List<Animal> animals
+-List<Hour> hour
+-List<Task> task
++Day(String[] sqlAnimal, String[] tasks, String[] treatment)
++PrintSchedule() : String
++populateLists()
+
+
+}
+
+
+class Hour{
+-int hour
+-List<Treatment> treatment
+-List<Feed> feed
+-int volunteer
+
++printHour(): String
+}
+
+class Task{
+-int TASK_ID
+-String DESCRIPTION
+-int DURATION
+-int MAX_WINDOW
+
++Task(taskID:int, description:String, duration:int, maxWindow:int)
++getTaskID(): int
++getDescription():String
++getDuration():int
++getMaxWindow():int
+
+}
+
+class Treatment{
+-int ANIMAL_ID
+-int TASK_ID
+-int START_HOUR
++Treatment(animalID: int, taskID: int, startHour: int)
++getAnimalID(): int
++getTaskID(): int
++getStartHour(): int
+}
+
+
+class Animal{
+-int ANIMAL_ID
+-String ANIMAL_NICKNAME
+-boolean feed = false
+-boolean dailyClean = false
+-boolean IS_ORPHAN
+
++Animal(animalID:int, animalNickname:String, orphan:boolean) 
+
++isClean():boolean
++clean(boolean)
++isFeed():boolean
++feed(boolean)
+
++getAnimalID():int
++getAnimalNickname():String
++isOrphan(boolean)
+
+
+}
+
+class Nocturnal{
+-int FEED_START = 0
+-int FEED_WINDOW = 3
++getFeedStart():int
++getFeedWindow():int
+}
+
+class Crepuscular{
+-int FEED_START = 19
+-int FEED_WINDOW = 3
++getFeedStart():int
++getFeedWindow():int
+}
+
+class Diurnal{
+-int FEED_START = 8
+-int FEED_WINDOW = 3
++getFeedStart():int
++getFeedWindow():int
+}
+
+class Raccoon{
+-int FEED_PREP = 0
+-int FEED_TIME = 5
+-int CLEAN_TIME = 5
++getFeedPrep():int
++getFeedTime():int
++getCleanTime():int
+}
+
+class Coyote{
+-int FEED_PREP = 10
+-int FEED_TIME = 5
+-int CLEAN_TIME = 5
++getFeedPrep():int
++getFeedTime():int
++getCleanTime():int
+}
+
+class Fox{
+-int FEED_PREP = 5
+-int FEED_TIME = 5
+-int CLEAN_TIME = 5
++getFeedPrep():int
++getFeedTime():int
++getCleanTime():int
+}
+class Beaver{
+-int FEED_PREP = 0
+-int FEED_TIME = 5
+-int CLEAN_TIME = 5
++getFeedPrep():int
++getFeedTime():int
++getCleanTime():int
+}
+class Porcupine{
+-int FEED_PREP = 0
+-int FEED_TIME = 5
+-int CLEAN_TIME = 10
++getFeedPrep():int
++getFeedTime():int
++getCleanTime():int
+}
+
+exception IllegalArgumentException{
+}
+
+
+Nocturnal *-- Fox
+Nocturnal *-- Raccoon
+Crepuscular *-- Coyote
+Crepuscular *--Porcupine
+Diurnal *-- Beaver
+Animal *-- Diurnal
+Animal *-- Crepuscular
+Animal *-- Nocturnal
+
+Animal ..> IllegalArgumentException: "<<throws>>"
+Task ..> IllegalArgumentException: "<<throws>>"
+Treatment ..> IllegalArgumentException: "<<throws>>"
+Day *-- Hour
+Day *-- Animal
+Hour *-- Treatment
+Day *-- Task
+
+@enduml
